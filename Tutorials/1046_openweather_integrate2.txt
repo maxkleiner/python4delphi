@@ -1,0 +1,365 @@
+{# ImageAI is a Python library built to empower Computer Vision
+from imageai.Detection import ObjectDetection
+#Using TensorFlow backend.  import pyowm
+##!/usr/bin/env python
+import wget and integrate in maXbox control - with 3h forecast }
+
+program OpenWeatherMap_Py_integrate2;
+
+const C=CRLF;    
+const SCRIPTNAMEP= '1046_openweather.py';
+const DETECTOUTFILE= 'openweather_out2.txt';
+
+Const PYSCRIPT6 = 
+'import pyowm                                                '+C+
+'import wget                                                 '+C+
+'import sys, datetime as dt                                  '+C+
+'#nltk.download("vader_lexicon")                             '+C+
+'from time import sleep                                      '+C+
+'import pandas as pd                                         '+C+
+'pd.set_option("max_colwidth", 400)                          '+C+
+'import numpy as np                                          '+C+
+'print("this first line after config & imports")             '+C+
+'                                                            '+C+
+'                                                            '+C+
+'output_path = sys.argv[1]                                   '+C+
+'locate = sys.argv[2]                                        '+C+
+'                                                                     '+C+
+'owm= pyowm.OWM("55013bf3d09cfb0619989a00ed5bed09")                   '+C+
+'observation= owm.weather_at_place((locate))                          '+C+
+'we= observation.get_weather()                                        '+C+
+'temp = we.get_temperature("celsius")                                 '+C+
+'forecast = owm.three_hours_forecast((locate))                        '+C+
+'with open(output_path, "w") as file:                                 '+C+
+'  file.write("OpenWeatherMap of "+locate+" "+str(dt.datetime.now())+ '+C+
+'               "\n"+str(we)+                                         '+C+
+'               "\n"+str(temp)+                                       '+C+
+'               "\n"+"rain:"+str(forecast.will_have_rain())+          '+C+
+'               "\n"+"UTC:"+str(dt.datetime.utcnow()))                '+C+    
+'                                                                     '+C+
+'print("\n")                                                          '+C+
+'print("Weather today:"+(locate)+" "+str(we)+"\n"+str(temp))          '+C+
+'print("integrate weatherreport detector compute ends...")            ';
+
+//*)
+
+Const ACTIVESCRIPT = PYSCRIPT6;
+
+var RUNSCRIPT, outputPath, locate: string;
+    startTime64, endTime64, freq64: Int64;
+
+begin //@main
+  //-init env
+  maxform1.console1click(self);
+  memo2.height:= 205;
+  QueryPerformanceFrequency(freq64); 
+  //-config
+  saveString(exepath+SCRIPTNAMEP, ACTIVESCRIPT);
+  sleep(600)
+  //outputPath:= '.\crypt\output\'+DETECTOUTFILE;
+  
+  if Not fileExists(exepath+DETECTOUTFILE) then
+      CreateFileFromString(exepath+DETECTOUTFILE, 'Open_Weather_Data');
+  
+  outputPath:= Exepath+DETECTOUTFILE;
+  locate:= '"Bern, CH"';
+  
+  if fileExists(exepath+SCRIPTNAMEP) then begin
+     RUNSCRIPT:= exepath+SCRIPTNAMEP;
+     QueryPerformanceCounter(startTime64);
+     writeln(getDosOutput('py '+RUNSCRIPT+' '+outputpath+' '+locate, exePath));
+     QueryPerformanceCounter(endTime64);
+     println('elapsedSeconds:= '+floattostr((endTime64-startTime64)/freq64));
+     openFile(outputPath)
+    //}
+  end; 
+end.   
+
+Ref:  https://openweathermap.org/find
+       [Search domain pypi.org] https://pypi.org/project/pyowm/
+       
+We’ll use the Python programming language and an awesome library called Python OpenWeatherMap (PyOWM) to make it easier to use the OpenWeatherMap API in Python.
+https://medium.com/nexttech/how-to-use-the-openweathermap-api-with-python-c84cc7075cfc
+ forecast = owm.three_hours_forecast('mumbai')
+ print(london.will_have_rain())
+ print(london.will_have_fog())
+       
+C:\maXbox>pip3 install pyowm
+Collecting pyowm
+  Downloading pyowm-2.10.0-py3-none-any.whl (3.7 MB)
+     |¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦| 3.7 MB 819 kB/s
+Requirement already satisfied: geojson<3,>=2.3.0 in c:\users\max\appdata\local\p
+rograms\python\python36\lib\site-packages (from pyowm) (2.4.0)
+Requirement already satisfied: requests<3,>=2.20.0 in c:\users\max\appdata\local
+\programs\python\python36\lib\site-packages (from pyowm) (2.24.0)
+Requirement already satisfied: chardet<4,>=3.0.2 in c:\users\max\appdata\local\p
+rograms\python\python36\lib\site-packages(from requests<3,>=2.20.0->pyowm)(3.0
+.4)
+Requirement already satisfied: urllib3!=1.25.0,!=1.25.1,<1.26,>=1.21.1 in c:\use
+rs\max\appdata\local\programs\python\python36\lib\site-packages (from requests<3
+,>=2.20.0->pyowm) (1.22)
+Requirement already satisfied: certifi>=2017.4.17 in c:\users\max\appdata\local\
+programs\python\python36\lib\site-packages (from requests<3,>=2.20.0->pyowm) (20
+18.1.18)
+Requirement already satisfied: idna<3,>=2.5 in c:\users\max\appdata\local\progra
+ms\python\python36\lib\site-packages (from requests<3,>=2.20.0->pyowm) (2.6)
+Installing collected packages: pyowm
+Successfully installed pyowm-2.10.0
+WARNING: You are using pip version 20.1.1; however,version 21.1.3 is available.
+
+You should consider upgrading via the 'c:\users\max\appdata\local\programs\pytho
+n\python36\python.exe -m pip install --upgrade pip' command.
+
+TypeError: 'module' object is not callable
+>>> owm = pyowm.OWM('55013bf3d09cfb0619989a00ed5bed09')
+>>> observation=owm.weather_at_place(('Bern'))
+>>> w=observation.get_weather()
+>>> w
+<pyowm.weatherapi25.weather.Weather - reference time=2021-07-05 14:02:48+00, sta
+tus=clouds, detailed status=broken clouds>
+>>> a=w.get_temperature('celsius')
+>>> a
+{'temp': 23.53, 'temp_max': 25.3, 'temp_min': 20.4, 'temp_kf': None}  >>>
+
+C:\maXbox>
+
+Cooming soon.
+
+           ,+++77777++=:,                    +=                      ,,++=7++=,,        
+         7~?7   +7I77 :,I777  I          77 7+77 7:        ,?777777??~,=+=~I7?,=77 I    
+        =7I7I~7  ,77: ++:~+7 77=7777 7     +77=7 =7I7     ,I777= 77,:~7 +?7, ~7   ~ 777?
+        77+7I 777~,,=7~  ,::7=7: 7 77   77: 7 7 +77,7 I777~+777I=   =:,77,77  77 7,777, 
+        = 7  ?7 , 7~,~  + 77 ?: :?777 +~77 77? I7777I7I7 777+77   =:, ?7   +7 777?      
+           77 ~I == ~77= +777 777~: I,+77?  7  7:?7? ?7 7 7 77 ~I   7I,,?7 I77~         
+            I 7=77~+77+?=:I+~77?     , I 7? 77 7   777~ +7 I+?7  +7~?777,77I            
+              =77 77= +7 7777         ,7 7?7:,??7     +7    7   77??+ 7777,             
+                  =I, I 7+:77?         +7I7?7777 :             :7 7                     
+                     7I7I?77 ~         +7:77,     ~         +7,::7   7                  
+                    ,7~77?7? ?:         7+:77777,           77 :7777=                   
+                     ?77 +I7+,7         7~  7,+7  ,?       ?7?~?777:                    
+                        I777=7777 ~     77 :  77 =7+,    I77  777                       
+                          +      ~?     , + 7    ,, ~I,  = ? ,                          
+                                         77:I+                                          
+                                         ,7                                             
+                                          :77                                           
+                                             :                                          
+
+https://github.com/dsblank/simple_kernel
+https://forum.lazarus.freepascal.org/index.php?topic=38955.0
+https://ipython-books.github.io/16-creating-a-simple-kernel-for-jupyter/
+
+The kernel and client live in different processes and this decoupling between the client and kernel makes it possible to write kernels in any language. They communicate via messaging protocols (I think its 0MQ) implemented on top of network sockets and these messages are encoded in JSON in a text-based document format.
+
+Die Safety-Measures sind Massnahmen, welche du im Design und der Implementierung umsetzt, um die Software sicher zu gestalten. Die meisten Safety-Measures wurden bereits durch die Risikoanalyse gefunden, die weiteren findest du auf Grund deiner Erfahrung oder der anzuwendenden Norm. Die Safety-Measures, welche ich immer wieder angetroffen habe sind:
+
+    Bereichsprüfungen an Schnittstellen von Komponenten
+    Prüfung der zwischengespeicherten Daten mit CRC oder redundanten Daten
+    Plausibilitätsprüfungen über verschiedene Daten-Arten
+    Programmflussüberwachung
+    Runtime-Tests zur Sicherstellung der Korrektheit Prozessors, wie z.B. RAM, ROM
+    Prüfungen auf nullptr
+    Zyklisches verarbeiten und versenden der Daten
+    
+BBC-News Sentiment of 2021-06-07 17:06:39.438889
+0: Pakistan train accident: Dozens killed in Sindh collision: -0.9001
+1: Unlocking: India states start reopening amid dip in Covid cases: 0.25
+2: Norway police say body on shore is Kurdish-Iranian boy who died in Channel: -0.7003
+3: Chinese birth-control policy could cut millions of Uyghur births, report finds: -0.4939
+4: Jeff Bezos and brother to fly to space in Blue Origin flight: 0.296
+5: Apple employees rally against office working plan: 0.0
+6: Greek islands aim to go 'Covid-free' to welcome back tourists: 0.4588
+7: Afghan policewomen abuse: US and EU urge inquiry: -0.9493
+8: Egerton Ryerson statue toppled at Canada indigenous school protest: -0.25
+9: Peru election: Fujimori's lead narrows as rural votes come in: 0.5719
+10: The Rolling Stones and Tom Jones call for streaming reforms: 0.0
+11: Ukraine's Euro 2020 football kit provokes outrage in Russia: -0.6808
+12: Why Kim Jong-un is waging war on slang, jeans and foreign films: -0.93
+13: Kenya's Thandiwe Muriu: Standing out in camouflage: 0.7269
+14: Daniel Ellsberg: The 90-year-old whistleblower tempting prosecution: -0.3182
+15: 'My foggy glasses solution helped me through Covid': 0.7579
+16: 'Clothes are torn, worn out - I can't find work gloves': -0.25
+17: The couple rescuing the house they bought by accident: -0.4767
+18: Letter from Africa: How Zimbabwe is still haunted by Robert Mugabe: -0.9001
+19: Egerton Ryerson: Statue toppled of architect of 'shameful' school system: 0.2732
+20: Prince Harry and Meghan: California residents react to birth of royal baby girl: 0.0
+21: Pakistan train cash: Footage shows collision aftermath: -0.7845
+22: Ukraine conflict: The couple that's survived seven years of war: 0.5267
+23: British Normandy Memorial unveiled on 77th D-Day anniversary: -0.5574
+24: Venice residents in environmental protest against first post-Covid cruise ship: -0.765
+2021-06-07 15:06:39.438889  
+
+[1935] PUSHTYPE 24(String) // 2
+ [1940] PUSHTYPE 25(String) // 3
+ [1945] PUSHTYPE 24(String) // 4
+ [1950] PUSHVAR Base[4] // 5
+ [1956] CALL 5
+ [1961] POP // 4
+ [1962] ASSIGN Base[3], Base[4]
+ [1973] POP // 3
+ [1974] CALC Base[3] + ['1046_openweather.py']
+ [2009] ASSIGN Base[2], Base[3]
+ [2020] POP // 2
+ [2021] CALL 4
+ [2026] POP // 1
+ [2027] POP // 0
+ [2028] PUSHTYPE 12(U32) // 1
+ [2033] ASSIGN Base[1], [600]
+ [2048] CALL 6
+ [2053] POP // 0
+ [2054] PUSHTYPE 33(U8) // 1
+ [2059] PUSHTYPE 24(String) // 2
+ [2064] PUSHTYPE 25(String) // 3
+ [2069] PUSHTYPE 24(String) // 4
+ [2074] PUSHVAR Base[4] // 5
+ [2080] CALL 5
+ [2085] POP // 4
+ [2086] ASSIGN Base[3], Base[4]
+ [2097] POP // 3
+ [2098] CALC Base[3] + ['openweather_out2.txt']
+ [2134] ASSIGN Base[2], Base[3]
+ [2145] POP // 2
+ [2146] PUSHVAR Base[1] // 3
+ [2152] CALL 7
+ [2157] POP // 2
+ [2158] POP // 1
+ [2159] BNOT Base[1]
+ [2165] SETFLAG NOT Base[1]
+ [2172] POP // 0
+ [2173] FLAGGOTO currpos + 131 [2309]
+ [2178] PUSHTYPE 24(String) // 1
+ [2183] ASSIGN Base[1], ['Open_Weather_Data']
+ [2215] PUSHTYPE 24(String) // 2
+ [2220] PUSHTYPE 25(String) // 3
+ [2225] PUSHTYPE 24(String) // 4
+ [2230] PUSHVAR Base[4] // 5
+ [2236] CALL 5
+ [2241] POP // 4
+ [2242] ASSIGN Base[3], Base[4]
+ [2253] POP // 3
+ [2254] CALC Base[3] + ['openweather_out2.txt']
+ [2290] ASSIGN Base[2], Base[3]
+ [2301] POP // 2
+ [2302] CALL 8
+ [2307] POP // 1
+ [2308] POP // 0
+ [2309] PUSHTYPE 25(String) // 1
+ [2314] PUSHTYPE 24(String) // 2
+ [2319] PUSHVAR Base[2] // 3
+ [2325] CALL 5
+ [2330] POP // 2
+ [2331] ASSIGN Base[1], Base[2]
+ [2342] POP // 1
+ [2343] CALC Base[1] + ['openweather_out2.txt']
+ [2379] ASSIGN GlobalVar[16], Base[1]
+ [2390] POP // 0
+ [2391] ASSIGN GlobalVar[17], ['"Bern, CH"']
+ [2416] PUSHTYPE 33(U8) // 1
+ [2421] PUSHTYPE 24(String) // 2
+ [2426] PUSHTYPE 25(String) // 3
+ [2431] PUSHTYPE 24(String) // 4
+ [2436] PUSHVAR Base[4] // 5
+ [2442] CALL 5
+ [2447] POP // 4
+ [2448] ASSIGN Base[3], Base[4]
+ [2459] POP // 3
+ [2460] CALC Base[3] + ['1046_openweather.py']
+ [2495] ASSIGN Base[2], Base[3]
+ [2506] POP // 2
+ [2507] PUSHVAR Base[1] // 3
+ [2513] CALL 7
+ [2518] POP // 2
+ [2519] POP // 1
+ [2520] SETFLAG NOT Base[1]
+ [2527] POP // 0
+ [2528] FLAGGOTO currpos + 439 [2972]
+ [2533] PUSHTYPE 25(String) // 1
+ [2538] PUSHTYPE 24(String) // 2
+ [2543] PUSHVAR Base[2] // 3
+ [2549] CALL 5
+ [2554] POP // 2
+ [2555] ASSIGN Base[1], Base[2]
+ [2566] POP // 1
+ [2567] CALC Base[1] + ['1046_openweather.py']
+ [2602] ASSIGN GlobalVar[15], Base[1]
+ [2613] POP // 0
+ [2614] PUSHTYPE 0(Pointer) // 1
+ [2619] SETPOINTER Base[1]: GlobalVar[18]
+ [2630] CALL 9
+ [2635] POP // 0
+ [2636] PUSHTYPE 24(String) // 1
+ [2641] PUSHTYPE 24(String) // 2
+ [2646] PUSHVAR Base[2] // 3
+ [2652] CALL 5
+ [2657] POP // 2
+ [2658] PUSHTYPE 24(String) // 3
+ [2663] PUSHTYPE 25(String) // 4
+ [2668] ASSIGN Base[4], ['py ']
+ [2686] CALC Base[4] + GlobalVar[15]
+ [2698] CALC Base[4] + [#32]
+ [2711] CALC Base[4] + GlobalVar[16]
+ [2723] CALC Base[4] + [#32]
+ [2736] CALC Base[4] + GlobalVar[17]
+ [2748] ASSIGN Base[3], Base[4]
+ [2759] POP // 3
+ [2760] PUSHVAR Base[1] // 4
+ [2766] CALL 11
+ [2771] POP // 3
+ [2772] POP // 2
+ [2773] POP // 1
+ [2774] CALL 10
+ [2779] POP // 0
+ [2780] PUSHTYPE 0(Pointer) // 1
+ [2785] SETPOINTER Base[1]: GlobalVar[19]
+ [2796] CALL 9
+ [2801] POP // 0
+ [2802] PUSHTYPE 24(String) // 1
+ [2807] PUSHTYPE 25(String) // 2
+ [2812] ASSIGN Base[2], ['elapsedSeconds:= ']
+ [2844] PUSHTYPE 24(String) // 3
+ [2849] PUSHTYPE 7(Extended) // 4
+ [2854] PUSHTYPE 10(S64) // 5
+ [2859] ASSIGN Base[5], GlobalVar[19]
+ [2870] CALC Base[5] - GlobalVar[18]
+ [2882] ASSIGN Base[4], Base[5]
+ [2893] POP // 4
+ [2894] CALC Base[4] / GlobalVar[20]
+ [2906] PUSHVAR Base[3] // 5
+ [2912] CALL 13
+ [2917] POP // 4
+ [2918] POP // 3
+ [2919] CALC Base[2] + Base[3]
+ [2931] POP // 2
+ [2932] ASSIGN Base[1], Base[2]
+ [2943] POP // 1
+ [2944] CALL 12
+ [2949] POP // 0
+ [2950] PUSHTYPE 24(String) // 1
+ [2955] ASSIGN Base[1], GlobalVar[16]
+ [2966] CALL 14
+ [2971] POP // 0
+ [2972] RET
+Proc [1]: External Decl: class:TMAXFORM1|CONSOLE1CLICK|\00\00\00 
+Proc [2]: External Decl: class:TCONTROL|HEIGHT@|\01\00\00\00 
+Proc [3]: External Decl: \01\01 QUERYPERFORMANCEFREQUENCY
+Proc [4]: External Decl: \00\00\00 SAVESTRING
+Proc [5]: External Decl: \01 EXEPATH
+Proc [6]: External Decl: \00\00 SLEEP
+Proc [7]: External Decl: \01\00 FILEEXISTS
+Proc [8]: External Decl: \00\00\00 CREATEFILEFROMSTRING
+Proc [9]: External Decl: \00\01 QUERYPERFORMANCECOUNTER
+Proc [10]: External Decl: \00\00 WRITELN
+Proc [11]: External Decl: \01\00\00 GETDOSOUTPUT
+Proc [12]: External Decl: \00\00 PRINTLN
+Proc [13]: External Decl: \01\00 FLOATTOSTR
+Proc [14]: External Decl: \00\00 OPENFILE
+Proc [15] Export: !MASTERPROC -1
+ [0] CALL 0
+ [5] RET
+ mX4 byte code executed: 08/07/2021 10:02:20  Runtime: 0:0:0.93  Memload: 73% use
+ByteCode Error Message: Null Pointer Exception
+1046_openweather_integrate.txt last File set history
+C:\maXbox\mX47464\maxbox4\examples\1046_openweather_integrate2.txt stored
+1046_openweather_integrate2.txt in maxboxdef.ini stored: 10:03:41
+  
+
+----Simple Browser started----
