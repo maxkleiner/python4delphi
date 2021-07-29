@@ -1,0 +1,135 @@
+program PyDemo21_Eval_Exec3;
+
+//https://github.com/maxkleiner/python4delphi/blob/master/Demos/Demo02/Unit1.pas
+//https://stackoverflow.com/questions/21464102/reset-python4delphi-engine
+//https://thepythonguru.com/python-builtin-functions/eval/
+//https://maxbox4.wordpress.com/2021/07/28/python4maxbox-code/
+
+//interface   - customize your PY environment first
+{uses
+  Classes, SysUtils,
+  Windows, Messages, Graphics, Controls, Forms, Dialogs,
+  StdCtrls, ComCtrls, ExtCtrls,
+  PythonEngine, Vcl.PythonGUIInputOutput, PythonVersions.pas ;   }
+
+const PYDLLNAME = 'python36.dll';
+      PSCRIPTNAME = 'initpy.py';
+      PYHOME = 'C:\Users\max\AppData\Local\Programs\Python\Python36-32\';  
+      PYSCRIPT = 'C:\maXbox\maxbox3\maxbox3\maXbox3\examples\module1maxbox1.py';
+      PYSCRIPT2= 'C:\maXbox\maxbox3\maXbox4\examples\896_textclassification.py';
+      LB = CR+LF;
+       
+const PyModule =
+              'def printData(data): '+#13#10+
+              '  return data+data+"/n"';       
+         
+const PYCMD = 'print("this is box")'+LB+ 
+              'import sys'+LB+ 
+              'f=open(r"1050pytest21.txt","w")'+LB+
+              'f.write("Hello PyWorld_mX4, \n")'+LB+
+              'f.write("This data will be written on the file.")'+LB+ 
+              'f.close()';
+           
+
+var myloadscript: string;
+     PyForm: TForm; pyMemo: TMemo;
+
+Procedure PYLaz_P4D_Demo2;
+//https://wiki.freepascal.org/Python4Delphi 
+var eng : TPythonEngine;
+    Out1: TPythonGUIInputOutput;
+begin
+  eng:= TPythonEngine.Create(Nil);
+  Out1:= TPythonGUIInputOutput.create(nil)
+  Out1.output:= pyMemo; //debugout.output; or memo2;
+  Out1.RawOutput:= False;
+  Out1.UnicodeIO:= False;
+  Out1.maxlines:= 20;
+  out1.displaystring('this string thing')
+  //eng.IO:= Out1;
+  Out1.writeline('draw the line');
+  try
+    eng.LoadDll;
+    eng.IO:= Out1;
+    if eng.IsHandleValid then begin
+      writeln('DLLhandle: '+botostr(eng.IsHandleValid))
+      WriteLn('evens: '+ eng.EvalStringAsStr('[x**2 for x in range(15)]'));
+      WriteLn('gauss: '+ eng.EvalStringAsStr('sum([x for x in range(101)])'));
+      WriteLn('gauss2: '+ eng.EvalStr('sum([x % 2 for x in range(10100)])'));
+      WriteLn('mathstr: '+ eng.EvalStr('"py " * 7'));
+      WriteLn('builtins: '+ eng.EvalStr('dir(__builtins__)'));
+      WriteLn('upperstr: '+ eng.EvalStr('"hello again".upper()'));
+      WriteLn('workdir: '+ eng.EvalStr('__import__("os").getcwd()'));
+      writeln('syncheck '+
+       botostr(eng.CheckEvalSyntax('print("powers:",[x**2 for x in range(10)])')));
+              
+      eng.ExecString('print("powers:",[x**2 for x in range(10)])');
+      writeln('ExecSynCheck1 '+botostr(eng.CheckExecSyntax(PYCMD)));
+      eng.ExecString(PYCMD);
+      {writeln('ExecSynCheck2 '+
+            botostr(eng.CheckExecSyntax(filetostring(PYSCRIPT))));
+      eng.ExecString(filetostring(PYSCRIPT)); }
+      writeln(eng.Run_CommandAsString('print("powers:",[x**2 for x in range(10)])',eval_input));
+      writeln(eng.Run_CommandAsString('sum([x for x in range(201)])',eval_input));
+      pymemo.update;
+    end
+      else writeln('invalid library handle! '+Getlasterrortext);
+    println('PythonOK: '+botostr(PythonOK));  
+  except
+     //eng.raiseError;
+     writeln('PyErr '+ExceptionToString(ExceptionType, ExceptionParam));
+  finally   
+     eng.free;
+  end;     
+  out1.free;
+  //pyImport(PyModule);
+end;
+
+begin  //@main
+
+  //PythonEngine1.Free;
+  //myloadscript2:= filetostring(PYSCRIPT2);
+  
+  PyForm:= loadForm2(300,200, clgreen, 'PyFrm4D');
+  pyMemo:= TMemo.create(PyForm);
+  pyMemo.parent:= PyForm
+  PyForm.show;
+  
+  PYLaz_P4D_Demo2; 
+  
+  //register_PYthonGUI;
+End.
+----app_template_loaded_code----
+----File newtemplate.txt not exists - now saved!----
+
+Doc: Destroying it calls Py_Finalize, which frees all memory allocated by the Python DLL.
+Or, if you're just using the Python API without the VCL wrappers, you can probably just call Py_NewInterpreter on your TPythonInterface object to get a fresh execution environment without necessarily discarding everything done before.
+
+Evil eval()
+
+You should never pass untrusted source to the eval() directly. As it is quite easy for the malicious user to wreak havoc on your system. For example, the following code can be used to delete all the files from the system.
+
+1 >>>
+2 eval('os.system("RM -RF /")') # command is deliberately capitalized
+3 >>>
+
+
+Ref: https://sourceforge.net/projects/maxbox/files/Examples/EKON/P4D/python37.dll/download
+--------------------------------------------------------
+dll EXCEPT Exception: There is already one instance of TPythonEngine running.
+TRUE
+Exception: Python is not properly initialized.
+PascalScript maXbox4 - RemObjects & SynEdit
+
+dll EXCEPT Exception: There is already one instance of TPythonEngine running.
+TRUE
+Exception: Python is not properly initialized.
+
+dll EXCEPT Exception: Access violation at address 00345A76 in module 'maXbox4.exe'. Read of address 4365636E.
+TRUE
+Exception: Access violation at address 6BA3BA66 in module 'python36.dll'. Read of address 000000AD.
+
+mapdll EXCEPT Exception: There is already one instance of TPythonEngine running.
+PythonOK TRUE
+ImportEXCEPT Exception: Access violation at address 6BA3BA66 in module 'python36.dll'. Read of address 000000AC.
+ mX4 executed: 26/07/2021 13:30:51  Runtime: 0:0:2.48  Memload: 71% use

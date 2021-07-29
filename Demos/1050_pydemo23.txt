@@ -1,0 +1,427 @@
+program PyDemo2;
+
+//https://github.com/maxkleiner/python4delphi/blob/master/Demos/Demo02/Unit1.pas
+//https://stackoverflow.com/questions/21464102/reset-python4delphi-engine
+//https://stackoverflow.com/questions/21464102/reset-python4delphi-engine
+
+//interface
+
+{uses
+  Classes, SysUtils,
+  Windows, Messages, Graphics, Controls, Forms, Dialogs,
+  StdCtrls, ComCtrls, ExtCtrls,
+  PythonEngine, Vcl.PythonGUIInputOutput;   }
+
+type
+  TForm1 = TForm;
+  var
+    PythonEngine1: TPythonEngine;
+    PythonModule1: TPythonModule;
+    PythonType1: TPythonType ;
+    aMemo2: TMemo;
+    Panel1: TPanel;
+    Button1: TButton;
+    Splitter1: TSplitter;
+    Button2: TButton;
+    Button3: TButton;
+    OpenDialog1: TOpenDialog;
+    SaveDialog1: TSaveDialog;
+    PythonGUIInputOutput1: TPythonGUIInputOutput;
+    aMemo1: TMemo;
+    procedure TForm1Button1Click(Sender: TObject); forward;
+    procedure TForm1Button2Click(Sender: TObject); forward;
+    procedure TForm1Button3Click(Sender: TObject); forward;
+  //private
+    { Déclarations privées }
+  //public
+    { Déclarations publiques }
+  //end;
+  
+const  PYDLLNAME = 'python36_.dll';
+       PSCRIPTNAME = 'initpy.py';
+       PYHOME = 'C:\Users\max\AppData\Local\Programs\Python\Python36-32\';  
+       PYSCRIPT = 'C:\maXbox\mX47464\maxbox4\1046_openweather.py';
+       PYSCRIPT2 = 'C:\maXbox\mX47464\maxbox4\mygauss.py';
+       LB = CR+LF;
+       
+       
+const PyModule =
+         'def printData(data): '+#13#10+
+         '  return data+data+"/n"';       
+       
+const PYCMD = 'print("this is box")'+LB+ 
+              'import sys'+LB+ 
+              'f=open(r"C:\maXbox\mX47464\maxbox4\pytest2.txt","w")'+LB+
+              'f.write("Hello PyWorld_mX4, \n")'+LB+
+              'f.write("This data will be written on the file.")'+LB+ 
+              'f.close()';
+           
+var
+  Form1: TForm1;
+
+//implementation         
+
+//{$R *.DFM}
+
+procedure TForm1Button1Click(Sender: TObject);
+var
+  //aResult : PPyObject;
+   codstr: TStrings;
+begin
+  codstr:= TStringlist.create;
+  with PythonEngine1 do begin
+      //UseLastKnownVersion := true;
+      //AutoFinalize:= False;
+      //dllpath:= PyHOME;
+      //dllname:= PYDLLNAME;
+      try
+        //unloadDLL;
+        loadDLL;
+        //unloadDLL;
+        //openDLL(Pyhome+pydllname)
+        writeln('IsHandleValid_after: '+botostr(IsHandleValid));
+      except
+        writeln('dll EXCEPT '+ExceptionToString(ExceptionType,ExceptionParam));
+        //free;
+      finally
+        free;   
+      end;
+     // DllPath := '/usr/lib/x86_64-linux-gnu';
+     // DllName := 'libpython3.9.so.1.0';
+      {Result := EvalStrings( Memo1.Lines );
+      if Assigned(Result) then
+        begin
+          ShowMessage(Format('Eval: %s',[PyObjectAsString(Result)]));
+          Py_DECREF(Result);
+        end
+      else  }
+      //  ShowMessage('Could not evaluate the script');
+      // Or you could simply use:
+      //Writeln('Eval: ' + EvalStringsAsStr( aMemo1.Lines ) );
+      codstr.text:= '2+3';
+      writeln(botostr(CheckEvalSyntax(codstr.text)));
+      //Writeln('Eval: ' + EvalStringsAsStr(codstr));
+      //free;
+    end;
+    codstr.Free;
+end;
+
+procedure TForm1CreatePythonComponents;
+begin
+  {if cbPyVersions.ItemIndex <0 then begin
+    ShowMessage('No Python version is selected');
+    Exit;
+  end;}
+
+  // Destroy P4D components
+  {
+  FreeAndNil(PythonEngine1);
+  FreeAndNil(PythonType1);
+  FreeAndNil(PythonModule1);   }
+  if assigned(PythonEngine1) then PythonEngine1.free;
+  if assigned(PythonModule1) then PythonModule1.free;
+  if assigned(PythonType1) then PythonType1.free;
+
+  { TPythonEngine }
+  PythonEngine1 := TPythonEngine.Create(Self);
+  //writeln('mapdll EXCEPT '+ExceptionToString(ExceptionType,ExceptionParam));
+  PythonEngine1.pythonhome:= PYHOME;
+      PythonEngine1.dllpath:= PyHOME;
+      PythonEngine1.dllname:= PYDLLNAME;
+  //PyVersions[cbPyVersions.ItemIndex].AssignTo(PythonEngine1);
+
+  PythonEngine1.IO := PythonGUIInputOutput1;
+
+  { TPythonModule }
+  PythonModule1 := TPythonModule.Create(Self);
+
+  //PythonModule1.Name := 'PythonModule1';
+  PythonModule1.Engine := PythonEngine1;
+  PythonModule1.ModuleName := 'spam';
+  with PythonModule1.Errors.Add do begin
+    Name := 'PointError';
+    ErrorType := etClass;
+  end;
+  with PythonModule1.Errors.Add do begin
+    Name := 'EBadPoint';
+    ErrorType := etClass;
+    ParentClass.Name := 'PointError';
+  end;
+
+  { TPythonType }
+  PythonType1 := TPythonType.Create;
+
+  PythonType1.Name := 'PythonType1';
+  PythonType1.Engine := PythonEngine1;
+  //PythonType1.OnInitialization := PythonType1Initialization;
+  PythonType1.TypeName := 'Point';
+  PythonType1.Prefix := 'Create';
+  PythonType1.Services.Basic := [pbsRepr,pbsStr,pbsGetAttrO,pbsSetAttrO];
+    //PythonType1.TypeFlags :=
+    //[tpfHaveGetCharBuffer,tpfHaveSequenceIn,tpfHaveInplaceOps, 
+    // [tpfHaveRichCompare,tpfHaveWeakRefs,tpfHaveIter,tpfHaveClass,tpfBaseType];
+  PythonType1.Module := PythonModule1;
+  try
+     PythonEngine1.LoadDll;
+   except
+     writeln('mapdll EXCEPT '+ExceptionToString(ExceptionType,ExceptionParam));
+   end;  
+   PythonEngine1.free;
+end;
+
+
+procedure TForm1Button2Click(Sender: TObject);
+begin
+  with OpenDialog1 do
+    begin
+      if Execute then
+        aMemo1.Lines.LoadFromFile( FileName );
+    end; //}
+end;
+
+procedure TForm1Button3Click(Sender: TObject);
+begin
+  with SaveDialog1 do
+    begin
+      if Execute then
+        aMemo1.Lines.SaveToFile( FileName );
+    end;
+end;
+
+procedure createPYEngine;
+begin
+
+//object PythonEngine1: TPythonEngine
+  PythonGUIInputOutput1:= TPythonGUIInputOutput.create(nil)
+   PythonEngine1:= TPythonEngine.create(nil)
+
+  PythonEngine1.IO := PythonGUIInputOutput1
+  OpenDialog1:= TOpenDialog.create(self);
+  with opendialog1 do begin
+    DefaultExt := '*.py'
+    Filter := 'Python files|*.py|Text files|*.txt|All files|*.*'
+    //Left = 176
+  end;
+  {object SaveDialog1: TSaveDialog
+    DefaultExt = '*.py'
+    Filter = 'Python files|*.py|Text files|*.txt|All files|*.*'
+    Left = 208
+  end }
+ //PythonGUIInputOutput1:= TPythonGUIInputOutput.create(self)
+  with PythonGUIInputOutput1 do begin
+    UnicodeIO:= False
+    RawOutput:= False
+    Output:= Memo2
+    //Left = 64
+   end; 
+ end;
+ 
+var myloadscript, myloadscript2: string;
+     PyForm: TForm; pyMemo: TMemo;
+     
+//C:\Users\Max\AppData\Local\Programs\Python\Python37\ 
+//	55.150 kB    
+//C:\Users\max\AppData\Local\Programs\Python\Python36-32
+
+{
+procedure TDynamicDll.LoadDll;
+begin
+  OpenDll( DllName );
+end;  }
+
+{On 64-bit Windows the 32-bit python27.dll is really in C:\Windows\sysWOW64. But if you try opening the C:\Windows\system32\python27.dll in a 32-bit process, it'll open just fine. If I'm not mistaken, WOW stands for Woodoo Of Windows. ;-) – 
+
+Exception: <class 'AssertionError'>: SRE module mismatch.
+Make sure you do not have any mismatch between Python interpreter version used (like 3.7) and the 're' python module (like 3.6.1).
+
+ The resolution of DLLs has changed in Python 3.8 for Windows.
+
+    New in version 3.8: Previous versions of CPython would resolve DLLs using the default behavior for the current process. This led to inconsistencies, such as only sometimes searching PATH or the current working directory, and OS functions such as AddDllDirectory having no effect.
+}
+
+Procedure PYLaz_P4D_Demo;
+//https://wiki.freepascal.org/Python4Delphi 
+var eng : TPythonEngine;
+    Out1: TPythonGUIInputOutput;
+begin
+  eng := TPythonEngine.Create(Nil);
+  Out1:= TPythonGUIInputOutput.create(nil)
+  Out1.output:= pyMemo; //debugout.output;  //memo2;
+  Out1.RawOutput:= False;
+  Out1.UnicodeIO:= False;
+  Out1.maxlines:= 20;
+  Out1.writeline('draw the line');
+  //eng.free;
+  //eng.LoadDll;
+  //eng.dllpath:= 'C:\Users\max\AppData\Local\Programs\Python\Python36_32';
+  eng.pythonhome:= 'C:\Users\max\AppData\Local\Programs\Python\Python36_32';
+  eng.dllpath:= 'C:\maXbox\EKON24'
+  eng.dllname:= 'python37.dll';
+  eng.AutoLoad:= false;               
+  //eng.UnloadDll;
+  //eng.loaddll;
+  try
+  eng.openDLL('C:\maXbox\EKON24\python37.dll');
+  writeln('dllname '+eng.dllname)
+  writeln('dllpath '+eng.dllpath)
+  writeln('is x64 '+botostr(Isx64('C:\maXbox\EKON24\python37.dll')));
+  writeln('is x64 '+botostr(Isx64('C:\Users\max\AppData\Local\Programs\Python\Python36\python36.dll')));
+  eng.IO:= Out1;
+    if eng.IsHandleValid then begin
+      writeln('DLLhandle: '+botostr(eng.IsHandleValid))
+      WriteLn('evens: '+ eng.EvalStringAsStr('[x*2 for x in range(10)]'));
+      WriteLn('gauss: '+ eng.EvalStringAsStr('sum([x for x in range(101)])'));
+      writeln('syncheck '+
+      botostr(eng.CheckEvalSyntax('print("powers:",[x**2 for x in range(10)])')));
+      eng.ExecString('print("powers:",[x**2 for x in range(10)])');
+      eng.ExecString(PYCMD);
+      writeln('ExecSynCheck1 '+botostr(eng.CheckExecSyntax(myloadscript)));
+      writeln('ExecSynCheck2 '+
+            botostr(eng.CheckExecSyntax(filetostring(PYSCRIPT2))));
+      eng.ExecString(filetostring(PYSCRIPT2));
+      WriteLn('workdir: '+ eng.EvalStr('__import__("os").getcwd()'));
+      WriteLn('sysdir: '+ eng.EvalStr('__import__("sys").path'));
+      //WriteLn('pathlib: '+eng.EvalStr('__import__("pathlib").Path(__file__).parent.absolute'));
+      //from pathlib import Path - print(Path.cwd())
+     //WriteLn('oslib: '+eng.EvalStr('__import__("pathlib").os'));
+     
+     //eval('exec("import uuid") or str(uuid.uuid4())')
+     
+     //WriteLn('exec: '+eng.EvalStr('exec("import numpy as np")'));
+      WriteLn('exec as eval: '+eng.EvalStr('exec("import os as o")'));
+      Println('exec: '+eng.EvalStr('o.getcwd()'));
+      //WriteLn('exec: '+eng.EvalStr('dir(o)'))
+      
+      //WriteLn('exec as eval: '+eng.EvalStr('exec("import numpy as np")'));
+      //WriteLn('exec as eval: '+eng.EvalStr('exec("import pandas as pd")'));
+     // WriteLn('exec as eval: '+eng.EvalStr('exec("import sklearn")'));
+     // WriteLn('eval: '+eng.EvalStr('sklearn.__version__'));
+      
+      writeln('uuid: '+eng.evalstr('exec("import uuid") or str(uuid.uuid4())'));
+      eng.ExecString('import math');
+      WriteLn('evalexec: '+eng.EvalStr('dir(math)'));                
+      
+     
+     //"exec('import whatever_you_want')"
+      
+      pymemo.update;
+    end
+  else writeln('invalid library handle! '+Getlasterrortext);
+  writeln('PythonOK '+botostr(PythonOK));
+  //out1.free;
+  //pyImport(PyModule);
+  except
+     eng.raiseError;
+     writeln('PyErr '+ExceptionToString(ExceptionType, ExceptionParam));
+     //eng.error
+  finally  
+     eng.free;
+  end;     
+  //eng.free;
+end;
+
+//https://stackoverflow.com/questions/67759582/find-correct-python4delphi-tpythonengine-parameters
+
+{$DEFINE MSWINDOWS}
+
+procedure TPythonEngineConfigSetPythonengineValues(PythonEngine
+  : TPythonEngine);
+var
+  FPyVersions: TPythonVersions;
+  var self: TPythonEngine;
+begin
+  ///
+  /// convert this  https://github.com/pyscripter/python4delphi/wiki/FindingPython
+  /// into a small  automatic setting  of parameter
+  ///
+   
+  PythonEngine.UseLastKnownVersion := Self.UseLastKnownVersion;
+  if Self.UseLastKnownVersion then
+  begin
+{$IFDEF MSWINDOWS}
+    FPyVersions := GetRegisteredPythonVersions;
+    FPyVersions[0].AssignTo(PythonEngine);
+{$ENDIF}
+{$IFDEF LINUX}
+    ///  not supported on LINUX
+    ///  https://en.delphipraxis.net/topic/4700-getregisteredpythonversions-for-linux/
+{$ENDIF}
+  end
+  else   
+  //var self: TPythonEngine;       
+  begin
+  self:= TPythonEngine(PythonEngine);
+    PythonEngine.APIVersion := self.APIVersion ;
+    PythonEngine.DllName := Self.DllName;
+    PythonEngine.DllPath := Self.DllPath;
+    PythonEngine.AutoFinalize := Self.AutoFinalize;
+    PythonEngine.AutoLoad := Self.AutoLoad;
+    PythonEngine.AutoUnload := Self.AutoUnload;
+    PythonEngine.RedirectIO := Self.RedirectIO;
+    PythonEngine.UseWindowsConsole := Self.UseWindowsConsole;
+    PythonEngine.RegVersion := Self.RegVersion;
+  end;
+end; 
+ 
+ var OriginalOwner: TPythonEngine;
+    
+
+begin  //@main
+
+ { createPYEngine;
+  TForm1Button1Click(self)}
+  
+  //TForm1CreatePythonComponents;
+  {OriginalOwner := GetPythonEngine; //.Owner;
+  GetPythonEngine.Free;
+  TPythonEngine.Create(OriginalOwner); }
+  //GetPythonEngine.Free;
+  {writeln('PythonOK '+botostr(PythonOK));
+  try
+     pyImport(PYSCRIPT)
+  except
+     writeln('ImportEXCEPT '+ExceptionToString(ExceptionType,ExceptionParam));
+  end; }
+  
+  //PythonEngine1.Free;
+  
+  myloadscript:= filetostring(PYSCRIPT);
+  myloadscript2:= filetostring(PYSCRIPT2);
+  
+  PyForm:= loadForm2(300,200, clgreen, 'PyFrm4D');
+  pyMemo:= TMemo.create(PyForm);
+  pyMemo.parent:= PyForm
+  PyForm.show;
+  
+  PYLaz_P4D_Demo; 
+  
+  //PyForm.show; 
+  
+End.
+----app_template_loaded_code----
+----File newtemplate.txt not exists - now saved!----
+
+Doc: Destroying it calls Py_Finalize, which frees all memory allocated by the Python DLL.
+
+Or, if you're just using the Python API without the VCL wrappers, you can probably just call Py_NewInterpreter on your TPythonInterface object to get a fresh execution environment without necessarily discarding everything done before.
+
+Ref:
+
+--------------------------------------------------------
+dll EXCEPT Exception: There is already one instance of TPythonEngine running.
+TRUE
+Exception: Python is not properly initialized.
+PascalScript maXbox4 - RemObjects & SynEdit
+
+dll EXCEPT Exception: There is already one instance of TPythonEngine running.
+TRUE
+Exception: Python is not properly initialized.
+
+dll EXCEPT Exception: Access violation at address 00345A76 in module 'maXbox4.exe'. Read of address 4365636E.
+TRUE
+Exception: Access violation at address 6BA3BA66 in module 'python36.dll'. Read of address 000000AD.
+
+mapdll EXCEPT Exception: There is already one instance of TPythonEngine running.
+PythonOK TRUE
+ImportEXCEPT Exception: Access violation at address 6BA3BA66 in module 'python36.dll'. Read of address 000000AC.
+ mX4 executed: 26/07/2021 13:30:51  Runtime: 0:0:2.48  Memload: 71% use
