@@ -29,3 +29,33 @@ Visit the [support forum](https://en.delphipraxis.net/forum/39-python4delphi/) t
 
 ### License
 The project is licensed under the MIT [license](https://github.com/pyscripter/python4delphi/blob/master/LICENSE).
+
+### maXbox Integration
+On maXbox4 theres a scripting integration with Eval and Ecec.
+The eval() is not just limited to simple expression. We can execute functions, call methods, reference variables and so on.
+For instance you can install packages from your script:
+eng.ExecString(‘import subprocess’);
+eng.ExecString(‘subprocess.call([“pip”, “install”, “langdetect”])’)
+eng.ExecString(‘from langdetect import detect’);
+println(‘detect: ‘+eng.EvalStr(‘detect(“bonjour mes ordinateurs”)’));
+>>> detect: fr
+
+The minimal configuration depends on your Python-installation and the UseLastKnownVersion property 
+in TDynamicDll but once known it goes like this with raiseError to get the Python exceptions:
+	
+with TPythonEngine.Create(Nil) do begin
+  pythonhome:= PYHOME;
+  try
+    loadDLL;
+    Println('Decimal: '+ 
+          EvalStr('__import__("decimal").Decimal(0.1)')); 
+  except
+    raiseError;        
+  finally       
+    free;
+  end; 
+end;    
+
+https://maxbox4.wordpress.com/2021/07/28/python4maxbox-code/
+
+
