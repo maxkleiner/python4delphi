@@ -1,0 +1,183 @@
+Version:0.9
+StartHTML:0000000105
+EndHTML:0000032207
+StartFragment:0000001053
+EndFragment:0000032191
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>mXScriptasHTML</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta name="generator" content="SynEdit HTML exporter" />
+<style type="text/css">
+<!--
+body { color: #000000; background-color: #FFFFFF; }
+.pas1-assembler { }
+.pas1-character { color: #0066CC; text-decoration: underline; }
+.pas1-comment { color: #000080; font-style: italic; }
+.pas1-float { color: #FF6347; }
+.pas1-hexadecimal { color: #FF00FF; }
+.pas1-identifier { }
+.pas1-number { color: #FF0000; }
+.pas1-preprocessor { font-style: italic; }
+.pas1-reservedword { color: #000000; font-weight: bold; }
+.pas1-space { }
+.pas1-string { color: #008080; }
+.pas1-symbol { color: #800080; }
+-->
+</style>
+</head>
+<body>
+<!--StartFragment--><pre><code><span class="pas1-reservedword">PROGRAM</span><span class="pas1-space"> SEPDemo__PythonTemplate_RSA_Hexer</span><span class="pas1-symbol">;
+</span><span class="pas1-comment">{Purpose: convert hex to int of RSA Keys!}
+//https://dev.to/dandyvica/understanding-public-private-rsa-keys-3j81
+
+</span><span class="pas1-reservedword">Const</span><span class="pas1-space"> PYHOME32 </span><span class="pas1-symbol">=</span><span class="pas1-space"> </span><span class="pas1-string">'C:\Users\max\AppData\Local\Programs\Python\Python36-32\'</span><span class="pas1-symbol">;</span><span class="pas1-space"> 
+      PYDLL32  </span><span class="pas1-symbol">=</span><span class="pas1-space"> </span><span class="pas1-string">'C:\Users\max\AppData\Local\Programs\Python\Python36-32\python36.dll'</span><span class="pas1-symbol">;</span><span class="pas1-space"> 
+
+      REXDEF</span><span class="pas1-symbol">=</span><span class="pas1-space"> </span><span class="pas1-string">'def striphtml(data):       '</span><span class="pas1-symbol">+</span><span class="pas1-identifier">LF</span><span class="pas1-symbol">+
+</span><span class="pas1-space">               </span><span class="pas1-string">'  p = re.compile(r&quot;&lt;.*?&gt;&quot;)'</span><span class="pas1-symbol">+</span><span class="pas1-identifier">LF</span><span class="pas1-symbol">+
+</span><span class="pas1-space">               </span><span class="pas1-string">'  return p.sub(&quot;&quot;, data)  '</span><span class="pas1-symbol">;</span><span class="pas1-space">  
+      CHEXSTR </span><span class="pas1-symbol">=</span><span class="pas1-space"> </span><span class="pas1-string">'00:c9:73:e2:3b:11:01:2f:2c:62:a4:1a:74:3f:92:'</span><span class="pas1-symbol">;</span><span class="pas1-space">         
+               
+      HEXCONVERT </span><span class="pas1-symbol">=
+</span><span class="pas1-space">      </span><span class="pas1-string">'&quot;&quot;&quot; convert hex string integer to int &quot;&quot;&quot; '</span><span class="pas1-symbol">+</span><span class="pas1-identifier">LF</span><span class="pas1-symbol">+
+</span><span class="pas1-space">      </span><span class="pas1-string">'def convert(n: str) -&gt; int:               '</span><span class="pas1-symbol">+</span><span class="pas1-identifier">LF</span><span class="pas1-symbol">+
+</span><span class="pas1-space">      </span><span class="pas1-string">'    # get rid of &quot;:&quot;, spaces and newlines '</span><span class="pas1-symbol">+</span><span class="pas1-identifier">LF</span><span class="pas1-symbol">+
+</span><span class="pas1-space">      </span><span class="pas1-string">'    hex = n.replace(&quot;:&quot;, &quot;&quot;).replace(&quot;\n&quot;,&quot;&quot;).replace(&quot; &quot;,&quot;&quot;)'</span><span class="pas1-symbol">+</span><span class="pas1-identifier">LF</span><span class="pas1-symbol">+
+</span><span class="pas1-space">      </span><span class="pas1-string">'    return int(hex,16)'</span><span class="pas1-symbol">;</span><span class="pas1-space">          
+         
+</span><span class="pas1-reservedword">var</span><span class="pas1-space"> bufs</span><span class="pas1-symbol">:</span><span class="pas1-space"> </span><span class="pas1-reservedword">string</span><span class="pas1-symbol">;</span><span class="pas1-space">               
+</span><span class="pas1-reservedword">Begin</span><span class="pas1-space">  </span><span class="pas1-comment">//@Main
+</span><span class="pas1-space">  </span><span class="pas1-reservedword">maxform1</span><span class="pas1-symbol">.</span><span class="pas1-identifier">console1click</span><span class="pas1-symbol">(</span><span class="pas1-identifier">self</span><span class="pas1-symbol">)
+</span><span class="pas1-space">  </span><span class="pas1-reservedword">memo2</span><span class="pas1-symbol">.</span><span class="pas1-identifier">height</span><span class="pas1-symbol">:=</span><span class="pas1-space"> </span><span class="pas1-number">200</span><span class="pas1-symbol">;
+</span><span class="pas1-space">  </span><span class="pas1-reservedword">with</span><span class="pas1-space"> TPythonEngine</span><span class="pas1-symbol">.</span><span class="pas1-identifier">Create</span><span class="pas1-symbol">(</span><span class="pas1-reservedword">Nil</span><span class="pas1-symbol">)</span><span class="pas1-space"> </span><span class="pas1-reservedword">do</span><span class="pas1-space"> </span><span class="pas1-reservedword">begin
+</span><span class="pas1-space">    pythonhome</span><span class="pas1-symbol">:=</span><span class="pas1-space"> PYHOME32</span><span class="pas1-symbol">;
+</span><span class="pas1-space">    </span><span class="pas1-reservedword">try
+</span><span class="pas1-space">      opendll</span><span class="pas1-symbol">(</span><span class="pas1-identifier">PYDLL32</span><span class="pas1-symbol">)
+</span><span class="pas1-space">      Println</span><span class="pas1-symbol">(</span><span class="pas1-string">'Colab Platform: '</span><span class="pas1-symbol">+</span><span class="pas1-space"> 
+          EvalStr</span><span class="pas1-symbol">(</span><span class="pas1-string">'__import__(&quot;platform&quot;).platform()'</span><span class="pas1-symbol">));</span><span class="pas1-space"> 
+      </span><span class="pas1-comment">//Println('CPU Arch. Check Linux: '+ 
+</span><span class="pas1-space">      </span><span class="pas1-comment">//EvalStr('__import__(&quot;subprocess&quot;).check_output(&quot;lscpu&quot;,shell=True).strip().decode()'));     
+</span><span class="pas1-space">     Println</span><span class="pas1-symbol">(</span><span class="pas1-string">'DIR Check: '</span><span class="pas1-symbol">+</span><span class="pas1-space"> 
+     EvalStr</span><span class="pas1-symbol">(</span><span class="pas1-string">'__import__(&quot;subprocess&quot;).check_output(&quot;dir&quot;,shell=True).strip().decode()'</span><span class="pas1-symbol">));
+</span><span class="pas1-space">     ExecString</span><span class="pas1-symbol">(</span><span class="pas1-identifier">HEXCONVERT</span><span class="pas1-symbol">);</span><span class="pas1-space"> 
+     println</span><span class="pas1-symbol">(</span><span class="pas1-identifier">EvalStr</span><span class="pas1-symbol">(</span><span class="pas1-string">'convert(&quot;'</span><span class="pas1-symbol">+</span><span class="pas1-identifier">CHEXSTR</span><span class="pas1-symbol">+</span><span class="pas1-string">'&quot;)'</span><span class="pas1-symbol">));
+</span><span class="pas1-space">     bufs</span><span class="pas1-symbol">:=</span><span class="pas1-space"> StringReplace</span><span class="pas1-symbol">(</span><span class="pas1-identifier">CHEXSTR</span><span class="pas1-symbol">,</span><span class="pas1-string">':'</span><span class="pas1-symbol">,</span><span class="pas1-string">''</span><span class="pas1-symbol">,[</span><span class="pas1-identifier">rfReplaceAll</span><span class="pas1-symbol">]);
+</span><span class="pas1-space">     </span><span class="pas1-reservedword">with</span><span class="pas1-space"> TInteger</span><span class="pas1-symbol">.</span><span class="pas1-identifier">create</span><span class="pas1-symbol">(</span><span class="pas1-number">0</span><span class="pas1-symbol">)</span><span class="pas1-space"> </span><span class="pas1-reservedword">do</span><span class="pas1-space"> </span><span class="pas1-reservedword">begin
+</span><span class="pas1-space">       </span><span class="pas1-reservedword">if</span><span class="pas1-space"> AssignHex</span><span class="pas1-symbol">(</span><span class="pas1-identifier">bufs</span><span class="pas1-symbol">)</span><span class="pas1-space"> </span><span class="pas1-reservedword">then
+</span><span class="pas1-space">         writeln</span><span class="pas1-symbol">(</span><span class="pas1-identifier">ConvertToDecimalString</span><span class="pas1-symbol">(</span><span class="pas1-identifier">false</span><span class="pas1-symbol">));
+</span><span class="pas1-space">       free
+     </span><span class="pas1-reservedword">end</span><span class="pas1-symbol">;</span><span class="pas1-space">     
+     writeln</span><span class="pas1-symbol">(</span><span class="pas1-identifier">sha1tohex</span><span class="pas1-symbol">(</span><span class="pas1-identifier">sha1ofstr</span><span class="pas1-symbol">(</span><span class="pas1-identifier">bufs</span><span class="pas1-symbol">)))
+</span><span class="pas1-space">     </span><span class="pas1-comment">//HexToBuf(CHEXSTR, bufs);
+</span><span class="pas1-space">    </span><span class="pas1-reservedword">except
+</span><span class="pas1-space">      raiseError</span><span class="pas1-symbol">;
+</span><span class="pas1-space">    </span><span class="pas1-reservedword">finally</span><span class="pas1-space">                         
+      Free</span><span class="pas1-symbol">;
+</span><span class="pas1-space">    </span><span class="pas1-reservedword">end</span><span class="pas1-symbol">;
+</span><span class="pas1-space">  </span><span class="pas1-reservedword">end</span><span class="pas1-symbol">;</span><span class="pas1-space">  
+</span><span class="pas1-reservedword">End</span><span class="pas1-symbol">.</span><span class="pas1-space"> 
+
+</span><span class="pas1-reservedword">Ref</span><span class="pas1-space"> Error</span><span class="pas1-symbol">:</span><span class="pas1-space">  Command </span><span class="pas1-string">'lscpu'</span><span class="pas1-space"> returned non</span><span class="pas1-symbol">-</span><span class="pas1-identifier">zero exit status </span><span class="pas1-number">1
+</span><span class="pas1-reservedword">It</span><span class="pas1-space"> occurs randomly </span><span class="pas1-symbol">;</span><span class="pas1-space"> after restarting the same build</span><span class="pas1-symbol">,</span><span class="pas1-space"> the error first happened </span><span class="pas1-reservedword">on</span><span class="pas1-space"> another job </span><span class="pas1-reservedword">then</span><span class="pas1-space"> </span><span class="pas1-reservedword">it</span><span class="pas1-space"> passed</span><span class="pas1-symbol">...
+</span><span class="pas1-reservedword">Or</span><span class="pas1-space"> maybe </span><span class="pas1-reservedword">it</span><span class="pas1-string">'s cache-related (passing only the second time ?)
+
+</span><span class="pas1-space">      </span><span class="pas1-reservedword">if</span><span class="pas1-space"> </span><span class="pas1-symbol">(</span><span class="pas1-identifier">ValidationRate </span><span class="pas1-symbol">&gt;</span><span class="pas1-space"> ValidationRecord</span><span class="pas1-symbol">)</span><span class="pas1-space"> </span><span class="pas1-reservedword">then
+</span><span class="pas1-space">        </span><span class="pas1-reservedword">begin
+</span><span class="pas1-space">          ValidationRecord </span><span class="pas1-symbol">:=</span><span class="pas1-space"> ValidationRate</span><span class="pas1-symbol">;
+</span><span class="pas1-space">          FMessageProc</span><span class="pas1-symbol">(</span><span class="pas1-string">'VALIDATION RECORD! Saving NN at '</span><span class="pas1-symbol">+</span><span class="pas1-identifier">fileName</span><span class="pas1-symbol">);
+</span><span class="pas1-space">          FAvgWeight</span><span class="pas1-symbol">.</span><span class="pas1-identifier">SaveToFile</span><span class="pas1-symbol">(</span><span class="pas1-identifier">fileName</span><span class="pas1-symbol">);
+</span><span class="pas1-space">        </span><span class="pas1-reservedword">end</span><span class="pas1-symbol">;
+
+</span><span class="pas1-reservedword">Ref</span><span class="pas1-symbol">:</span><span class="pas1-space">  https</span><span class="pas1-symbol">:</span><span class="pas1-comment">//www.sonarqube.org/features/multi-languages/python/
+</span><span class="pas1-identifier">C</span><span class="pas1-symbol">:\</span><span class="pas1-reservedword">maXbox</span><span class="pas1-symbol">\</span><span class="pas1-identifier">mX39998</span><span class="pas1-symbol">\</span><span class="pas1-identifier">maxbox3</span><span class="pas1-symbol">&gt;</span><span class="pas1-identifier">pip3 install </span><span class="pas1-symbol">-</span><span class="pas1-identifier">U </span><span class="pas1-symbol">-</span><span class="pas1-identifier">t C</span><span class="pas1-symbol">:\</span><span class="pas1-identifier">Users</span><span class="pas1-symbol">\</span><span class="pas1-identifier">max</span><span class="pas1-symbol">\</span><span class="pas1-identifier">AppData</span><span class="pas1-symbol">\</span><span class="pas1-identifier">Local</span><span class="pas1-symbol">\</span><span class="pas1-identifier">Programs
+</span><span class="pas1-symbol">\</span><span class="pas1-identifier">Python</span><span class="pas1-symbol">\</span><span class="pas1-identifier">Python36</span><span class="pas1-symbol">-</span><span class="pas1-number">32</span><span class="pas1-symbol">\</span><span class="pas1-identifier">Lib https</span><span class="pas1-symbol">:</span><span class="pas1-comment">//files.pythonhosted.org/packages/19/29/f7a38ee300
+</span><span class="pas1-number">83</span><span class="pas1-identifier">f2caa14cc77a6d34c4d5cfd1a69641e87bf1b3d6ba90d0ba</span><span class="pas1-symbol">/</span><span class="pas1-identifier">psutil</span><span class="pas1-symbol">-</span><span class="pas1-float">5.8.0</span><span class="pas1-symbol">-</span><span class="pas1-identifier">cp36</span><span class="pas1-symbol">-</span><span class="pas1-identifier">cp36m</span><span class="pas1-symbol">-</span><span class="pas1-identifier">win32</span><span class="pas1-symbol">.</span><span class="pas1-identifier">whl
+Collecting psutil</span><span class="pas1-symbol">==</span><span class="pas1-float">5.8.0
+</span><span class="pas1-space">  </span><span class="pas1-reservedword">Using</span><span class="pas1-space"> cached psutil</span><span class="pas1-symbol">-</span><span class="pas1-float">5.8.0</span><span class="pas1-symbol">-</span><span class="pas1-identifier">cp36</span><span class="pas1-symbol">-</span><span class="pas1-identifier">cp36m</span><span class="pas1-symbol">-</span><span class="pas1-identifier">win32</span><span class="pas1-symbol">.</span><span class="pas1-identifier">whl </span><span class="pas1-symbol">(</span><span class="pas1-number">240</span><span class="pas1-space"> kB</span><span class="pas1-symbol">)
+</span><span class="pas1-identifier">ERROR</span><span class="pas1-symbol">:</span><span class="pas1-space"> distributed </span><span class="pas1-float">2.22.0</span><span class="pas1-space"> has requirement cloudpickle</span><span class="pas1-symbol">&gt;=</span><span class="pas1-float">1.5.0</span><span class="pas1-symbol">,</span><span class="pas1-space"> but you</span><span class="pas1-string">'ll have cl
+</span><span class="pas1-identifier">oudpickle </span><span class="pas1-float">0.5.3</span><span class="pas1-space"> which </span><span class="pas1-reservedword">is</span><span class="pas1-space"> incompatible</span><span class="pas1-symbol">.
+</span><span class="pas1-identifier">Installing collected packages</span><span class="pas1-symbol">:</span><span class="pas1-space"> psutil
+Successfully installed psutil</span><span class="pas1-symbol">-</span><span class="pas1-float">5.8.0
+</span><span class="pas1-symbol">----</span><span class="pas1-reservedword">File</span><span class="pas1-space"> newtemplate</span><span class="pas1-symbol">.</span><span class="pas1-identifier">txt </span><span class="pas1-reservedword">not</span><span class="pas1-space"> exists </span><span class="pas1-symbol">-</span><span class="pas1-space"> now saved</span><span class="pas1-symbol">!----
+
+</span><span class="pas1-character">#</span><span class="pas1-space"> </span><span class="pas1-symbol">-*-</span><span class="pas1-space"> coding</span><span class="pas1-symbol">:</span><span class="pas1-space"> utf</span><span class="pas1-symbol">-</span><span class="pas1-number">8</span><span class="pas1-space"> </span><span class="pas1-symbol">-*-
+&quot;&quot;&quot;</span><span class="pas1-identifier">Kopie von EKON_SimpleImageClassificationCPU</span><span class="pas1-symbol">.</span><span class="pas1-identifier">ipynb
+Automatically generated by Colaboratory</span><span class="pas1-symbol">.
+
+</span><span class="pas1-identifier">Original </span><span class="pas1-reservedword">file</span><span class="pas1-space"> </span><span class="pas1-reservedword">is</span><span class="pas1-space"> located at
+    https</span><span class="pas1-symbol">:</span><span class="pas1-comment">//colab.research.google.com/drive/1clvG2uoMGo-_bfrJnxBJmpNTxjvnsMx9
+</span><span class="pas1-symbol">&quot;&quot;&quot;
+
+!</span><span class="pas1-identifier">apt</span><span class="pas1-symbol">-</span><span class="pas1-identifier">get update
+</span><span class="pas1-symbol">!</span><span class="pas1-identifier">apt</span><span class="pas1-symbol">-</span><span class="pas1-identifier">get install fpc fpc</span><span class="pas1-symbol">-</span><span class="pas1-identifier">source lazarus git subversion
+
+</span><span class="pas1-symbol">!</span><span class="pas1-identifier">git clone https</span><span class="pas1-symbol">:</span><span class="pas1-comment">//github.com/joaopauloschuler/neural-api.git
+
+</span><span class="pas1-symbol">!</span><span class="pas1-identifier">svn checkout https</span><span class="pas1-symbol">:</span><span class="pas1-comment">//svn.code.sf.net/p/lazarus-ccr/svn/components/multithreadprocs mtprocs
+
+</span><span class="pas1-symbol">!</span><span class="pas1-identifier">lazbuild mtprocs</span><span class="pas1-symbol">/</span><span class="pas1-identifier">multithreadprocslaz</span><span class="pas1-symbol">.</span><span class="pas1-identifier">lpk
+
+</span><span class="pas1-symbol">!</span><span class="pas1-identifier">ls </span><span class="pas1-symbol">-</span><span class="pas1-identifier">l neural</span><span class="pas1-symbol">-</span><span class="pas1-identifier">api</span><span class="pas1-symbol">/</span><span class="pas1-identifier">examples</span><span class="pas1-symbol">/</span><span class="pas1-identifier">SimpleImageClassifier</span><span class="pas1-symbol">/</span><span class="pas1-identifier">SimpleImageClassifier</span><span class="pas1-symbol">.</span><span class="pas1-identifier">lpi
+
+</span><span class="pas1-symbol">!</span><span class="pas1-identifier">lazbuild neural</span><span class="pas1-symbol">-</span><span class="pas1-identifier">api</span><span class="pas1-symbol">/</span><span class="pas1-identifier">examples</span><span class="pas1-symbol">/</span><span class="pas1-identifier">SimpleImageClassifier</span><span class="pas1-symbol">/</span><span class="pas1-identifier">SimpleImageClassifier</span><span class="pas1-symbol">.</span><span class="pas1-identifier">lpi
+
+ls </span><span class="pas1-symbol">-</span><span class="pas1-identifier">l neural</span><span class="pas1-symbol">-</span><span class="pas1-identifier">api</span><span class="pas1-symbol">/</span><span class="pas1-identifier">bin</span><span class="pas1-symbol">/</span><span class="pas1-identifier">x86_64</span><span class="pas1-symbol">-</span><span class="pas1-identifier">linux</span><span class="pas1-symbol">/</span><span class="pas1-identifier">bin</span><span class="pas1-symbol">/</span><span class="pas1-identifier">SimpleImageClassifier
+
+import os
+import urllib</span><span class="pas1-symbol">.</span><span class="pas1-identifier">request
+
+</span><span class="pas1-reservedword">if</span><span class="pas1-space"> </span><span class="pas1-reservedword">not</span><span class="pas1-space"> os</span><span class="pas1-symbol">.</span><span class="pas1-identifier">path</span><span class="pas1-symbol">.</span><span class="pas1-identifier">isfile</span><span class="pas1-symbol">(</span><span class="pas1-string">'cifar-10-batches-bin/data_batch_1.bin'</span><span class="pas1-symbol">):
+</span><span class="pas1-space">  print</span><span class="pas1-symbol">(&quot;</span><span class="pas1-identifier">Downloading CIFAR</span><span class="pas1-symbol">-</span><span class="pas1-number">10</span><span class="pas1-space"> Files</span><span class="pas1-symbol">&quot;)
+</span><span class="pas1-space">  url </span><span class="pas1-symbol">=</span><span class="pas1-space"> </span><span class="pas1-string">'https://www.cs.toronto.edu/~kriz/cifar-10-binary.tar.gz'
+</span><span class="pas1-space">  urllib</span><span class="pas1-symbol">.</span><span class="pas1-identifier">request</span><span class="pas1-symbol">.</span><span class="pas1-identifier">urlretrieve</span><span class="pas1-symbol">(</span><span class="pas1-identifier">url</span><span class="pas1-symbol">,</span><span class="pas1-space"> </span><span class="pas1-string">'./file.tar'</span><span class="pas1-symbol">)
+
+</span><span class="pas1-identifier">ls </span><span class="pas1-symbol">-</span><span class="pas1-identifier">l
+</span><span class="pas1-symbol">!</span><span class="pas1-identifier">tar </span><span class="pas1-symbol">-</span><span class="pas1-identifier">xvf </span><span class="pas1-symbol">./</span><span class="pas1-reservedword">file</span><span class="pas1-symbol">.</span><span class="pas1-identifier">tar
+
+</span><span class="pas1-reservedword">if</span><span class="pas1-space"> </span><span class="pas1-reservedword">not</span><span class="pas1-space"> os</span><span class="pas1-symbol">.</span><span class="pas1-identifier">path</span><span class="pas1-symbol">.</span><span class="pas1-identifier">isfile</span><span class="pas1-symbol">(</span><span class="pas1-string">'./data_batch_1.bin'</span><span class="pas1-symbol">):
+</span><span class="pas1-space">  print</span><span class="pas1-symbol">(&quot;</span><span class="pas1-identifier">Copying files </span><span class="pas1-reservedword">to</span><span class="pas1-space"> current folder</span><span class="pas1-symbol">&quot;)
+</span><span class="pas1-space">  </span><span class="pas1-symbol">!</span><span class="pas1-identifier">cp </span><span class="pas1-symbol">./</span><span class="pas1-identifier">cifar</span><span class="pas1-symbol">-</span><span class="pas1-number">10</span><span class="pas1-symbol">-</span><span class="pas1-identifier">batches</span><span class="pas1-symbol">-</span><span class="pas1-identifier">bin</span><span class="pas1-symbol">/*</span><span class="pas1-space"> </span><span class="pas1-symbol">./
+
+</span><span class="pas1-reservedword">if</span><span class="pas1-space"> os</span><span class="pas1-symbol">.</span><span class="pas1-identifier">path</span><span class="pas1-symbol">.</span><span class="pas1-identifier">isfile</span><span class="pas1-symbol">(</span><span class="pas1-string">'./data_batch_1.bin'</span><span class="pas1-symbol">):
+</span><span class="pas1-space">  print</span><span class="pas1-symbol">(&quot;</span><span class="pas1-identifier">RUNNING</span><span class="pas1-symbol">!&quot;)
+</span><span class="pas1-space">  </span><span class="pas1-symbol">!</span><span class="pas1-identifier">neural</span><span class="pas1-symbol">-</span><span class="pas1-identifier">api</span><span class="pas1-symbol">/</span><span class="pas1-identifier">bin</span><span class="pas1-symbol">/</span><span class="pas1-identifier">x86_64</span><span class="pas1-symbol">-</span><span class="pas1-identifier">linux</span><span class="pas1-symbol">/</span><span class="pas1-identifier">bin</span><span class="pas1-symbol">/</span><span class="pas1-identifier">SimpleImageClassifier
+
+from google</span><span class="pas1-symbol">.</span><span class="pas1-identifier">colab import files
+</span><span class="pas1-symbol">!</span><span class="pas1-identifier">ls </span><span class="pas1-symbol">-</span><span class="pas1-identifier">l
+files</span><span class="pas1-symbol">.</span><span class="pas1-identifier">download</span><span class="pas1-symbol">(</span><span class="pas1-string">'SimpleImageClassifier-66.nn'</span><span class="pas1-symbol">)
+</span><span class="pas1-identifier">files</span><span class="pas1-symbol">.</span><span class="pas1-identifier">download</span><span class="pas1-symbol">(</span><span class="pas1-string">'SimpleImageClassifier-66.csv'</span><span class="pas1-symbol">)
+
+</span><span class="pas1-identifier">Statistic
+Starting Rate</span><span class="pas1-symbol">:</span><span class="pas1-number">100</span><span class="pas1-symbol">%
+</span><span class="pas1-identifier">Rate</span><span class="pas1-symbol">:</span><span class="pas1-number">94</span><span class="pas1-symbol">%
+</span><span class="pas1-identifier">Characters</span><span class="pas1-symbol">:</span><span class="pas1-number">55104
+</span><span class="pas1-identifier">Char</span><span class="pas1-symbol">.</span><span class="pas1-space"> w</span><span class="pas1-symbol">/</span><span class="pas1-identifier">o Space</span><span class="pas1-symbol">:</span><span class="pas1-number">47777
+</span><span class="pas1-identifier">Words</span><span class="pas1-symbol">:</span><span class="pas1-number">7132
+</span><span class="pas1-identifier">Lines</span><span class="pas1-symbol">:</span><span class="pas1-number">716
+</span><span class="pas1-identifier">Errors </span><span class="pas1-symbol">(</span><span class="pas1-identifier">Red</span><span class="pas1-symbol">):</span><span class="pas1-number">250
+</span><span class="pas1-identifier">Unknown </span><span class="pas1-symbol">(</span><span class="pas1-identifier">Orange</span><span class="pas1-symbol">):</span><span class="pas1-number">198
+</span><span class="pas1-identifier">Auto Corrected </span><span class="pas1-symbol">(</span><span class="pas1-identifier">Green</span><span class="pas1-symbol">):</span><span class="pas1-number">5
+</span><span class="pas1-identifier">Corrected by user </span><span class="pas1-symbol">(</span><span class="pas1-identifier">Blue</span><span class="pas1-symbol">):</span><span class="pas1-number">1
+
+</span><span class="pas1-identifier">Gen </span><span class="pas1-reservedword">private</span><span class="pas1-space"> key pair tester
+OpenSSL</span><span class="pas1-symbol">&gt;</span><span class="pas1-space"> genpkey </span><span class="pas1-symbol">-</span><span class="pas1-identifier">algorithm RSA </span><span class="pas1-symbol">-</span><span class="pas1-reservedword">out</span><span class="pas1-space"> genpkeySSH</span><span class="pas1-symbol">.</span><span class="pas1-identifier">cer </span><span class="pas1-symbol">-</span><span class="pas1-identifier">outform DER </span><span class="pas1-symbol">-</span><span class="pas1-identifier">pkeyopt rsa_ke
+ygen_bits</span><span class="pas1-symbol">:</span><span class="pas1-number">2048
+</span><span class="pas1-symbol">......................................................+++
+.+++
+</span><span class="pas1-identifier">OpenSSL</span><span class="pas1-symbol">&gt;</span><span class="pas1-space"> rsa </span><span class="pas1-symbol">-</span><span class="pas1-identifier">inform DER </span><span class="pas1-symbol">-</span><span class="pas1-identifier">outform PEM </span><span class="pas1-symbol">-</span><span class="pas1-reservedword">in</span><span class="pas1-space"> genpkeySSH</span><span class="pas1-symbol">.</span><span class="pas1-identifier">cer </span><span class="pas1-symbol">-</span><span class="pas1-reservedword">out</span><span class="pas1-space"> genpkeySSH</span><span class="pas1-symbol">.</span><span class="pas1-identifier">pem
+writing RSA key
+OpenSSL</span><span class="pas1-symbol">&gt;
+</span><span class="pas1-identifier">Extract the </span><span class="pas1-reservedword">public</span><span class="pas1-space"> key from the PEM formatted RSA pair
+OpenSSL</span><span class="pas1-symbol">&gt;</span><span class="pas1-space"> rsa </span><span class="pas1-symbol">-</span><span class="pas1-reservedword">in</span><span class="pas1-space"> genpkeySSH</span><span class="pas1-symbol">.</span><span class="pas1-identifier">pem </span><span class="pas1-symbol">-</span><span class="pas1-identifier">pubout </span><span class="pas1-symbol">-</span><span class="pas1-reservedword">out</span><span class="pas1-space"> genpubkeySSH</span><span class="pas1-symbol">.</span><span class="pas1-identifier">pem
+writing RSA key
+ssh</span><span class="pas1-symbol">-</span><span class="pas1-identifier">rsa </span><span class="pas1-number">2048</span><span class="pas1-space"> </span><span class="pas1-number">49</span><span class="pas1-symbol">:</span><span class="pas1-identifier">c8</span><span class="pas1-symbol">:</span><span class="pas1-identifier">b6</span><span class="pas1-symbol">:</span><span class="pas1-number">21</span><span class="pas1-symbol">:</span><span class="pas1-identifier">b0</span><span class="pas1-symbol">:</span><span class="pas1-number">90</span><span class="pas1-symbol">:</span><span class="pas1-number">76</span><span class="pas1-symbol">:</span><span class="pas1-number">47</span><span class="pas1-symbol">:</span><span class="pas1-number">2</span><span class="pas1-identifier">f</span><span class="pas1-symbol">:</span><span class="pas1-identifier">e9</span><span class="pas1-symbol">:</span><span class="pas1-identifier">ab</span><span class="pas1-symbol">:</span><span class="pas1-float">6e</span><span class="pas1-symbol">:</span><span class="pas1-float">5e</span><span class="pas1-symbol">:</span><span class="pas1-identifier">e6</span><span class="pas1-symbol">:</span><span class="pas1-number">6</span><span class="pas1-identifier">c</span><span class="pas1-symbol">:</span><span class="pas1-identifier">ef
+ssh</span><span class="pas1-symbol">-</span><span class="pas1-identifier">rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCjRMOq7NaaonIGzYYrYClbNEztVDnZ</span><span class="pas1-symbol">+</span><span class="pas1-identifier">rIK21R3xLJogPJwiaKQk3ZPLf9Wf9SaZkEkFb</span><span class="pas1-symbol">+</span><span class="pas1-identifier">xDdecU</span><span class="pas1-symbol">+</span><span class="pas1-identifier">NsOk0Plmc65eY7dsJHfa</span><span class="pas1-symbol">/</span><span class="pas1-identifier">UqYj7KXDy7cf</span><span class="pas1-symbol">+</span><span class="pas1-identifier">TxZN5EA2</span><span class="pas1-symbol">+</span><span class="pas1-identifier">QuTLkQEcWvj4IJXknNMxlZUZUJ5kvTcm0U</span><span class="pas1-symbol">+</span><span class="pas1-identifier">FdvYQPIZtcipmslPblx0YfXSXI4QkpBuEerKHanwU0lI</span><span class="pas1-symbol">+</span><span class="pas1-identifier">iXUQTC6yOubICaSC0lU3UAkShr</span><span class="pas1-symbol">/</span><span class="pas1-identifier">iS5JKjWiB8OI7cEmGTqjvzRhQe4nzhl92Vi1y2DqTN0vmVRQSXFdEsq1AaHPXjrhuLgBiCsDNCC4r6o3MDZMf6O2MpeDQHtaa8YcK8TyXl6YmbdxQ3E5 imported</span><span class="pas1-symbol">-</span><span class="pas1-identifier">openssh</span><span class="pas1-symbol">-</span><span class="pas1-identifier">key
+
+        
+   
+   
+</span></code></pre><!--EndFragment--></body>
+</html>

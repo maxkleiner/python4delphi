@@ -1,0 +1,93 @@
+PROGRAM SEPDemo__PythonTemplate_Puzzle_24;
+//https://blog.finxter.com/python-one-line-sum-list/
+
+Const PYHOME32 = 'C:\Users\max\AppData\Local\Programs\Python\Python36-32\'; 
+      PYDLL32  = 'C:\Users\max\AppData\Local\Programs\Python\Python36-32\python36.dll'; 
+
+      CHEXSTR = '00:c9:73:e2:3b:11:01:2f:2c:62:a4:1a:74:3f:92:';         
+               
+      HEXCONVERT =
+      '""" convert hex string integer to int """ '+LF+
+      'def convert(n: str) -> int:               '+LF+
+      '    # get rid of ":", spaces and newlines '+LF+
+      '    hex = n.replace(":", "").replace("\n","").replace(" ","")'+LF+
+      '    return int(hex,16)';     
+      
+      FUNC1 =
+      '""" returns increment """ '+LF+
+      'def func1(x: int) -> int: '+LF+
+      '    return x+1';               
+         
+var bufs, tabstr: string;               
+Begin  //@Main
+  maxform1.console1click(self)
+  memo2.height:= 200;
+  memo2.font.name:= 'Courier';
+  with TPythonEngine.Create(Nil) do begin
+    pythonhome:= PYHOME32;
+    try
+      opendll(PYDLL32)
+      Println('Colab Platform: '+ 
+          EvalStr('__import__("platform").platform()')); 
+      //Println('CPU Arch. Check Linux: '+ 
+     Println('DIR Check: '+ 
+     EvalStr('__import__("subprocess").check_output("dir",shell=True).strip().decode()'));
+     ExecString(HEXCONVERT); 
+     println(EvalStr('convert("'+CHEXSTR+'")'));
+     bufs:= StringReplace(CHEXSTR,':','',[rfReplaceAll]);
+     with TInteger.create(0) do begin
+       if AssignHex(bufs) then
+         writeln(ConvertToDecimalString(false));
+       free
+     end;     
+     ExecString('x="cool"');
+     println('finxter id 332, puzzle: '+EvalStr('x[-1]+x[-2]+x[-4]+x[-3]'));
+     ExecString(FUNC1); 
+     ExecString('f = func1'); 
+     println('finxter id 358, puzzle: '+EvalStr('f(2)+func1(2)'));
+    except
+      raiseError;
+    finally                         
+      Free;
+    end;
+  end; 
+    Writeln('Demo01	A simple Python evaluator Gauss evaluator '+CRLF+
+   'Demo02	Evaluate expression with ExecSynCheck1 and Strlist '+CRLF+
+   'http://www.softwareschule.ch/examples/pydemo2.txt'         +CRLF+
+   'http://www.softwareschule.ch/examples/pydemo2.htm          '+CRLF+
+   'Demo03	15-powerful-python-one-liners PYLaz_P4D_Demo2      '+CRLF+
+   'Demo04	Eval_IOEvents (advanced case) Demo3 PYLaz_P4D_Demo2'+CRLF+
+   'Demo05	Defining a mX4_Python Template                     '+CRLF+
+   'Demo06	Defining a Python Template_PyCryptoDome_Bitcoin    '+CRLF+
+   'Demo07	Using Translator with Subprocess()                 '+CRLF+
+   'Demo08	Using Turtle Graph for new Python types            '+CRLF+
+   'Demo09	Making a URLLib_Agent with GoggleSearch            '+CRLF+
+   'Demo10  Using URLLib_ISBN_Agent_PyPas inside Python        '+CRLF+
+   'Demo11	Using URLLib_JSON_PyPas inside Pascal              '+CRLF+
+   'Demo12	Using a RSA_PyPa crypto methods                    '+CRLF+
+   'Demo13	Using Python_Cheat_Sheet5 big demo                 '+CRLF+
+   'Demo14	Get Import Module with LoadStringJ(PYMODFILE)               '+CRLF+
+   'Demo15	ImportModuleData: this is a extension of Demo14             '+CRLF+
+   'Demo16	Using ImportModuleData_Export in TPythonModule or Pylist    '+CRLF+
+   'Demo17	Using Threading, Windows Console and Command line arguments '+CRLF+
+   'Demo18	Using Threading and Delphi log window                       '+CRLF+
+   'Demo19	Using VarPyth.pas                                           '+CRLF+
+   'Demo20	Demo8 revisited to allow new Python type to be subclassed   '+CRLF+
+   'Demo21  Container indexing this one!   '+CRLF+
+   'Demo22	NLTK and wordnet'+CRLF+ 
+   'Demo23	import tabulator TAB Formater'+CRLF+ 
+   'Demo24	this finxter Demo');                                     
+End.        
+
+
+                                                              
+
+
+
+
+
+        
+   
+   
+      
+   

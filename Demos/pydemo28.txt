@@ -1,0 +1,330 @@
+Program Python_ThreadsDemo28_Dissasemble;
+
+//https://arutselvan99.medium.com/python-why-is-faster-than-list-1b52d0ea9ac9
+//https://www.programiz.com/python-programming/time/sleep
+//Note: modify PYHOME and PYDLL :
+
+const //PYHOME = 'C:\Users\breitsch\AppData\Local\Programs\Python\Python37-32\';
+    PYHOME = 'C:\Users\max\AppData\Local\Programs\Python\Python36-32\';
+    PYDLL  = 'C:\Users\max\AppData\Local\Programs\Python\Python36-32\python36.dll'; 
+    PYSCRIPT = 'C:\maXbox\maxbox3\maxbox3\maXbox3\examples\module1maxbox1.py';
+    LB= CR+LF;
+       
+const TH1 = 'def print_hello_three_times(): '+LB+
+            '  for i in range(3):           '+LB+
+            '    winsound.Beep(540, 500)    '+LB+
+            '    #time.sleep(1.4)           '+LB+
+            '  return "Hello"';
+  
+const TH2 = 'def print_hi_three_times():    '+LB+ 
+            '  for i in range(3):           '+LB+
+            '    print("\a")                '+LB+
+            '    winsound.Beep(440, 500)    '+LB+
+            '  return "Hi"'; 
+            
+const ATIME='while True: '+LB+ 
+            '  localtime = time.localtime()'+LB+ 
+            '  result = time.strftime("%I:%M:%S %p", localtime)'+LB+ 
+            '  print(result, end="", flush=True)'+LB+ 
+            '  print("\r", end="", flush=True)'+LB+ 
+            '  time.sleep(1)';                        
+              
+var  PyForm: TForm; pyMemo: TMemo;
+     pyval: variant;
+     
+
+var eng: TPythonEngine; aPythonVersion: TPythonVersion;
+         PythonVersions: TPythonVersions; AllUserInstall: Boolean;
+         apd: TApdMeter;
+
+begin  //@main
+  //myloadscript2:= filetostring(PYSCRIPT2);
+  
+  PyForm:= loadForm2(200,300, clgreen,'PyFrm4D_VersionThread_Tester_EKON25');
+  pyMemo:= TMemo.create(PyForm);
+  apd:= TApdMeter.create(pyform);
+  //apd.color:= clyellow;
+  apd.parent:= pyform;
+  apd.barcolor:= clred;
+  apd.position:= 30;
+  apd.SetBounds(10,100, 150, 150);
+  apd.visible:= true;
+  pyMemo.parent:= PyForm
+  PyForm.show;
+  aPythonVersion:= TPythonVersion.create;
+  
+ //3. replace maps demo
+   eng:= TPythonEngine.Create(Nil);
+   eng.pythonhome:= PYHOME;
+   eng.opendll(PYDLL)
+   //eng.IO:= pyMemo;
+   try
+     eng.Execstring('pets= ("bird","snake","dog","turtle","cat","hamster")');
+     // eng.Execstring('val.sort(key=lambda x: x[2],reverse=False)');
+     eng.Execstring('uppercased_pets = list(map(str.upper, pets))');
+     println('Tip replace maps: '+eng.EvalStr('uppercased_pets'));
+     pyMemo.lines.add(eng.EvalStr('list(map(str.upper, pets))'));
+     
+     eng.Execstr('import dis, winsound, time');
+     println('disassemble call1: '+eng.EvalStr('(dis.dis(lambda: []))')); 
+     println('disassemble call2: '+eng.EvalStr('(dis.dis(lambda: list()))')); 
+     //println('def call: '+eng.EvalStr('print_hello_three_times()')); 
+     println('call3: '+eng.evalstr('__import__("dis").dis(lambda: [])')); 
+     //saveString(exepath+'pydis.py', 'import dis'+CRLF+('print(dis.dis(lambda: list()))'));
+   //saveString(exepath+'pydis.py','import dis'+CRLF+('repr(print(dis.dis(print("TXT"))))'+CRLF));
+     //ExecuteShell('py', 'pydis.py');
+     saveString(exepath+'pydis.py', 'import dis'+CRLF+('dis.dis(x for x in range(5))'));
+     println(getDOSOutput('py '+exepath+'pydis.py', exePath));
+     
+     //eng.Execstring(ATIME);
+     if PythonVersionFromPath(PYHOME, aPythonVersion, false) then begin
+       aPythonVersion.AssignTo(eng) ;
+       writeln('Version from path: '+TPythonEngine(eng).RegVersion);
+       writeln('DLL from path: '+TPythonEngine(eng).DLLName);
+     end;
+     {for it:= 10 to 50 do begin
+       sleep(100) 
+       apd.position:= it;
+     end;}
+   except
+     //eng.raiseError;
+     writeln(ExceptionToString(ExceptionType, ExceptionParam));
+   finally
+     eng.Free;
+     aPythonVersion.Free;
+     apd.position:= 100;
+  end;    
+  
+  //PYLaz_P4D_Demo2; 
+End.
+
+Doc: One thing to note is that the map() function returns an iterable object, and thus we can use the list() function to generate a list from this iterable.
+writeln('RegVersion: '+itoa(TPythonEngine(eng).RegVersion));
+https://stackoverflow.com/questions/16779799/py-initialize-and-py-finalize-and-matplotlib
+
+import threading 
+  
+def print_hello_three_times():
+  for i in range(3):
+    print("Hello")
+  
+def print_hi_three_times(): 
+    for i in range(3): 
+      print("Hi") 
+
+t1 = threading.Thread(target=print_hello_three_times)  
+t2 = threading.Thread(target=print_hi_three_times)  
+t1.start()
+t2.start()
+
+This package implements JSON support for FPC.
+
+
+[Application1]
+File Number=3150161893
+TAction=176
+TActionList=12
+TADOCommand=1
+TADOConnection=1
+TADODataSet=2
+TADOQuery=2
+TADOStoredProc=2
+TADOTable=2
+TAfComPort=1
+TAfDataDispatcher=1
+TAfPortComboBox=1
+TAnimate=1
+TApplicationEvents=1
+TBevel=28
+TBitBtn=33
+TBrowseURL=2
+TButton=180
+TCheckBox=61
+TCheckers=1
+TCheckListBox=1
+TChessBrd=1
+TClientDataSet=2
+TColorDialog=7
+TColorSelect=2
+TComboBox=36
+TComboBoxEx=1
+TComComboBox=7
+TComDataPacket=1
+TComLed=2
+TComPort=1
+TComTerminal=1
+TControlBar=1
+TCoolBar=4
+TDataSetProvider=1
+TDataSetTableProducer=1
+TDataSource=6
+TDBGrid=3
+TDBImage=1
+TDBMemo=1
+TDBNavigator=1
+TDirectoryListBox=3
+TDoubleBufferedPanel=1
+TDownLoadURL=2
+TDrawGrid=1
+TDriveComboBox=3
+TEdit=87
+TEditCopy=2
+TEditCut=2
+TEditDelete=2
+TEditPaste=2
+TEditSelectAll=2
+TEditUndo=2
+TFileExit=2
+TFileListBox=2
+TFileOpen=2
+TFileOpenWith=2
+TFilePrintSetup=2
+TFileRun=2
+TFileSaveAs=2
+TFilterComboBox=2
+TFindDialog=1
+TFontDialog=5
+TFontEdit=2
+TGLActor=4
+TGLCadencer=2
+TGLCamera=2
+TGLDummyCube=3
+TGLLightSource=1
+TGLMaterialLibrary=2
+TGLParticleFXRenderer=1
+TGLPointLightPFXManager=1
+TGLScene=2
+TGLSceneViewer=2
+TGLShadowPlane=1
+TGLSphere=1
+TGPS=1
+TGPSCompass=1
+TGPSSatellitesPosition=1
+TGPSSatellitesReception=1
+TGPSSpeed=3
+TGPStoGPX=1
+TGroupBox=45
+THeaderControl=1
+THotKey=1
+THTTPReqResp=1
+THTTPSoapDispatcher=1
+THTTPSoapPascalInvoker=1
+TImage=41
+TImageList=31
+TIntegerField=1
+TJvBrowseForFolderDialog=1
+TJvColorComboBox=4
+TJvFilenameEdit=2
+TKPrintPreview=1
+TLabel=296
+TLabeledEdit=1
+TListBox=23
+TListControlClearSelection=2
+TListControlCopySelection=2
+TListControlDeleteSelection=2
+TListControlMoveSelection=2
+TListControlSelectAll=2
+TListView=9
+TMainMenu=16
+TMemo=21
+TMenuItem=703
+TNextTab=2
+TNotebook=1
+TOpenDialog=15
+TOpenPicture=2
+TOpenPictureDialog=3
+TPage=4
+TPageControl=8
+TPaintBox=4
+TPanel=101
+TPopupMenu=14
+TPreviousTab=2
+TPrintDialog=2
+TPrinterSetupDialog=2
+TProgressBar=2
+TPSDllPlugin=1
+TPSImport_Classes=1
+TPSImport_ComObj=1
+TPSImport_Controls=1
+TPSImport_DateUtils=1
+TPSImport_DB=1
+TPSImport_Forms=1
+TPSImport_StdCtrls=1
+TPSScript=1
+TPSScriptDebugger=1
+TRadioButton=12
+TRadioGroup=11
+TRichEdit=6
+TRichEditAlignCenter=2
+TRichEditAlignLeft=2
+TRichEditAlignRight=2
+TRichEditBold=2
+TRichEditBullets=2
+TRichEditItalic=2
+TRichEditStrikeOut=2
+TRichEditUnderline=2
+TSaveDialog=12
+TSavePictureDialog=1
+TScrollBox=6
+TSearchFind=2
+TSearchFindFirst=2
+TSearchFindNext=2
+TSearchReplace=2
+TSendMail=2
+TShape=2
+TSmallintField=1
+TSpeedButton=82
+TSpinEdit=8
+TSplitter=10
+TStaticListAction=2
+TStaticText=7
+TStatusBar=16
+TStringGrid=2
+TSynAsmSyn=1
+TSynBatSyn=1
+TSynCppSyn=2
+TSynCssSyn=1
+TSynCSSyn=1
+TSynDfmSyn=2
+TSynEdit=2
+TSynEditPrint=1
+TSynEditSearch=2
+TSynEiffelSyn=1
+TSynExporterHTML=2
+TSynExporterRTF=2
+TSynHTMLSyn=1
+TSynIdlSyn=1
+TSynIniSyn=1
+TSynJavaSyn=1
+TSynJScriptSyn=1
+TSynMemo=1
+TSynMsgSyn=1
+TSynMultiSyn=1
+TSynPasSyn=3
+TSynPerlSyn=1
+TSynPHPSyn=1
+TSynPythonSyn=1
+TSynRubySyn=1
+TSynSQLSyn=1
+TSynTeXSyn=1
+TSynUNIXShellScriptSyn=1
+TSynURIOpener=1
+TSynURISyn=1
+TSynVBScriptSyn=1
+TSynVBSyn=1
+TSynXMLSyn=1
+TTabControl=1
+TTabSheet=30
+TTimer=7
+TToolBar=18
+TToolButton=195
+TTrackBar=10
+TTreeView=2
+TUpDown=14
+TWebBrowser=1
+TWideStringField=1
+TWordField=2
+TWSDLHTMLPublish=1
+TXPManifest=1
+
+    

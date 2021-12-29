@@ -1,0 +1,108 @@
+PROGRAM SEPDemo__PythonTemplate_RSA_Hexer_Indexer_1_20_PyDemo;
+{Purpose: convert hex to int of RSA Keys!}
+//https://dev.to/dandyvica/understanding-public-private-rsa-keys-3j81
+
+Const PYHOME32 = 'C:\Users\max\AppData\Local\Programs\Python\Python36-32\'; 
+      PYDLL32  = 'C:\Users\max\AppData\Local\Programs\Python\Python36-32\python36.dll'; 
+
+      REXDEF= 'def striphtml(data):       '+LF+
+               '  p = re.compile(r"<.*?>")'+LF+
+               '  return p.sub("", data)  ';  
+      CHEXSTR = '00:c9:73:e2:3b:11:01:2f:2c:62:a4:1a:74:3f:92:';         
+               
+      HEXCONVERT =
+      '""" convert hex string integer to int """ '+LF+
+      'def convert(n: str) -> int:               '+LF+
+      '    # get rid of ":", spaces and newlines '+LF+
+      '    hex = n.replace(":", "").replace("\n","").replace(" ","")'+LF+
+      '    return int(hex,16)';          
+         
+var bufs, tabstr: string;               
+Begin  //@Main
+  maxform1.console1click(self)
+  memo2.height:= 200;
+  memo2.font.name:= 'Courier';
+  with TPythonEngine.Create(Nil) do begin
+    pythonhome:= PYHOME32;
+    try
+      opendll(PYDLL32)
+      Println('Colab Platform: '+ 
+          EvalStr('__import__("platform").platform()')); 
+      //Println('CPU Arch. Check Linux: '+ 
+     Println('DIR Check: '+ 
+     EvalStr('__import__("subprocess").check_output("dir",shell=True).strip().decode()'));
+     ExecString(HEXCONVERT); 
+     
+     //https://towardsdatascience.com/two-cool-functions-to-know-in-python-7c36da49f884
+     ExecString('from tabulate import tabulate');
+     
+     ExecString('table = [["First Name", "Last Name", "Age"], ["John", "Smith", 39],'+
+                          ' ["Mary", "Jane", 25], ["Jennifer", "Doe", 28]]');
+     println('Tabulate '+evalstr('print(tabulate(table))')); 
+     println('Tabulate '+evalstr('repr(tabulate(table))')); 
+     writeln('')
+     tabstr:= evalstr('repr(tabulate(table, headers="firstrow"))')
+     writeln(StringReplace(tabstr,'\n',CRLF,[rfReplaceAll])); 
+     writeln('');
+     tabstr:= evalstr('repr(tabulate(table, headers="firstrow",tablefmt="fancy_grid"))')
+     //writeln(tabstr)
+     tabstr:= StringReplace(tabstr,'\n',CRLF,[rfReplaceAll]);
+     tabstr:= StringReplace(tabstr,'‚îÇ','I',[rfReplaceAll]);
+     tabstr:= StringReplace(tabstr,'ïê‚','-',[rfReplaceAll]);
+     tabstr:= StringReplace(tabstr,'îÄ‚','-',[rfReplaceAll]);
+     writeln(tabstr); 
+     writeln('');
+                        
+                          
+     println(EvalStr('convert("'+CHEXSTR+'")'));
+     bufs:= StringReplace(CHEXSTR,':','',[rfReplaceAll]);
+     with TInteger.create(0) do begin
+       if AssignHex(bufs) then
+         writeln(ConvertToDecimalString(false));
+       free
+     end;     
+     writeln(sha1tohex(sha1ofstr(bufs)))
+     //HexToBuf(CHEXSTR, bufs);
+    except
+      raiseError;
+    finally                         
+      Free;
+    end;
+  end; 
+    Writeln('Demo01	A simple Python evaluator Gauss evaluator '+CRLF+
+   'Demo02	Evaluate a Python expression with ExecSynCheck1 and Strlist'+CRLF+
+   'http://www.softwareschule.ch/examples/pydemo2.txt'          +CRLF+
+   'http://www.softwareschule.ch/examples/pydemo2.htm           '+CRLF+
+   'Demo03	15-powerful-python-one-liners PYLaz_P4D_Demo2       '+CRLF+
+   'Demo04	Eval_IOEvents (advanced case) extension Demo3 PYLaz_P4D_Demo2'+CRLF+
+   'Demo05	Defining a mX4_Python Template                     '+CRLF+
+   'Demo06	Defining a Python Template_PyCryptoDome_Bitcoin    '+CRLF+
+   'Demo07	Using Translator with Subprocess()                 '+CRLF+
+   'Demo08	Using Turtle Graph for new Python types            '+CRLF+
+   'Demo09	Making a URLLib_Agent with GoggleSearch            '+CRLF+
+   'Demo10  Using URLLib_ISBN_Agent_PyPas inside Python        '+CRLF+
+   'Demo11	Using URLLib_JSON_PyPas inside Pascal               '+CRLF+
+   'Demo12	Using a RSA_PyPa crypto methods                     '+CRLF+
+   'Demo13	Using Python_Cheat_Sheet5 big demo                  '+CRLF+
+   'Demo14	Get Import Module with LoadStringJ(PYMODFILE)                '+CRLF+
+   'Demo15	ImportModuleData: this is a extension of Demo14              '+CRLF+
+   'Demo16	Using ImportModuleData_Export in TPythonModule or Pylist     '+CRLF+
+   'Demo17	Using Threading, Windows Console and Command line arguments  '+CRLF+
+   'Demo18	Using Threading and Delphi log window                        '+CRLF+
+   'Demo19	Using VarPyth.pas                                            '+CRLF+
+   'Demo20	Demo8 revisited to allow the new Python type to be subclassed'+CRLF+
+   'Demo21  Container indexing this one!   ' );                                     
+End.        
+
+
+                                                              
+
+
+
+
+
+        
+   
+   
+      
+   

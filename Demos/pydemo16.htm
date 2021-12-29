@@ -1,0 +1,103 @@
+Version:0.9
+StartHTML:0000000105
+EndHTML:0000014994
+StartFragment:0000001053
+EndFragment:0000014978
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>mXScriptasHTML</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta name="generator" content="SynEdit HTML exporter" />
+<style type="text/css">
+<!--
+body { color: #000000; background-color: #FFFFFF; }
+.pas1-assembler { }
+.pas1-character { color: #0066CC; text-decoration: underline; }
+.pas1-comment { color: #000080; font-style: italic; }
+.pas1-float { color: #00FF00; }
+.pas1-hexadecimal { color: #FF00FF; }
+.pas1-identifier { }
+.pas1-number { color: #FF0000; }
+.pas1-preprocessor { font-style: italic; }
+.pas1-reservedword { color: #000080; font-weight: bold; }
+.pas1-space { }
+.pas1-string { color: #008080; }
+.pas1-symbol { color: #FF0000; }
+-->
+</style>
+</head>
+<body>
+<!--StartFragment--><pre><code><span class="pas1-reservedword">PROGRAM</span><span class="pas1-space"> SEPDemo__PythonTemplate_ImportModuleData_Export</span><span class="pas1-symbol">;
+</span><span class="pas1-comment">{Purpose: import a module with execstring(). and shows ddata -get PyModule first!}
+//Please check providers list below:['mymemory', 'microsoft', 'deepl', 'libre'].
+{TYPE &lt;Type declarations&gt; Pascal-Delphi-Python-Json-JScript}</span><span class="pas1-space"> 
+
+</span><span class="pas1-reservedword">Const</span><span class="pas1-space"> PYHOME32 </span><span class="pas1-symbol">=</span><span class="pas1-space"> </span><span class="pas1-string">'C:\Users\max\AppData\Local\Programs\Python\Python36-32\'</span><span class="pas1-symbol">;</span><span class="pas1-space"> 
+      PYDLL32  </span><span class="pas1-symbol">=</span><span class="pas1-space"> </span><span class="pas1-string">'C:\Users\max\AppData\Local\Programs\Python\Python36-32\python36.dll'</span><span class="pas1-symbol">;</span><span class="pas1-space"> 
+      PYMODULE </span><span class="pas1-symbol">=</span><span class="pas1-space"> </span><span class="pas1-string">'C:\maXbox\mX47464\maxbox4\examples\histogram15.py'</span><span class="pas1-symbol">;
+</span><span class="pas1-space">      PYMODULEPATH </span><span class="pas1-symbol">=</span><span class="pas1-space"> </span><span class="pas1-string">'C:\maXbox\mX47464\maxbox4\examples'</span><span class="pas1-symbol">;
+
+</span><span class="pas1-space">      PYBC </span><span class="pas1-symbol">=</span><span class="pas1-space">  </span><span class="pas1-string">'from bitcoin import *'</span><span class="pas1-symbol">+</span><span class="pas1-identifier">LF</span><span class="pas1-symbol">+
+</span><span class="pas1-space">              </span><span class="pas1-string">'my_private_key = random_key()'</span><span class="pas1-symbol">+</span><span class="pas1-identifier">LF</span><span class="pas1-symbol">+
+</span><span class="pas1-space">              </span><span class="pas1-string">'my_public_key = privtopub(my_private_key)'</span><span class="pas1-symbol">+</span><span class="pas1-identifier">LF</span><span class="pas1-symbol">+
+</span><span class="pas1-space">              </span><span class="pas1-string">'my_bitcoin_addr = pubtoaddr(my_public_key)'</span><span class="pas1-symbol">+</span><span class="pas1-identifier">LF</span><span class="pas1-symbol">+
+</span><span class="pas1-space">              </span><span class="pas1-string">'print(my_bitcoin_addr)'</span><span class="pas1-symbol">;
+</span><span class="pas1-space">              
+      REXDEF</span><span class="pas1-symbol">=</span><span class="pas1-space"> </span><span class="pas1-string">'def striphtml(data):      '</span><span class="pas1-symbol">+</span><span class="pas1-identifier">LF</span><span class="pas1-symbol">+
+</span><span class="pas1-space">               </span><span class="pas1-string">'  p = re.compile(r&quot;&lt;.*?&gt;&quot;)'</span><span class="pas1-symbol">+</span><span class="pas1-identifier">LF</span><span class="pas1-symbol">+
+</span><span class="pas1-space">               </span><span class="pas1-string">'  return p.sub(&quot;&quot;, data)  '</span><span class="pas1-symbol">;</span><span class="pas1-space">  
+               
+</span><span class="pas1-reservedword">var</span><span class="pas1-space"> pystr</span><span class="pas1-symbol">:</span><span class="pas1-space"> </span><span class="pas1-reservedword">string</span><span class="pas1-symbol">;</span><span class="pas1-space"> pyole</span><span class="pas1-symbol">:</span><span class="pas1-space"> Olevariant</span><span class="pas1-symbol">;</span><span class="pas1-space">  pystrlist</span><span class="pas1-symbol">:</span><span class="pas1-space"> TStrings</span><span class="pas1-symbol">;
+</span><span class="pas1-space">               
+</span><span class="pas1-reservedword">Begin</span><span class="pas1-space">  </span><span class="pas1-comment">//@Main
+</span><span class="pas1-space">  </span><span class="pas1-reservedword">with</span><span class="pas1-space"> TPythonEngine</span><span class="pas1-symbol">.</span><span class="pas1-identifier">Create</span><span class="pas1-symbol">(</span><span class="pas1-reservedword">Nil</span><span class="pas1-symbol">)</span><span class="pas1-space"> </span><span class="pas1-reservedword">do</span><span class="pas1-space"> </span><span class="pas1-reservedword">begin
+</span><span class="pas1-space">    pythonhome</span><span class="pas1-symbol">:=</span><span class="pas1-space"> PYHOME32</span><span class="pas1-symbol">;
+</span><span class="pas1-space">    opendll</span><span class="pas1-symbol">(</span><span class="pas1-identifier">PYDLL32</span><span class="pas1-symbol">)
+</span><span class="pas1-space">    </span><span class="pas1-reservedword">try
+</span><span class="pas1-space">      Execstring</span><span class="pas1-symbol">(</span><span class="pas1-string">'import base64'</span><span class="pas1-symbol">+</span><span class="pas1-identifier">LF</span><span class="pas1-symbol">+</span><span class="pas1-string">'import urllib.parse, re, sys'</span><span class="pas1-symbol">);
+</span><span class="pas1-space">      Execstring</span><span class="pas1-symbol">(</span><span class="pas1-identifier">REXDEF</span><span class="pas1-symbol">);
+</span><span class="pas1-space">      </span><span class="pas1-reservedword">if</span><span class="pas1-space"> fileExists</span><span class="pas1-symbol">(</span><span class="pas1-identifier">PYMODULE</span><span class="pas1-symbol">)</span><span class="pas1-space"> </span><span class="pas1-reservedword">then</span><span class="pas1-space"> </span><span class="pas1-reservedword">begin
+</span><span class="pas1-space">        println</span><span class="pas1-symbol">(</span><span class="pas1-identifier">UTF8toAnsi</span><span class="pas1-symbol">(</span><span class="pas1-identifier">pymodule</span><span class="pas1-symbol">)+</span><span class="pas1-identifier">CRLF</span><span class="pas1-symbol">)
+</span><span class="pas1-space">        </span><span class="pas1-comment">{Execstring('sys.path.append(r'+'&quot;'+PYMODULEPATH+'&quot;)');
+         Execstring('from histogram import *'); }
+</span><span class="pas1-space">        Execstring</span><span class="pas1-symbol">(</span><span class="pas1-identifier">LoadStringJ</span><span class="pas1-symbol">(</span><span class="pas1-identifier">PYMODULE</span><span class="pas1-symbol">));
+</span><span class="pas1-space">        </span><span class="pas1-comment">//Exception: Exception: RaiseError: couldn't fetch last exception..
+</span><span class="pas1-space">        println</span><span class="pas1-symbol">(</span><span class="pas1-string">'get module data: '</span><span class="pas1-symbol">+</span><span class="pas1-identifier">evalStr</span><span class="pas1-symbol">(</span><span class="pas1-string">'pyplot.hist(x)'</span><span class="pas1-symbol">));
+</span><span class="pas1-space">        
+        pystr</span><span class="pas1-symbol">:=</span><span class="pas1-space"> evalStr</span><span class="pas1-symbol">(</span><span class="pas1-string">'pyplot.hist(x)'</span><span class="pas1-symbol">);
+</span><span class="pas1-space">        pyole</span><span class="pas1-symbol">:=</span><span class="pas1-space"> StringToVarArray</span><span class="pas1-symbol">(</span><span class="pas1-identifier">pystr</span><span class="pas1-symbol">);
+</span><span class="pas1-space">        </span><span class="pas1-comment">//writeln(vartostr(pyole));
+</span><span class="pas1-space">        </span><span class="pas1-comment">//Proc StrToStrings(S,Sep: Ansistr; const List:TStrings;const AllowEmptyString :Bool)
+</span><span class="pas1-space">        pystrlist</span><span class="pas1-symbol">:=</span><span class="pas1-space"> TStringlist</span><span class="pas1-symbol">.</span><span class="pas1-identifier">create</span><span class="pas1-symbol">;
+</span><span class="pas1-space">          StrToStrings</span><span class="pas1-symbol">(</span><span class="pas1-identifier">pystr</span><span class="pas1-symbol">,</span><span class="pas1-string">','</span><span class="pas1-symbol">,</span><span class="pas1-space"> pystrlist</span><span class="pas1-symbol">,</span><span class="pas1-space"> false</span><span class="pas1-symbol">)
+</span><span class="pas1-space">            writeln</span><span class="pas1-symbol">(</span><span class="pas1-identifier">pystrlist</span><span class="pas1-symbol">.</span><span class="pas1-identifier">text</span><span class="pas1-symbol">);
+</span><span class="pas1-space">            writeln</span><span class="pas1-symbol">(</span><span class="pas1-string">'how many items: '</span><span class="pas1-symbol">+</span><span class="pas1-identifier">itoa</span><span class="pas1-symbol">(</span><span class="pas1-identifier">pystrlist</span><span class="pas1-symbol">.</span><span class="pas1-identifier">count</span><span class="pas1-symbol">))
+</span><span class="pas1-space">          </span><span class="pas1-reservedword">for</span><span class="pas1-space"> </span><span class="pas1-reservedword">it</span><span class="pas1-symbol">:=</span><span class="pas1-space"> </span><span class="pas1-number">0</span><span class="pas1-space"> </span><span class="pas1-reservedword">to</span><span class="pas1-space"> pystrlist</span><span class="pas1-symbol">.</span><span class="pas1-identifier">count</span><span class="pas1-symbol">-1</span><span class="pas1-space"> </span><span class="pas1-reservedword">do</span><span class="pas1-space"> 
+            write</span><span class="pas1-symbol">(</span><span class="pas1-identifier">pystrlist</span><span class="pas1-symbol">[</span><span class="pas1-reservedword">it</span><span class="pas1-symbol">]+</span><span class="pas1-string">' - '</span><span class="pas1-symbol">);</span><span class="pas1-space">  
+         pystrlist</span><span class="pas1-symbol">.</span><span class="pas1-identifier">Free</span><span class="pas1-symbol">;</span><span class="pas1-space">   
+      </span><span class="pas1-reservedword">end</span><span class="pas1-symbol">;
+</span><span class="pas1-space">      println</span><span class="pas1-symbol">(</span><span class="pas1-identifier">evalStr</span><span class="pas1-symbol">(</span><span class="pas1-string">'striphtml(str(base64.b64decode(&quot;2e8WuEr0+5nc14VBxQrOl4ob6guOTySr&quot;)))'</span><span class="pas1-symbol">));
+</span><span class="pas1-space">    </span><span class="pas1-reservedword">except
+</span><span class="pas1-space">      raiseError</span><span class="pas1-symbol">;
+</span><span class="pas1-space">    </span><span class="pas1-reservedword">finally</span><span class="pas1-space">                         
+      Free</span><span class="pas1-symbol">;
+</span><span class="pas1-space">    </span><span class="pas1-reservedword">end</span><span class="pas1-symbol">;
+</span><span class="pas1-space">  </span><span class="pas1-reservedword">end</span><span class="pas1-symbol">;</span><span class="pas1-space">  
+</span><span class="pas1-comment">//&lt;Definitions&gt;  
+</span><span class="pas1-reservedword">End</span><span class="pas1-symbol">.</span><span class="pas1-space"> 
+
+</span><span class="pas1-reservedword">Ref</span><span class="pas1-symbol">:</span><span class="pas1-space">  https</span><span class="pas1-symbol">:</span><span class="pas1-comment">//www.sonarqube.org/features/multi-languages/python/
+
+</span><span class="pas1-identifier">Install a </span><span class="pas1-number">32-</span><span class="pas1-identifier">bit </span><span class="pas1-reservedword">package</span><span class="pas1-space"> </span><span class="pas1-reservedword">with</span><span class="pas1-space"> a </span><span class="pas1-number">64</span><span class="pas1-space"> pip installer </span><span class="pas1-symbol">-</span><span class="pas1-identifier">t </span><span class="pas1-symbol">(</span><span class="pas1-identifier">Target</span><span class="pas1-symbol">)
+</span><span class="pas1-identifier">C</span><span class="pas1-symbol">:\</span><span class="pas1-identifier">Users</span><span class="pas1-symbol">\</span><span class="pas1-identifier">max</span><span class="pas1-symbol">\</span><span class="pas1-identifier">AppData</span><span class="pas1-symbol">\</span><span class="pas1-identifier">Local</span><span class="pas1-symbol">\</span><span class="pas1-identifier">Programs</span><span class="pas1-symbol">\</span><span class="pas1-identifier">Python</span><span class="pas1-symbol">\</span><span class="pas1-identifier">Python36</span><span class="pas1-symbol">-32&gt;</span><span class="pas1-identifier">pip3 install </span><span class="pas1-symbol">-</span><span class="pas1-identifier">t C</span><span class="pas1-symbol">:\</span><span class="pas1-identifier">Users</span><span class="pas1-symbol">\
+</span><span class="pas1-identifier">max</span><span class="pas1-symbol">\</span><span class="pas1-identifier">AppData</span><span class="pas1-symbol">\</span><span class="pas1-identifier">Local</span><span class="pas1-symbol">\</span><span class="pas1-identifier">Programs</span><span class="pas1-symbol">\</span><span class="pas1-identifier">Python</span><span class="pas1-symbol">\</span><span class="pas1-identifier">Python36</span><span class="pas1-symbol">-32\</span><span class="pas1-identifier">Lib bitcoin
+</span><span class="pas1-symbol">----</span><span class="pas1-reservedword">File</span><span class="pas1-space"> newtemplate</span><span class="pas1-symbol">.</span><span class="pas1-identifier">txt </span><span class="pas1-reservedword">not</span><span class="pas1-space"> exists </span><span class="pas1-symbol">-</span><span class="pas1-space"> now saved</span><span class="pas1-symbol">!----
+
+
+</span><span class="pas1-space">       
+   
+   
+</span></code></pre><!--EndFragment--></body>
+</html>

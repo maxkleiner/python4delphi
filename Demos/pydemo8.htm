@@ -1,0 +1,140 @@
+Version:0.9
+StartHTML:0000000105
+EndHTML:0000018220
+StartFragment:0000001053
+EndFragment:0000018204
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>mXScriptasHTML</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta name="generator" content="SynEdit HTML exporter" />
+<style type="text/css">
+<!--
+body { color: #000000; background-color: #FFFFFF; }
+.pas1-assembler { }
+.pas1-character { color: #0066CC; text-decoration: underline; }
+.pas1-comment { color: #000080; font-style: italic; }
+.pas1-float { color: #00FF00; }
+.pas1-hexadecimal { color: #FF00FF; }
+.pas1-identifier { }
+.pas1-number { color: #FF0000; }
+.pas1-preprocessor { font-style: italic; }
+.pas1-reservedword { color: #000080; font-weight: bold; }
+.pas1-space { }
+.pas1-string { color: #008080; }
+.pas1-symbol { color: #FF0000; }
+-->
+</style>
+</head>
+<body>
+<!--StartFragment--><pre><code><span class="pas1-reservedword">PROGRAM</span><span class="pas1-space"> SEPDemo_App_mX4_PythonTemplate_Turtle</span><span class="pas1-symbol">;
+</span><span class="pas1-comment">//https://docs.python.org/3/library/turtle.html
+
+//https://techvidvan.com/tutorials/python-language-translator/
+//https://www.tutorialspoint.com/python_text_processing/python_text_translation.htm
+//https://translate-python.readthedocs.io/en/latest/providers.html
+
+//&lt;Constant declarations&gt; 
+//Please check providers list below: ['mymemory', 'microsoft', 'deepl', 'libre'].
+{TYPE 
+&lt;Type declarations&gt;}</span><span class="pas1-space"> 
+
+</span><span class="pas1-reservedword">Const</span><span class="pas1-space"> PYHOME32 </span><span class="pas1-symbol">=</span><span class="pas1-space"> </span><span class="pas1-string">'C:\Users\max\AppData\Local\Programs\Python\Python36-32\'</span><span class="pas1-symbol">;</span><span class="pas1-space"> 
+      PYDLL32  </span><span class="pas1-symbol">=</span><span class="pas1-space"> </span><span class="pas1-string">'C:\Users\max\AppData\Local\Programs\Python\Python36-32\python36.dll'</span><span class="pas1-symbol">;</span><span class="pas1-space"> 
+      PYHOME64 </span><span class="pas1-symbol">=</span><span class="pas1-space"> </span><span class="pas1-string">'C:\Users\max\AppData\Local\Programs\Python\Python36\'</span><span class="pas1-symbol">;</span><span class="pas1-space"> 
+      PYDLL64  </span><span class="pas1-symbol">=</span><span class="pas1-space"> </span><span class="pas1-string">'C:\Users\max\AppData\Local\Programs\Python\Python36\python36.dll'</span><span class="pas1-symbol">;</span><span class="pas1-space"> 
+
+</span><span class="pas1-reservedword">Var</span><span class="pas1-space"> 
+</span><span class="pas1-comment">//&lt;Variable declarations&gt;
+</span><span class="pas1-space">  i</span><span class="pas1-symbol">:</span><span class="pas1-space"> integer</span><span class="pas1-symbol">;</span><span class="pas1-space"> eng</span><span class="pas1-symbol">:</span><span class="pas1-space"> TPythonEngine</span><span class="pas1-symbol">;
+
+</span><span class="pas1-comment">//&lt;FUNCTION&gt;
+//&lt;PROCEDURE&gt; 
+
+//Generate public key and private key
+
+</span><span class="pas1-reservedword">Const</span><span class="pas1-space"> PYBC </span><span class="pas1-symbol">=</span><span class="pas1-space">  </span><span class="pas1-string">'from bitcoin import *'</span><span class="pas1-symbol">+</span><span class="pas1-identifier">LF</span><span class="pas1-symbol">+
+</span><span class="pas1-space">              </span><span class="pas1-string">'my_private_key = random_key()'</span><span class="pas1-symbol">+</span><span class="pas1-identifier">LF</span><span class="pas1-symbol">+
+</span><span class="pas1-space">              </span><span class="pas1-string">'my_public_key = privtopub(my_private_key)'</span><span class="pas1-symbol">+</span><span class="pas1-identifier">LF</span><span class="pas1-symbol">+
+</span><span class="pas1-space">              </span><span class="pas1-string">'my_bitcoin_addr = pubtoaddr(my_public_key)'</span><span class="pas1-symbol">+</span><span class="pas1-identifier">LF</span><span class="pas1-symbol">+
+</span><span class="pas1-space">              </span><span class="pas1-string">'print(my_bitcoin_addr)'</span><span class="pas1-symbol">;
+</span><span class="pas1-space">              
+</span><span class="pas1-reservedword">Const</span><span class="pas1-space"> PYTURTLE </span><span class="pas1-symbol">=</span><span class="pas1-space"> </span><span class="pas1-string">'from turtle import *      '</span><span class="pas1-symbol">+</span><span class="pas1-identifier">LF</span><span class="pas1-symbol">+
+</span><span class="pas1-space">                 </span><span class="pas1-string">'color(&quot;red&quot;, &quot;yellow&quot;)    '</span><span class="pas1-symbol">+</span><span class="pas1-identifier">LF</span><span class="pas1-symbol">+
+</span><span class="pas1-space">                 </span><span class="pas1-string">'s = Screen()              '</span><span class="pas1-symbol">+</span><span class="pas1-identifier">LF</span><span class="pas1-symbol">+
+</span><span class="pas1-space">                 </span><span class="pas1-string">'s.setup(700,500)          '</span><span class="pas1-symbol">+</span><span class="pas1-identifier">LF</span><span class="pas1-symbol">+
+</span><span class="pas1-space">                 </span><span class="pas1-string">'s.bgcolor(&quot;black&quot;)        '</span><span class="pas1-symbol">+</span><span class="pas1-identifier">LF</span><span class="pas1-symbol">+
+</span><span class="pas1-space">                 </span><span class="pas1-string">'#speed(5)                  '</span><span class="pas1-symbol">+</span><span class="pas1-identifier">LF</span><span class="pas1-symbol">+
+</span><span class="pas1-space">                 </span><span class="pas1-string">'begin_fill()              '</span><span class="pas1-symbol">+</span><span class="pas1-identifier">LF</span><span class="pas1-symbol">+
+</span><span class="pas1-space">                 </span><span class="pas1-string">'while True:               '</span><span class="pas1-symbol">+</span><span class="pas1-identifier">LF</span><span class="pas1-symbol">+
+</span><span class="pas1-space">                 </span><span class="pas1-string">'    forward(250)          '</span><span class="pas1-symbol">+</span><span class="pas1-identifier">LF</span><span class="pas1-symbol">+
+</span><span class="pas1-space">                 </span><span class="pas1-string">'    left(170)             '</span><span class="pas1-symbol">+</span><span class="pas1-identifier">LF</span><span class="pas1-symbol">+
+</span><span class="pas1-space">                 </span><span class="pas1-string">'    if abs(pos()) &lt; 1:    '</span><span class="pas1-symbol">+</span><span class="pas1-identifier">LF</span><span class="pas1-symbol">+
+</span><span class="pas1-space">                 </span><span class="pas1-string">'         break            '</span><span class="pas1-symbol">+</span><span class="pas1-identifier">LF</span><span class="pas1-symbol">+
+</span><span class="pas1-space">                 </span><span class="pas1-string">'end_fill()                '</span><span class="pas1-symbol">+</span><span class="pas1-identifier">LF</span><span class="pas1-symbol">+
+</span><span class="pas1-space">                 </span><span class="pas1-string">'done()                    '</span><span class="pas1-symbol">;</span><span class="pas1-space">  
+                 
+</span><span class="pas1-reservedword">Const</span><span class="pas1-space"> REFTXT </span><span class="pas1-symbol">=</span><span class="pas1-space"> </span><span class="pas1-string">'Hola PyWorld_,&amp;#10; Estos datos se escribir&aacute;n en el archivo.'</span><span class="pas1-symbol">;</span><span class="pas1-space">                             
+</span><span class="pas1-reservedword">Begin</span><span class="pas1-space">  </span><span class="pas1-comment">//@Main
+//&lt;Executable statements&gt;
+</span><span class="pas1-space">  eng</span><span class="pas1-symbol">:=</span><span class="pas1-space"> TPythonEngine</span><span class="pas1-symbol">.</span><span class="pas1-identifier">Create</span><span class="pas1-symbol">(</span><span class="pas1-reservedword">Nil</span><span class="pas1-symbol">);
+</span><span class="pas1-space">  eng</span><span class="pas1-symbol">.</span><span class="pas1-identifier">pythonhome</span><span class="pas1-symbol">:=</span><span class="pas1-space"> PYHOME32</span><span class="pas1-symbol">;
+</span><span class="pas1-space">  eng</span><span class="pas1-symbol">.</span><span class="pas1-identifier">opendll</span><span class="pas1-symbol">(</span><span class="pas1-identifier">PYDLL32</span><span class="pas1-symbol">)
+</span><span class="pas1-space">  </span><span class="pas1-comment">//eng.IO:= pyMemo;
+</span><span class="pas1-space">    </span><span class="pas1-reservedword">try
+</span><span class="pas1-space">      eng</span><span class="pas1-symbol">.</span><span class="pas1-identifier">Execstring</span><span class="pas1-symbol">(</span><span class="pas1-string">'import base64'</span><span class="pas1-symbol">);
+</span><span class="pas1-space">      </span><span class="pas1-comment">//eng.Execstring('import Crypto');
+</span><span class="pas1-space">      </span><span class="pas1-comment">//eng.ExecString('import subprocess');  
+</span><span class="pas1-space">      </span><span class="pas1-comment">//eng.ExecString('subprocess.call([&quot;pip3&quot;,&quot;install -t '+PYHOME32+'Lib&quot;, &quot;translate&quot;])')
+</span><span class="pas1-space">      </span><span class="pas1-comment">//eng.ExecString('subprocess.call([&quot;pip3&quot;,&quot;install&quot;, &quot;translate&quot;])')
+</span><span class="pas1-space">      
+     </span><span class="pas1-comment">(* eng.Execstring('from translate import Translator');
+      eng.Execstring('translator= Translator(provider=&quot;mymemory&quot;,'+
+                                             'from_lang=&quot;german&quot;,to_lang=&quot;spanish&quot;)');
+      println(UTF8Decode(eng.EvalStr('translator.translate(&quot;Guten Morgen Programmierer&quot;)')));
+      
+      //eng.Execstring('with open(r&quot;'+exepath+'999_lesmiserable_135-0.txt&quot;,&quot;rb&quot;) as afile:'+
+      //MAX ALLOWED QUERY : 500 CHARS QUERY LENGTH LIMIT EXCEDEED. 
+      eng.Execstring('with open(r&quot;'+exepath+'test.txt&quot;,&quot;rb&quot;) as afile:'+
+                                            ' ftrans = afile.read().decode(&quot;utf-8&quot;)');
+      println(UTF8Decode(eng.EvalStr('translator.translate(ftrans)')));
+      //StringReplace(StringReplace(Trim(address),#13,' ',[rfReplaceAll]),#10,' ',[rfReplaceAll]);
+      *)
+</span><span class="pas1-space">      </span><span class="pas1-comment">//println(((REFTXT)));
+</span><span class="pas1-space">      eng</span><span class="pas1-symbol">.</span><span class="pas1-identifier">Execstring</span><span class="pas1-symbol">(</span><span class="pas1-identifier">PYTURTLE</span><span class="pas1-symbol">);
+</span><span class="pas1-space">      println</span><span class="pas1-symbol">(</span><span class="pas1-identifier">StringReplace</span><span class="pas1-symbol">((</span><span class="pas1-identifier">REFTXT</span><span class="pas1-symbol">),</span><span class="pas1-string">'#10'</span><span class="pas1-symbol">,</span><span class="pas1-character">#13#10</span><span class="pas1-symbol">,[</span><span class="pas1-identifier">rfReplaceAll</span><span class="pas1-symbol">]));
+</span><span class="pas1-space">        
+      eng</span><span class="pas1-symbol">.</span><span class="pas1-identifier">Execstring</span><span class="pas1-symbol">(</span><span class="pas1-string">'with open(r&quot;'</span><span class="pas1-symbol">+</span><span class="pas1-identifier">exepath</span><span class="pas1-symbol">+</span><span class="pas1-string">'maXbox4.exe&quot;,&quot;rb&quot;) as afile:'</span><span class="pas1-symbol">+
+</span><span class="pas1-space">                              </span><span class="pas1-string">' fbuf = afile.read()'</span><span class="pas1-symbol">);
+</span><span class="pas1-space">      println</span><span class="pas1-symbol">(</span><span class="pas1-identifier">eng</span><span class="pas1-symbol">.</span><span class="pas1-identifier">evalstr</span><span class="pas1-symbol">(</span><span class="pas1-string">'__import__(&quot;hashlib&quot;).sha512('</span><span class="pas1-symbol">+
+</span><span class="pas1-space">                                    </span><span class="pas1-string">'fbuf).hexdigest().upper()'</span><span class="pas1-symbol">));</span><span class="pas1-space"> 
+    </span><span class="pas1-reservedword">except
+</span><span class="pas1-space">      eng</span><span class="pas1-symbol">.</span><span class="pas1-identifier">raiseError</span><span class="pas1-symbol">;
+</span><span class="pas1-space">    </span><span class="pas1-reservedword">finally
+</span><span class="pas1-space">      eng</span><span class="pas1-symbol">.</span><span class="pas1-identifier">Free</span><span class="pas1-symbol">;
+</span><span class="pas1-space">      </span><span class="pas1-comment">//aPythonVersion.Free;
+</span><span class="pas1-space">    </span><span class="pas1-reservedword">end</span><span class="pas1-symbol">;</span><span class="pas1-space">    
+  </span><span class="pas1-comment">//maXcalcF('2^64 /(60*60*24*365)')  
+//&lt;Definitions&gt;  
+</span><span class="pas1-reservedword">End</span><span class="pas1-symbol">.</span><span class="pas1-space"> 
+
+</span><span class="pas1-reservedword">Ref</span><span class="pas1-symbol">:</span><span class="pas1-space">  https</span><span class="pas1-symbol">:</span><span class="pas1-comment">//www.sonarqube.org/features/multi-languages/python/
+
+</span><span class="pas1-reservedword">Ref</span><span class="pas1-space"> code</span><span class="pas1-symbol">:</span><span class="pas1-space">  https</span><span class="pas1-symbol">:</span><span class="pas1-comment">//mymemory.translated.net/doc/spec.php
+</span><span class="pas1-identifier">Hello PyWorld_</span><span class="pas1-symbol">,</span><span class="pas1-space"> 
+This data will be written </span><span class="pas1-reservedword">on</span><span class="pas1-space"> the </span><span class="pas1-reservedword">file</span><span class="pas1-symbol">.
+</span><span class="pas1-identifier">Hola PyWorld_</span><span class="pas1-symbol">,&amp;</span><span class="pas1-character">#10</span><span class="pas1-symbol">;</span><span class="pas1-space"> Estos datos se escribir</span><span class="pas1-symbol">&aacute;</span><span class="pas1-identifier">n en el archivo</span><span class="pas1-symbol">.
+
+</span><span class="pas1-identifier">MYMEMORY WARNING</span><span class="pas1-symbol">:</span><span class="pas1-space"> YOU USED ALL AVAILABLE FREE TRANSLATIONS </span><span class="pas1-reservedword">FOR</span><span class="pas1-space"> TODAY</span><span class="pas1-symbol">.</span><span class="pas1-space"> NEXT AVAILABLE </span><span class="pas1-reservedword">IN</span><span class="pas1-space">  </span><span class="pas1-number">02
+</span><span class="pas1-space"> HOURS </span><span class="pas1-number">49</span><span class="pas1-space"> MINUTES </span><span class="pas1-number">44</span><span class="pas1-space"> SECONDSVISIT HTTPS</span><span class="pas1-symbol">:</span><span class="pas1-comment">//MYMEMORY.TRANSLATED.NET/DOC/USAGELIMITS.PHP TO TRANSLATE MORE
+
+</span><span class="pas1-identifier">Install a </span><span class="pas1-number">32-</span><span class="pas1-identifier">bit </span><span class="pas1-reservedword">package</span><span class="pas1-space"> </span><span class="pas1-reservedword">with</span><span class="pas1-space"> a </span><span class="pas1-number">64</span><span class="pas1-space"> pip installer </span><span class="pas1-symbol">-</span><span class="pas1-identifier">t </span><span class="pas1-symbol">(</span><span class="pas1-identifier">Target</span><span class="pas1-symbol">)
+</span><span class="pas1-identifier">C</span><span class="pas1-symbol">:\</span><span class="pas1-identifier">Users</span><span class="pas1-symbol">\</span><span class="pas1-identifier">max</span><span class="pas1-symbol">\</span><span class="pas1-identifier">AppData</span><span class="pas1-symbol">\</span><span class="pas1-identifier">Local</span><span class="pas1-symbol">\</span><span class="pas1-identifier">Programs</span><span class="pas1-symbol">\</span><span class="pas1-identifier">Python</span><span class="pas1-symbol">\</span><span class="pas1-identifier">Python36</span><span class="pas1-symbol">-32&gt;</span><span class="pas1-identifier">pip3 install </span><span class="pas1-symbol">-</span><span class="pas1-identifier">t C</span><span class="pas1-symbol">:\</span><span class="pas1-identifier">Users</span><span class="pas1-symbol">\
+</span><span class="pas1-identifier">max</span><span class="pas1-symbol">\</span><span class="pas1-identifier">AppData</span><span class="pas1-symbol">\</span><span class="pas1-identifier">Local</span><span class="pas1-symbol">\</span><span class="pas1-identifier">Programs</span><span class="pas1-symbol">\</span><span class="pas1-identifier">Python</span><span class="pas1-symbol">\</span><span class="pas1-identifier">Python36</span><span class="pas1-symbol">-32\</span><span class="pas1-identifier">Lib bitcoin
+ 
+</span><span class="pas1-symbol">----</span><span class="pas1-identifier">app_template_loaded_code</span><span class="pas1-symbol">----
+----</span><span class="pas1-reservedword">File</span><span class="pas1-space"> newtemplate</span><span class="pas1-symbol">.</span><span class="pas1-identifier">txt </span><span class="pas1-reservedword">not</span><span class="pas1-space"> exists </span><span class="pas1-symbol">-</span><span class="pas1-space"> now saved</span><span class="pas1-symbol">!----
+</span></code></pre><!--EndFragment--></body>
+</html>

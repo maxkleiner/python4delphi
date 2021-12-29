@@ -1,0 +1,613 @@
+Version:0.9
+StartHTML:0000000105
+EndHTML:0000094441
+StartFragment:0000001053
+EndFragment:0000094425
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>mXScriptasHTML</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta name="generator" content="SynEdit HTML exporter" />
+<style type="text/css">
+<!--
+body { color: #000000; background-color: #FFFFFF; }
+.pas1-assembler { }
+.pas1-character { color: #0066CC; text-decoration: underline; }
+.pas1-comment { color: #000080; font-style: italic; }
+.pas1-float { color: #00FF00; }
+.pas1-hexadecimal { color: #FF00FF; }
+.pas1-identifier { }
+.pas1-number { color: #FF0000; }
+.pas1-preprocessor { font-style: italic; }
+.pas1-reservedword { color: #000080; font-weight: bold; }
+.pas1-space { }
+.pas1-string { color: #008080; }
+.pas1-symbol { color: #FF0000; }
+-->
+</style>
+</head>
+<body>
+<!--StartFragment--><pre><code><span class="pas1-reservedword">Program</span><span class="pas1-space"> PyDemo7_Eval_IOEvents</span><span class="pas1-symbol">;
+
+</span><span class="pas1-comment">//https://github.com/Alexey-T/Python-for-Lazarus/blob/master/python4lazarus/PythonEngine.pas
+//https://github.com/maxkleiner/python4delphi/blob/master/Demos/Demo02/Unit1.pas
+//https://stackoverflow.com/questions/21464102/reset-python4delphi-engine
+//https://thepythonguru.com/python-builtin-functions/eval/
+//https://maxbox4.wordpress.com/2021/07/28/python4maxbox-code/
+//https://stackoverflow.com/questions/359498/how-can-i-unload-a-dll-using-ctypes-in-python
+//https://levelup.gitconnected.com/5-powerful-python-one-liners-you-should-know-469b9c4737c7
+
+//interface   - customize your PY environment first
+{uses
+  Classes, SysUtils,
+  Windows, Messages, Graphics, Controls, Forms, Dialogs,
+  StdCtrls, ComCtrls, ExtCtrls,
+  PythonEngine, Vcl.PythonGUIInputOutput, PythonVersions.pas ;   }</span><span class="pas1-space">  
+  
+</span><span class="pas1-comment">{procedure PyFinalize();
+      external 
+  'Py_Finalize@C:\Users\breitsch\AppData\Local\Programs\Python\Python37-32\python37.dll stdcall';   }</span><span class="pas1-space">    
+</span><span class="pas1-comment">//Note: modify PYHOME and PYDLL :
+
+</span><span class="pas1-reservedword">const</span><span class="pas1-space"> </span><span class="pas1-comment">//PYHOME = 'C:\Users\breitsch\AppData\Local\Programs\Python\Python37-32\';
+</span><span class="pas1-space">    PYHOME </span><span class="pas1-symbol">=</span><span class="pas1-space"> </span><span class="pas1-string">'C:\Users\max\AppData\Local\Programs\Python\Python36-32\'</span><span class="pas1-symbol">;
+</span><span class="pas1-space">    PYDLL  </span><span class="pas1-symbol">=</span><span class="pas1-space"> </span><span class="pas1-string">'C:\Users\max\AppData\Local\Programs\Python\Python36-32\python36.dll'</span><span class="pas1-symbol">;</span><span class="pas1-space"> 
+    PYSCRIPT </span><span class="pas1-symbol">=</span><span class="pas1-space"> </span><span class="pas1-string">'C:\maXbox\maxbox3\maxbox3\maXbox3\examples\module1maxbox1.py'</span><span class="pas1-symbol">;
+</span><span class="pas1-space">    PYSCRIPT2</span><span class="pas1-symbol">=</span><span class="pas1-space"> </span><span class="pas1-string">'C:\maXbox\maxbox3\maXbox4\examples\896_textclassification.py'</span><span class="pas1-symbol">;
+</span><span class="pas1-space">    LB </span><span class="pas1-symbol">=</span><span class="pas1-space"> CR</span><span class="pas1-symbol">+</span><span class="pas1-identifier">LF</span><span class="pas1-symbol">;
+</span><span class="pas1-space">       
+</span><span class="pas1-reservedword">const</span><span class="pas1-space"> PyModule </span><span class="pas1-symbol">=
+</span><span class="pas1-space">              </span><span class="pas1-string">'def printData(data): '</span><span class="pas1-symbol">+</span><span class="pas1-character">#13#10</span><span class="pas1-symbol">+
+</span><span class="pas1-space">              </span><span class="pas1-string">'  return data+data+&quot;/n&quot;'</span><span class="pas1-symbol">;</span><span class="pas1-space">       
+         
+</span><span class="pas1-reservedword">const</span><span class="pas1-space"> PYCMD </span><span class="pas1-symbol">=</span><span class="pas1-space"> </span><span class="pas1-string">'print(&quot;this is box&quot;)'</span><span class="pas1-symbol">+</span><span class="pas1-identifier">LB</span><span class="pas1-symbol">+</span><span class="pas1-space"> 
+              </span><span class="pas1-string">'import sys'</span><span class="pas1-symbol">+</span><span class="pas1-identifier">LB</span><span class="pas1-symbol">+</span><span class="pas1-space"> 
+              </span><span class="pas1-string">'f=open(r&quot;1050pytest21_5powers.txt&quot;,&quot;w&quot;)'</span><span class="pas1-symbol">+</span><span class="pas1-identifier">LB</span><span class="pas1-symbol">+
+</span><span class="pas1-space">              </span><span class="pas1-string">'f.write(&quot;Hello PyWorld_mX47580, \n&quot;)'</span><span class="pas1-symbol">+</span><span class="pas1-identifier">LB</span><span class="pas1-symbol">+
+</span><span class="pas1-space">              </span><span class="pas1-string">'f.write(&quot;This data will be written on the file.&quot;)'</span><span class="pas1-symbol">+</span><span class="pas1-identifier">LB</span><span class="pas1-symbol">+</span><span class="pas1-space"> 
+              </span><span class="pas1-string">'f.close()'</span><span class="pas1-symbol">;
+
+</span><span class="pas1-comment">//https://stackoverflow.com/questions/9771261/python4delphi-returning-a-python-object-in-a-function-delphiwrapper
+</span><span class="pas1-space">              
+</span><span class="pas1-reservedword">const</span><span class="pas1-space"> PYCMD2 </span><span class="pas1-symbol">=</span><span class="pas1-space"> </span><span class="pas1-string">'print(&quot;this is box2&quot;)'</span><span class="pas1-symbol">+</span><span class="pas1-identifier">LF</span><span class="pas1-symbol">+</span><span class="pas1-space"> 
+              </span><span class="pas1-string">'import sys'</span><span class="pas1-symbol">+</span><span class="pas1-identifier">LF</span><span class="pas1-symbol">+</span><span class="pas1-space"> 
+              </span><span class="pas1-string">'#import pyio'</span><span class="pas1-symbol">+</span><span class="pas1-identifier">LF</span><span class="pas1-symbol">+</span><span class="pas1-space"> 
+              </span><span class="pas1-string">'f=open(r&quot;1050pytest21_5powers.txt&quot;,&quot;w&quot;)'</span><span class="pas1-symbol">+</span><span class="pas1-identifier">LF</span><span class="pas1-symbol">+
+</span><span class="pas1-space">              </span><span class="pas1-string">'f.write(&quot;Hello PyWorld_mX47580_2_pyIO, \n&quot;)'</span><span class="pas1-symbol">+</span><span class="pas1-identifier">LF</span><span class="pas1-symbol">+
+</span><span class="pas1-space">              </span><span class="pas1-string">'f.write(&quot;This data will be written on the file.&quot;)'</span><span class="pas1-symbol">+</span><span class="pas1-identifier">LF</span><span class="pas1-symbol">+</span><span class="pas1-space"> 
+              </span><span class="pas1-string">'print(&quot;this is box4fromPyscript&quot;)'</span><span class="pas1-symbol">+</span><span class="pas1-identifier">LF</span><span class="pas1-symbol">+</span><span class="pas1-space"> 
+              </span><span class="pas1-string">'print(2+2)'</span><span class="pas1-symbol">+</span><span class="pas1-identifier">LF</span><span class="pas1-symbol">+
+</span><span class="pas1-space">              </span><span class="pas1-string">'12+200'</span><span class="pas1-symbol">+</span><span class="pas1-identifier">LF</span><span class="pas1-symbol">+
+</span><span class="pas1-space">              </span><span class="pas1-string">'#print(sys.argv[1])'</span><span class="pas1-symbol">+</span><span class="pas1-identifier">LF</span><span class="pas1-symbol">+</span><span class="pas1-space"> 
+              </span><span class="pas1-string">'#val = input(&quot;Enter your value: &quot;)'</span><span class="pas1-symbol">+</span><span class="pas1-identifier">LF</span><span class="pas1-symbol">+
+</span><span class="pas1-space">              </span><span class="pas1-string">'f.close()'</span><span class="pas1-symbol">;</span><span class="pas1-space">              
+              
+</span><span class="pas1-reservedword">var</span><span class="pas1-space">  PyForm</span><span class="pas1-symbol">:</span><span class="pas1-space"> TForm</span><span class="pas1-symbol">;</span><span class="pas1-space"> pyMemo</span><span class="pas1-symbol">:</span><span class="pas1-space"> TMemo</span><span class="pas1-symbol">;
+</span><span class="pas1-space">     avar</span><span class="pas1-symbol">:</span><span class="pas1-space"> </span><span class="pas1-reservedword">string</span><span class="pas1-symbol">;</span><span class="pas1-space"> pyval</span><span class="pas1-symbol">:</span><span class="pas1-space"> variant</span><span class="pas1-symbol">;</span><span class="pas1-space"> pyint</span><span class="pas1-symbol">:</span><span class="pas1-space"> integer</span><span class="pas1-symbol">;
+</span><span class="pas1-space">     
+ 
+
+</span><span class="pas1-reservedword">Procedure</span><span class="pas1-space"> PYLaz_P4D_Demo2</span><span class="pas1-symbol">;
+</span><span class="pas1-comment">//https://wiki.freepascal.org/Python4Delphi 
+</span><span class="pas1-reservedword">var</span><span class="pas1-space"> eng </span><span class="pas1-symbol">:</span><span class="pas1-space"> TPythonEngine</span><span class="pas1-symbol">;
+</span><span class="pas1-space">    Out1</span><span class="pas1-symbol">:</span><span class="pas1-space"> TPythonGUIInputOutput</span><span class="pas1-symbol">;
+</span><span class="pas1-space">    pystrings</span><span class="pas1-symbol">:</span><span class="pas1-space"> TStrings</span><span class="pas1-symbol">;
+</span><span class="pas1-reservedword">begin
+
+</span><span class="pas1-comment">// FIOPythonModule := TPythonModule.Create( Self );
+</span><span class="pas1-space">    </span><span class="pas1-comment">//with  TPythonModule.Create( Self ) do
+</span><span class="pas1-space">      </span><span class="pas1-comment">//AddMethod(
+</span><span class="pas1-space">      
+  eng</span><span class="pas1-symbol">:=</span><span class="pas1-space"> TPythonEngine</span><span class="pas1-symbol">.</span><span class="pas1-identifier">Create</span><span class="pas1-symbol">(</span><span class="pas1-reservedword">Nil</span><span class="pas1-symbol">);
+</span><span class="pas1-space">  Out1</span><span class="pas1-symbol">:=</span><span class="pas1-space"> TPythonGUIInputOutput</span><span class="pas1-symbol">.</span><span class="pas1-identifier">create</span><span class="pas1-symbol">(</span><span class="pas1-identifier">eng</span><span class="pas1-symbol">)
+</span><span class="pas1-space">  pystrings</span><span class="pas1-symbol">:=</span><span class="pas1-space"> TStringlist</span><span class="pas1-symbol">.</span><span class="pas1-identifier">create</span><span class="pas1-symbol">;
+</span><span class="pas1-space">  Out1</span><span class="pas1-symbol">.</span><span class="pas1-identifier">output</span><span class="pas1-symbol">:=</span><span class="pas1-space"> pyMemo</span><span class="pas1-symbol">;</span><span class="pas1-space"> </span><span class="pas1-comment">//debugout.output; or memo2;
+</span><span class="pas1-space">  </span><span class="pas1-comment">//eng.IO:= Out1;
+</span><span class="pas1-space">  Out1</span><span class="pas1-symbol">.</span><span class="pas1-identifier">RawOutput</span><span class="pas1-symbol">:=</span><span class="pas1-space"> True</span><span class="pas1-symbol">;
+</span><span class="pas1-space">  Out1</span><span class="pas1-symbol">.</span><span class="pas1-identifier">UnicodeIO</span><span class="pas1-symbol">:=</span><span class="pas1-space"> False</span><span class="pas1-symbol">;
+</span><span class="pas1-space">  </span><span class="pas1-comment">//eng.IO:= Out1;
+</span><span class="pas1-space">  Out1</span><span class="pas1-symbol">.</span><span class="pas1-identifier">maxlines</span><span class="pas1-symbol">:=</span><span class="pas1-space"> </span><span class="pas1-number">40;
+</span><span class="pas1-space">  out1</span><span class="pas1-symbol">.</span><span class="pas1-identifier">DelayWrites</span><span class="pas1-symbol">:=</span><span class="pas1-space"> False</span><span class="pas1-symbol">;
+</span><span class="pas1-space">  out1</span><span class="pas1-symbol">.</span><span class="pas1-identifier">displaystring</span><span class="pas1-symbol">(</span><span class="pas1-string">'this string thing draw the line'</span><span class="pas1-symbol">)
+</span><span class="pas1-space">  out1</span><span class="pas1-symbol">.</span><span class="pas1-identifier">write</span><span class="pas1-symbol">(</span><span class="pas1-string">'YXthis write string thing draw the line'</span><span class="pas1-symbol">);
+</span><span class="pas1-space">  </span><span class="pas1-comment">//eng.IO:= Out1;
+</span><span class="pas1-space">  writeln</span><span class="pas1-symbol">(</span><span class="pas1-identifier">botostr</span><span class="pas1-symbol">(</span><span class="pas1-identifier">Isx64</span><span class="pas1-symbol">(</span><span class="pas1-identifier">PYDLL</span><span class="pas1-symbol">)));
+</span><span class="pas1-space">  </span><span class="pas1-comment">//writeln(botostr(Isx64(pydllpath2)));
+</span><span class="pas1-space">  </span><span class="pas1-comment">//eng.dllpath:= exepath;
+</span><span class="pas1-space">  </span><span class="pas1-comment">//eng.dllname:='python37.dll';
+</span><span class="pas1-space">  eng</span><span class="pas1-symbol">.</span><span class="pas1-identifier">pythonhome</span><span class="pas1-symbol">:=</span><span class="pas1-space"> PYHOME</span><span class="pas1-symbol">;
+</span><span class="pas1-space">  pystrings</span><span class="pas1-symbol">.</span><span class="pas1-identifier">add</span><span class="pas1-symbol">(</span><span class="pas1-identifier">PYCMD2</span><span class="pas1-symbol">);
+</span><span class="pas1-space">  eng</span><span class="pas1-symbol">.</span><span class="pas1-identifier">InitScript</span><span class="pas1-symbol">:=</span><span class="pas1-space"> pystrings</span><span class="pas1-symbol">;
+</span><span class="pas1-space">  </span><span class="pas1-reservedword">try
+</span><span class="pas1-space">   </span><span class="pas1-comment">//pymod.InitializeForNewInterpreter; //}
+</span><span class="pas1-space">   </span><span class="pas1-comment">//pymod.engine:= eng;
+</span><span class="pas1-space">   </span><span class="pas1-comment">//eng.IO:= Out1;
+</span><span class="pas1-space">   eng</span><span class="pas1-symbol">.</span><span class="pas1-identifier">RedirectIO</span><span class="pas1-symbol">:=</span><span class="pas1-space"> true</span><span class="pas1-symbol">;
+</span><span class="pas1-space">    eng</span><span class="pas1-symbol">.</span><span class="pas1-identifier">opendll</span><span class="pas1-symbol">(</span><span class="pas1-identifier">PYDLL</span><span class="pas1-symbol">)
+</span><span class="pas1-space">    </span><span class="pas1-comment">//eng.loadDLL;
+</span><span class="pas1-space">    eng</span><span class="pas1-symbol">.</span><span class="pas1-identifier">RedirectIO</span><span class="pas1-symbol">:=</span><span class="pas1-space"> true</span><span class="pas1-symbol">;
+</span><span class="pas1-space">    eng</span><span class="pas1-symbol">.</span><span class="pas1-identifier">IO</span><span class="pas1-symbol">:=</span><span class="pas1-space"> Out1</span><span class="pas1-symbol">;
+</span><span class="pas1-space">    Out1</span><span class="pas1-symbol">.</span><span class="pas1-identifier">output</span><span class="pas1-symbol">:=</span><span class="pas1-space"> pyMemo</span><span class="pas1-symbol">;</span><span class="pas1-space"> 
+    </span><span class="pas1-comment">//eng.traceback
+</span><span class="pas1-space">    eng</span><span class="pas1-symbol">.</span><span class="pas1-identifier">AutoFinalize</span><span class="pas1-symbol">:=</span><span class="pas1-space"> True</span><span class="pas1-symbol">;</span><span class="pas1-space"> 
+    </span><span class="pas1-comment">//eng.RedirectIO:= true;
+</span><span class="pas1-space">    </span><span class="pas1-comment">//eng.AutoUnload:= false; 
+</span><span class="pas1-space">    writeln</span><span class="pas1-symbol">(</span><span class="pas1-identifier">eng</span><span class="pas1-symbol">.</span><span class="pas1-identifier">dllname</span><span class="pas1-symbol">);
+</span><span class="pas1-space">    </span><span class="pas1-comment">//pymod.engine:= eng;
+</span><span class="pas1-space">    </span><span class="pas1-reservedword">if</span><span class="pas1-space"> eng</span><span class="pas1-symbol">.</span><span class="pas1-identifier">IsHandleValid </span><span class="pas1-reservedword">then</span><span class="pas1-space"> </span><span class="pas1-reservedword">begin
+</span><span class="pas1-space">      writeln</span><span class="pas1-symbol">(</span><span class="pas1-string">'DLLhandle: '</span><span class="pas1-symbol">+</span><span class="pas1-identifier">botostr</span><span class="pas1-symbol">(</span><span class="pas1-identifier">eng</span><span class="pas1-symbol">.</span><span class="pas1-identifier">IsHandleValid</span><span class="pas1-symbol">))
+</span><span class="pas1-space">      WriteLn</span><span class="pas1-symbol">(</span><span class="pas1-string">'evens: '</span><span class="pas1-symbol">+</span><span class="pas1-space"> eng</span><span class="pas1-symbol">.</span><span class="pas1-identifier">EvalStringAsStr</span><span class="pas1-symbol">(</span><span class="pas1-string">'[x**2 for x in range(15)]'</span><span class="pas1-symbol">));
+</span><span class="pas1-space">      WriteLn</span><span class="pas1-symbol">(</span><span class="pas1-string">'gauss: '</span><span class="pas1-symbol">+</span><span class="pas1-space"> eng</span><span class="pas1-symbol">.</span><span class="pas1-identifier">EvalStringAsStr</span><span class="pas1-symbol">(</span><span class="pas1-string">'sum([x for x in range(101)])'</span><span class="pas1-symbol">));
+</span><span class="pas1-space">      WriteLn</span><span class="pas1-symbol">(</span><span class="pas1-string">'gauss2: '</span><span class="pas1-symbol">+</span><span class="pas1-space"> eng</span><span class="pas1-symbol">.</span><span class="pas1-identifier">EvalStr</span><span class="pas1-symbol">(</span><span class="pas1-string">'sum([x % 2 for x in range(10100)])'</span><span class="pas1-symbol">));
+</span><span class="pas1-space">      WriteLn</span><span class="pas1-symbol">(</span><span class="pas1-string">'mathstr: '</span><span class="pas1-symbol">+</span><span class="pas1-space"> eng</span><span class="pas1-symbol">.</span><span class="pas1-identifier">EvalStr</span><span class="pas1-symbol">(</span><span class="pas1-string">'&quot;py &quot; * 7'</span><span class="pas1-symbol">));
+</span><span class="pas1-space">      WriteLn</span><span class="pas1-symbol">(</span><span class="pas1-string">'builtins: '</span><span class="pas1-symbol">+</span><span class="pas1-space"> eng</span><span class="pas1-symbol">.</span><span class="pas1-identifier">EvalStr</span><span class="pas1-symbol">(</span><span class="pas1-string">'dir(__builtins__)'</span><span class="pas1-symbol">));
+</span><span class="pas1-space">      WriteLn</span><span class="pas1-symbol">(</span><span class="pas1-string">'upperstr: '</span><span class="pas1-symbol">+</span><span class="pas1-space"> eng</span><span class="pas1-symbol">.</span><span class="pas1-identifier">EvalStr</span><span class="pas1-symbol">(</span><span class="pas1-string">'&quot;hello again&quot;.upper()'</span><span class="pas1-symbol">));
+</span><span class="pas1-space">      pymemo</span><span class="pas1-symbol">.</span><span class="pas1-identifier">lines</span><span class="pas1-symbol">.</span><span class="pas1-identifier">add</span><span class="pas1-symbol">(</span><span class="pas1-string">'workdir: '</span><span class="pas1-symbol">+</span><span class="pas1-space"> eng</span><span class="pas1-symbol">.</span><span class="pas1-identifier">EvalStr</span><span class="pas1-symbol">(</span><span class="pas1-string">'__import__(&quot;os&quot;).getcwd()'</span><span class="pas1-symbol">));
+</span><span class="pas1-space">      writeln</span><span class="pas1-symbol">(</span><span class="pas1-string">'syncheck '</span><span class="pas1-symbol">+
+</span><span class="pas1-space">      botostr</span><span class="pas1-symbol">(</span><span class="pas1-identifier">eng</span><span class="pas1-symbol">.</span><span class="pas1-identifier">CheckEvalSyntax</span><span class="pas1-symbol">(</span><span class="pas1-string">'print(&quot;powers:&quot;,[x**2 for x in range(10)])'</span><span class="pas1-symbol">)));
+</span><span class="pas1-space">      
+      WriteLn</span><span class="pas1-symbol">(</span><span class="pas1-string">'powerline1: '</span><span class="pas1-symbol">+</span><span class="pas1-space"> eng</span><span class="pas1-symbol">.</span><span class="pas1-identifier">EvalStr</span><span class="pas1-symbol">(</span><span class="pas1-string">'list(map(int, [&quot;1&quot;, &quot;2&quot;, &quot;3&quot;]))'</span><span class="pas1-symbol">));
+</span><span class="pas1-space">      WriteLn</span><span class="pas1-symbol">(</span><span class="pas1-string">'powerline2: '</span><span class="pas1-symbol">+</span><span class="pas1-space"> 
+               eng</span><span class="pas1-symbol">.</span><span class="pas1-identifier">EvalStr</span><span class="pas1-symbol">(</span><span class="pas1-string">'list(map(float,[&quot;1&quot;,2,&quot;3.0&quot;,4.0,&quot;5&quot;,6]))'</span><span class="pas1-symbol">));
+</span><span class="pas1-space">               eng</span><span class="pas1-symbol">.</span><span class="pas1-identifier">Execstring</span><span class="pas1-symbol">(</span><span class="pas1-string">'sum_of_digits=lambda x: sum(map(int, str(x)))'</span><span class="pas1-symbol">);
+</span><span class="pas1-space">      WriteLn</span><span class="pas1-symbol">(</span><span class="pas1-string">'powerline3: '</span><span class="pas1-symbol">+</span><span class="pas1-space"> eng</span><span class="pas1-symbol">.</span><span class="pas1-identifier">EvalStr</span><span class="pas1-symbol">(</span><span class="pas1-string">'sum_of_digits(1789)'</span><span class="pas1-symbol">));
+</span><span class="pas1-space">      
+               eng</span><span class="pas1-symbol">.</span><span class="pas1-identifier">Execstring</span><span class="pas1-symbol">(</span><span class="pas1-string">'A = [[1, 2, 3], [4, 5, 6], [7, 8, 9]]'</span><span class="pas1-symbol">);
+</span><span class="pas1-space">               eng</span><span class="pas1-symbol">.</span><span class="pas1-identifier">Execstring</span><span class="pas1-symbol">(</span><span class="pas1-string">'transpose_A = [list(i) for i in zip(*A)]'</span><span class="pas1-symbol">);
+</span><span class="pas1-space">      WriteLn</span><span class="pas1-symbol">(</span><span class="pas1-string">'powerline4: '</span><span class="pas1-symbol">+</span><span class="pas1-space"> eng</span><span class="pas1-symbol">.</span><span class="pas1-identifier">EvalStr</span><span class="pas1-symbol">(</span><span class="pas1-string">'transpose_A'</span><span class="pas1-symbol">));</span><span class="pas1-space">  
+      
+      </span><span class="pas1-comment">//We can use dictionary comprehension to swap key-value pairs.
+</span><span class="pas1-space">               eng</span><span class="pas1-symbol">.</span><span class="pas1-identifier">Execstring</span><span class="pas1-symbol">(</span><span class="pas1-string">'staff={&quot;Data Scientist&quot;:&quot;John&quot;,&quot;Django Developer&quot;:&quot;Max&quot;}'</span><span class="pas1-symbol">);
+</span><span class="pas1-space">      WriteLn</span><span class="pas1-symbol">(</span><span class="pas1-string">'powerline5: '</span><span class="pas1-symbol">+</span><span class="pas1-space"> eng</span><span class="pas1-symbol">.</span><span class="pas1-identifier">EvalStr</span><span class="pas1-symbol">(</span><span class="pas1-string">'{i:j for j, i in staff.items()}'</span><span class="pas1-symbol">));</span><span class="pas1-space">                                                   
+      eng</span><span class="pas1-symbol">.</span><span class="pas1-identifier">ExecString</span><span class="pas1-symbol">(</span><span class="pas1-string">'print(&quot;powers:&quot;,[x**2 for x in range(10)])'</span><span class="pas1-symbol">);
+</span><span class="pas1-space">      
+      writeln</span><span class="pas1-symbol">(</span><span class="pas1-string">'ExecSynCheck1 '</span><span class="pas1-symbol">+</span><span class="pas1-identifier">botostr</span><span class="pas1-symbol">(</span><span class="pas1-identifier">eng</span><span class="pas1-symbol">.</span><span class="pas1-identifier">CheckExecSyntax</span><span class="pas1-symbol">(</span><span class="pas1-identifier">PYCMD2</span><span class="pas1-symbol">)));
+</span><span class="pas1-space">      </span><span class="pas1-comment">//eng.ExecString(PYCMD2+'parainput');
+</span><span class="pas1-space">      eng</span><span class="pas1-symbol">.</span><span class="pas1-identifier">ExecString</span><span class="pas1-symbol">(</span><span class="pas1-identifier">PYCMD2</span><span class="pas1-symbol">+</span><span class="pas1-string">''</span><span class="pas1-symbol">);
+</span><span class="pas1-space">      eng</span><span class="pas1-symbol">.</span><span class="pas1-identifier">CheckError</span><span class="pas1-symbol">(</span><span class="pas1-identifier">true</span><span class="pas1-symbol">);
+</span><span class="pas1-space">      
+     </span><span class="pas1-comment">{ pystrings:= TStringlist.create;
+      pystrings.add('import matplotlib.pyplot as plt')
+      pystrings.add('import numpy as np')
+      pystrings.add('np.arange(5, 24, 3)')
+      pystrings.add('fig, ax = plt.subplots(dpi=153)')
+      pystrings.add('plt.plot([1,2,3,4,5,6], [1,2,3,4,9,5], &quot;go&quot;)')
+      pystrings.add('plt.show()')
+      eng.ExecStrings4(pystrings);
+      pystrings.free; }
+</span><span class="pas1-space">      
+     </span><span class="pas1-comment">(* eng.ExecString('import subprocess');  
+      eng.ExecString('subprocess.call([&quot;pip&quot;, &quot;install&quot;, &quot;sympy&quot;])')
+      eng.ExecString('from sympy import *');
+      eng.ExecString('from sympy.plotting import plot'); 
+      writeln(eng.EvalStr('list(primerange(7, 150))'));
+      writeln(eng.EvalStr('sum(list(primerange(0, 100)))'));
+      writeln(eng.EvalStr('(list(primerange(0, 101)))'));
+      writeln(eng.EvalStr('len(list(primerange(0, 101)))'));
+      //https://www.tutorialspoint.com/sympy/sympy_solvers.htm
+      avar:= '-2';
+      eng.ExecString('x=Symbol(&quot;x&quot;)');
+      eng.ExecString('x,y=symbols(&quot;x y&quot;)');
+      writeln(eng.EvalStr('solveset(Eq(x**2-9,0), x)'));
+      writeln(eng.EvalStr('solveset(Eq(x**2-3*x,'+avar+'),x)'));
+      writeln(eng.EvalStr('solveset(exp(x),x)'));
+      println(eng.EvalStr('linsolve([Eq(x-y,4),Eq( x + y ,1) ], (x, y))'));
+       *)
+</span><span class="pas1-space">     
+      </span><span class="pas1-comment">//eng.ExecString('plot(x**'+avar+', line_color=&quot;red&quot;)');
+</span><span class="pas1-space">      </span><span class="pas1-comment">//eng.ExecString('plot((sin(x),(x, -2*pi, 2*pi)),(cos(x), (x, -pi, pi)))');
+</span><span class="pas1-space">      </span><span class="pas1-comment">{
+      eng.ExecString('from sympy.plotting import plot3d'); 
+      eng.ExecString('x,y=symbols(&quot;x y&quot;) '); 
+      eng.ExecString('plot3d(x*y, (x, -10,10), (y, -10,10))'); }
+</span><span class="pas1-space">      
+      WriteLn</span><span class="pas1-symbol">(</span><span class="pas1-string">'powerline6: '</span><span class="pas1-symbol">+</span><span class="pas1-space"> eng</span><span class="pas1-symbol">.</span><span class="pas1-identifier">EvalStr</span><span class="pas1-symbol">(</span><span class="pas1-string">'len(str(2**4096))'</span><span class="pas1-symbol">));
+</span><span class="pas1-space">      pymemo</span><span class="pas1-symbol">.</span><span class="pas1-identifier">lines</span><span class="pas1-symbol">.</span><span class="pas1-identifier">add</span><span class="pas1-symbol">(</span><span class="pas1-string">'Decimal: '</span><span class="pas1-symbol">+</span><span class="pas1-space"> 
+              eng</span><span class="pas1-symbol">.</span><span class="pas1-identifier">EvalStr</span><span class="pas1-symbol">(</span><span class="pas1-string">'__import__(&quot;decimal&quot;).Decimal((0,(3,1,4),-2))'</span><span class="pas1-symbol">));
+</span><span class="pas1-space">      pymemo</span><span class="pas1-symbol">.</span><span class="pas1-identifier">lines</span><span class="pas1-symbol">.</span><span class="pas1-identifier">add</span><span class="pas1-symbol">(</span><span class="pas1-string">'Decimal: '</span><span class="pas1-symbol">+</span><span class="pas1-space"> 
+              eng</span><span class="pas1-symbol">.</span><span class="pas1-identifier">EvalStr</span><span class="pas1-symbol">(</span><span class="pas1-string">'__import__(&quot;decimal&quot;).Decimal(0.1)'</span><span class="pas1-symbol">));</span><span class="pas1-space"> 
+      eng</span><span class="pas1-symbol">.</span><span class="pas1-identifier">ExecString</span><span class="pas1-symbol">(</span><span class="pas1-string">'import decimal'</span><span class="pas1-symbol">)</span><span class="pas1-space">  
+      </span><span class="pas1-comment">//https://www.w3schools.com/python/python_ref_functions.asp      
+</span><span class="pas1-space">      writeln</span><span class="pas1-symbol">(</span><span class="pas1-string">'is instance: '</span><span class="pas1-symbol">+</span><span class="pas1-identifier">eng</span><span class="pas1-symbol">.</span><span class="pas1-identifier">EvalStr</span><span class="pas1-symbol">(</span><span class="pas1-string">'isinstance(decimal.Decimal,'</span><span class="pas1-symbol">+
+</span><span class="pas1-space">                    </span><span class="pas1-string">'(float, int, str, list, dict, tuple, type))'</span><span class="pas1-symbol">));</span><span class="pas1-space"> 
+      writeln</span><span class="pas1-symbol">(</span><span class="pas1-string">'is type: '</span><span class="pas1-symbol">+</span><span class="pas1-identifier">eng</span><span class="pas1-symbol">.</span><span class="pas1-identifier">EvalStr</span><span class="pas1-symbol">(</span><span class="pas1-string">'type(str(decimal.Decimal(0.1)))'</span><span class="pas1-symbol">));
+</span><span class="pas1-space">      writeln</span><span class="pas1-symbol">(</span><span class="pas1-string">'is type: '</span><span class="pas1-symbol">+</span><span class="pas1-identifier">eng</span><span class="pas1-symbol">.</span><span class="pas1-identifier">EvalStr</span><span class="pas1-symbol">(</span><span class="pas1-string">'type(float(decimal.Decimal(0.1)))'</span><span class="pas1-symbol">));
+</span><span class="pas1-space">      writeln</span><span class="pas1-symbol">(</span><span class="pas1-string">'is type: '</span><span class="pas1-symbol">+</span><span class="pas1-identifier">eng</span><span class="pas1-symbol">.</span><span class="pas1-identifier">EvalStr</span><span class="pas1-symbol">(</span><span class="pas1-string">'type(decimal.Decimal)'</span><span class="pas1-symbol">));</span><span class="pas1-space"> 
+      writeln</span><span class="pas1-symbol">(</span><span class="pas1-string">'is type: '</span><span class="pas1-symbol">+</span><span class="pas1-identifier">eng</span><span class="pas1-symbol">.</span><span class="pas1-identifier">EvalStr</span><span class="pas1-symbol">(</span><span class="pas1-string">'type(decimal)'</span><span class="pas1-symbol">));</span><span class="pas1-space">                    
+      </span><span class="pas1-comment">//eng.ExecString('from spacy import *');
+</span><span class="pas1-space">      </span><span class="pas1-comment">//eng.ExecString('from nltk.classify import MaxentClassifier')          
+</span><span class="pas1-space">      </span><span class="pas1-comment">//eng.ExecString('import tensorflow')  
+</span><span class="pas1-space">      
+      eng</span><span class="pas1-symbol">.</span><span class="pas1-identifier">ExecString</span><span class="pas1-symbol">(</span><span class="pas1-string">'print(&quot;2*4&quot;)'</span><span class="pas1-symbol">);</span><span class="pas1-space">        
+      
+      pyval</span><span class="pas1-symbol">:=</span><span class="pas1-space"> VarPythonEval</span><span class="pas1-symbol">(</span><span class="pas1-string">'sum([x for x in range(201)])'</span><span class="pas1-symbol">);
+</span><span class="pas1-space">      </span><span class="pas1-comment">//writeln('evalvar '+botostr(VarIsPythonList(pyval)));
+</span><span class="pas1-space">      writeln</span><span class="pas1-symbol">(</span><span class="pas1-string">'evalvar '</span><span class="pas1-symbol">+</span><span class="pas1-identifier">botostr</span><span class="pas1-symbol">(</span><span class="pas1-identifier">VarIsnumeric</span><span class="pas1-symbol">(</span><span class="pas1-identifier">pyval</span><span class="pas1-symbol">)));
+</span><span class="pas1-space">      pyval</span><span class="pas1-symbol">:=</span><span class="pas1-space"> NewPythonDict</span><span class="pas1-symbol">;
+</span><span class="pas1-space">      writeln</span><span class="pas1-symbol">(</span><span class="pas1-identifier">botostr</span><span class="pas1-symbol">(</span><span class="pas1-identifier">VarIsPython</span><span class="pas1-symbol">(</span><span class="pas1-space"> pyval</span><span class="pas1-symbol">)));
+</span><span class="pas1-space">      pyval </span><span class="pas1-symbol">:=</span><span class="pas1-space"> </span><span class="pas1-symbol">(</span><span class="pas1-identifier">VarPythonEval</span><span class="pas1-symbol">(</span><span class="pas1-string">'2 ** 3'</span><span class="pas1-symbol">));</span><span class="pas1-space">         
+     </span><span class="pas1-comment">{ eng.ExecString('import subprocess');  
+      eng.ExecString('subprocess.call([&quot;pip&quot;, &quot;install&quot;, &quot;langdetect&quot;])')
+      eng.ExecString('from langdetect import detect'); 
+      println('lang detect: '+eng.EvalStr('detect(&quot;bonjour mes ordinateurs&quot;)'));
+      }
+</span><span class="pas1-space">      Out1</span><span class="pas1-symbol">.</span><span class="pas1-identifier">output</span><span class="pas1-symbol">:=</span><span class="pas1-space"> pyMemo</span><span class="pas1-symbol">;</span><span class="pas1-space"> 
+      pymemo</span><span class="pas1-symbol">.</span><span class="pas1-identifier">update</span><span class="pas1-symbol">;
+</span><span class="pas1-space">    </span><span class="pas1-reservedword">end
+</span><span class="pas1-space">      </span><span class="pas1-reservedword">else</span><span class="pas1-space"> writeln</span><span class="pas1-symbol">(</span><span class="pas1-string">'invalid library handle! '</span><span class="pas1-symbol">+</span><span class="pas1-identifier">Getlasterrortext</span><span class="pas1-symbol">);
+</span><span class="pas1-space">    println</span><span class="pas1-symbol">(</span><span class="pas1-string">'PythonOK: '</span><span class="pas1-symbol">+</span><span class="pas1-identifier">botostr</span><span class="pas1-symbol">(</span><span class="pas1-identifier">PythonOK</span><span class="pas1-symbol">));</span><span class="pas1-space">  
+  </span><span class="pas1-reservedword">except
+</span><span class="pas1-space">     eng</span><span class="pas1-symbol">.</span><span class="pas1-identifier">raiseError</span><span class="pas1-symbol">;
+</span><span class="pas1-space">     writeln</span><span class="pas1-symbol">(</span><span class="pas1-string">'PyErr '</span><span class="pas1-symbol">+</span><span class="pas1-identifier">ExceptionToString</span><span class="pas1-symbol">(</span><span class="pas1-identifier">ExceptionType</span><span class="pas1-symbol">,</span><span class="pas1-space"> ExceptionParam</span><span class="pas1-symbol">));
+</span><span class="pas1-space">  </span><span class="pas1-comment">//PyErr Exception: Access violation at address 50F49DA6 in module '_multiarray_umath.cp37-win32.pyd'. Write of address 00000022.
+</span><span class="pas1-space">  </span><span class="pas1-reservedword">finally
+</span><span class="pas1-space">     </span><span class="pas1-comment">//eng.close 
+</span><span class="pas1-space">     eng</span><span class="pas1-symbol">.</span><span class="pas1-identifier">unloaddll</span><span class="pas1-symbol">;</span><span class="pas1-space"> 
+     </span><span class="pas1-comment">//PyFinalize();
+</span><span class="pas1-space">     out1</span><span class="pas1-symbol">.</span><span class="pas1-identifier">free</span><span class="pas1-symbol">;
+</span><span class="pas1-space">     eng</span><span class="pas1-symbol">.</span><span class="pas1-identifier">free</span><span class="pas1-symbol">;
+</span><span class="pas1-space">     </span><span class="pas1-comment">//PyFinalize();
+</span><span class="pas1-space">     pystrings</span><span class="pas1-symbol">.</span><span class="pas1-identifier">Free</span><span class="pas1-symbol">;
+</span><span class="pas1-space">  </span><span class="pas1-reservedword">end</span><span class="pas1-symbol">;</span><span class="pas1-space">     
+  </span><span class="pas1-comment">//out1.free;
+</span><span class="pas1-space">  </span><span class="pas1-comment">//pyImport(PyModule);
+</span><span class="pas1-reservedword">end</span><span class="pas1-symbol">;
+
+</span><span class="pas1-reservedword">procedure</span><span class="pas1-space"> PythonInputOutput_SendData</span><span class="pas1-symbol">(</span><span class="pas1-identifier">sender</span><span class="pas1-symbol">:</span><span class="pas1-space"> tobject</span><span class="pas1-symbol">;</span><span class="pas1-space"> </span><span class="pas1-reservedword">const</span><span class="pas1-space"> data</span><span class="pas1-symbol">:</span><span class="pas1-space"> ansistring</span><span class="pas1-symbol">);
+</span><span class="pas1-reservedword">Var
+</span><span class="pas1-space">  S </span><span class="pas1-symbol">:</span><span class="pas1-space"> </span><span class="pas1-reservedword">string</span><span class="pas1-symbol">;
+</span><span class="pas1-reservedword">begin
+</span><span class="pas1-space">  </span><span class="pas1-comment">{ if Assigned(FOnSendData) then
+    inherited
+  else
+    DisplayString( string(Data) );}
+</span><span class="pas1-space">    
+  showmessage</span><span class="pas1-symbol">(</span><span class="pas1-string">'event second sended...'</span><span class="pas1-symbol">)
+</span><span class="pas1-space">  println</span><span class="pas1-symbol">(</span><span class="pas1-identifier">itoa</span><span class="pas1-symbol">(</span><span class="pas1-identifier">length</span><span class="pas1-symbol">(</span><span class="pas1-identifier">data</span><span class="pas1-symbol">)));
+</span><span class="pas1-space">  </span><span class="pas1-reservedword">for</span><span class="pas1-space"> </span><span class="pas1-reservedword">it</span><span class="pas1-symbol">:=</span><span class="pas1-space"> </span><span class="pas1-number">1</span><span class="pas1-space"> </span><span class="pas1-reservedword">to</span><span class="pas1-space"> length</span><span class="pas1-symbol">(</span><span class="pas1-identifier">data</span><span class="pas1-symbol">)</span><span class="pas1-space"> </span><span class="pas1-reservedword">do</span><span class="pas1-space"> </span><span class="pas1-reservedword">begin
+</span><span class="pas1-space">    s</span><span class="pas1-symbol">:=</span><span class="pas1-space"> s</span><span class="pas1-symbol">+</span><span class="pas1-identifier">data</span><span class="pas1-symbol">[</span><span class="pas1-reservedword">it</span><span class="pas1-symbol">];
+</span><span class="pas1-space">    </span><span class="pas1-comment">//write(s)
+</span><span class="pas1-space">    </span><span class="pas1-reservedword">end</span><span class="pas1-symbol">;
+</span><span class="pas1-space">  println</span><span class="pas1-symbol">(</span><span class="pas1-string">'event send data '</span><span class="pas1-symbol">+</span><span class="pas1-identifier">s</span><span class="pas1-symbol">)
+</span><span class="pas1-space">  println</span><span class="pas1-symbol">(</span><span class="pas1-string">'event2 send data '</span><span class="pas1-symbol">+</span><span class="pas1-identifier">data</span><span class="pas1-symbol">)
+</span><span class="pas1-reservedword">end</span><span class="pas1-symbol">;</span><span class="pas1-space">  
+
+</span><span class="pas1-reservedword">procedure</span><span class="pas1-space"> PythonInputOutput_ReceiveData</span><span class="pas1-symbol">(</span><span class="pas1-identifier">sender</span><span class="pas1-symbol">:</span><span class="pas1-space"> tobject</span><span class="pas1-symbol">;</span><span class="pas1-space"> </span><span class="pas1-reservedword">var</span><span class="pas1-space"> data</span><span class="pas1-symbol">:</span><span class="pas1-space"> ansistring</span><span class="pas1-symbol">);
+</span><span class="pas1-reservedword">Var
+</span><span class="pas1-space">  S </span><span class="pas1-symbol">:</span><span class="pas1-space"> </span><span class="pas1-reservedword">string</span><span class="pas1-symbol">;
+</span><span class="pas1-reservedword">begin
+</span><span class="pas1-space">  </span><span class="pas1-comment">{if Assigned( FOnReceiveData ) then
+    Result := inherited ReceiveData
+  else
+  begin
+    InputQuery( 'Query from Python', 'Enter text', S);
+    Result := AnsiString(S);
+  end;  }
+</span><span class="pas1-space">  showmessage</span><span class="pas1-symbol">(</span><span class="pas1-string">'second received...'</span><span class="pas1-symbol">)
+</span><span class="pas1-space">  println</span><span class="pas1-symbol">(</span><span class="pas1-string">'event send data '</span><span class="pas1-symbol">+</span><span class="pas1-identifier">data</span><span class="pas1-symbol">)
+</span><span class="pas1-reservedword">end</span><span class="pas1-symbol">;</span><span class="pas1-space">  
+
+</span><span class="pas1-reservedword">function</span><span class="pas1-space"> SysVersionFromDLLName2</span><span class="pas1-symbol">(</span><span class="pas1-reservedword">const</span><span class="pas1-space"> DLLFileName </span><span class="pas1-symbol">:</span><span class="pas1-space"> </span><span class="pas1-reservedword">string</span><span class="pas1-symbol">):</span><span class="pas1-space"> </span><span class="pas1-reservedword">string</span><span class="pas1-symbol">;
+</span><span class="pas1-reservedword">var
+</span><span class="pas1-space">  Minor</span><span class="pas1-symbol">,</span><span class="pas1-space"> Major</span><span class="pas1-symbol">:</span><span class="pas1-space"> integer</span><span class="pas1-symbol">;
+</span><span class="pas1-reservedword">begin
+</span><span class="pas1-space">  PythonVersionFromDLLName</span><span class="pas1-symbol">(</span><span class="pas1-identifier">DLLFileName</span><span class="pas1-symbol">,</span><span class="pas1-space"> Major</span><span class="pas1-symbol">,</span><span class="pas1-space"> Minor</span><span class="pas1-symbol">);
+</span><span class="pas1-space">  Result </span><span class="pas1-symbol">:=</span><span class="pas1-space"> Format</span><span class="pas1-symbol">(</span><span class="pas1-string">'%d.%d'</span><span class="pas1-symbol">,</span><span class="pas1-space"> </span><span class="pas1-symbol">[</span><span class="pas1-identifier">Major</span><span class="pas1-symbol">,</span><span class="pas1-space"> Minor</span><span class="pas1-symbol">]);
+</span><span class="pas1-reservedword">end</span><span class="pas1-symbol">;
+
+</span><span class="pas1-comment">//https://stackoverflow.com/questions/64324481/delphi-4-python/69123825#69123825
+</span><span class="pas1-reservedword">procedure</span><span class="pas1-space"> callDynPy</span><span class="pas1-symbol">;
+</span><span class="pas1-reservedword">var
+</span><span class="pas1-space">  PyEngine_netA</span><span class="pas1-symbol">:</span><span class="pas1-space"> TPythonEngine</span><span class="pas1-symbol">;
+</span><span class="pas1-space">  PyInpOut_netA</span><span class="pas1-symbol">:</span><span class="pas1-space"> TPythonInputOutput</span><span class="pas1-symbol">;
+</span><span class="pas1-space">  FIOPythonModule </span><span class="pas1-symbol">:</span><span class="pas1-space"> TPythonModule</span><span class="pas1-symbol">;
+</span><span class="pas1-space">  pystrings</span><span class="pas1-symbol">:</span><span class="pas1-space"> TStrings</span><span class="pas1-symbol">;
+</span><span class="pas1-reservedword">begin
+</span><span class="pas1-space">  PyEngine_netA </span><span class="pas1-symbol">:=</span><span class="pas1-space"> TPythonEngine</span><span class="pas1-symbol">.</span><span class="pas1-identifier">Create</span><span class="pas1-symbol">(</span><span class="pas1-identifier">Self</span><span class="pas1-symbol">);
+</span><span class="pas1-space">  PyInpOut_netA </span><span class="pas1-symbol">:=</span><span class="pas1-space"> TPythonInputOutput</span><span class="pas1-symbol">.</span><span class="pas1-identifier">Create</span><span class="pas1-symbol">(</span><span class="pas1-identifier">Self</span><span class="pas1-symbol">);
+</span><span class="pas1-space">  FIOPythonModule </span><span class="pas1-symbol">:=</span><span class="pas1-space"> TPythonModule</span><span class="pas1-symbol">.</span><span class="pas1-identifier">Create</span><span class="pas1-symbol">(</span><span class="pas1-space"> Self </span><span class="pas1-symbol">);
+</span><span class="pas1-space">  pystrings</span><span class="pas1-symbol">:=</span><span class="pas1-space"> TStringlist</span><span class="pas1-symbol">.</span><span class="pas1-identifier">create</span><span class="pas1-symbol">;
+</span><span class="pas1-space">  
+  pystrings</span><span class="pas1-symbol">.</span><span class="pas1-identifier">text</span><span class="pas1-symbol">:=
+</span><span class="pas1-space">   </span><span class="pas1-string">'import sys'</span><span class="pas1-symbol">+</span><span class="pas1-identifier">LF</span><span class="pas1-symbol">+
+</span><span class="pas1-space">   </span><span class="pas1-string">'import os'</span><span class="pas1-symbol">+</span><span class="pas1-identifier">LF</span><span class="pas1-symbol">+
+</span><span class="pas1-space">   </span><span class="pas1-string">'pylist = []'</span><span class="pas1-symbol">+</span><span class="pas1-identifier">LF</span><span class="pas1-symbol">+
+</span><span class="pas1-space">   </span><span class="pas1-string">'print(&quot;Python path =&quot;, sys.path)         '</span><span class="pas1-symbol">+</span><span class="pas1-identifier">LF</span><span class="pas1-symbol">+
+</span><span class="pas1-space">   </span><span class="pas1-string">'print()                                  '</span><span class="pas1-symbol">+</span><span class="pas1-identifier">LF</span><span class="pas1-symbol">+
+</span><span class="pas1-space">   </span><span class="pas1-string">'print(&quot;Python modules already imported:&quot;)'</span><span class="pas1-symbol">+</span><span class="pas1-identifier">LF</span><span class="pas1-symbol">+
+</span><span class="pas1-space">   </span><span class="pas1-string">'for m in sys.modules.values():           '</span><span class="pas1-symbol">+</span><span class="pas1-identifier">LF</span><span class="pas1-symbol">+
+</span><span class="pas1-space">   </span><span class="pas1-string">'    if m:                                '</span><span class="pas1-symbol">+</span><span class="pas1-identifier">LF</span><span class="pas1-symbol">+
+</span><span class="pas1-space">   </span><span class="pas1-string">'        print(&quot; &quot;, m,&quot;\n&quot;)               '</span><span class="pas1-symbol">+</span><span class="pas1-identifier">LF</span><span class="pas1-symbol">+
+</span><span class="pas1-space">   </span><span class="pas1-string">'        pylist.append(m)                 '</span><span class="pas1-symbol">+</span><span class="pas1-identifier">LF</span><span class="pas1-symbol">+
+</span><span class="pas1-space">   </span><span class="pas1-string">'        pylist.append(&quot;\n&quot;)              '</span><span class="pas1-symbol">+</span><span class="pas1-identifier">LF</span><span class="pas1-symbol">+
+</span><span class="pas1-space">   </span><span class="pas1-string">'print()                                  '</span><span class="pas1-symbol">+</span><span class="pas1-identifier">LF</span><span class="pas1-symbol">+
+</span><span class="pas1-space">   </span><span class="pas1-string">'#pylist = &quot;\n&quot;.join(pylist)              '</span><span class="pas1-symbol">+</span><span class="pas1-identifier">LF</span><span class="pas1-symbol">+</span><span class="pas1-space"> 
+   </span><span class="pas1-string">'#PYTHONHOME=os.getenv(r&quot;'</span><span class="pas1-symbol">+</span><span class="pas1-identifier">PYHOME</span><span class="pas1-symbol">+</span><span class="pas1-string">'\&quot;))   '</span><span class="pas1-symbol">+</span><span class="pas1-identifier">LF</span><span class="pas1-symbol">+
+</span><span class="pas1-space">   </span><span class="pas1-string">'pylist.append(os.getenv(&quot;PYTHONHOME&quot;))   '</span><span class="pas1-symbol">+</span><span class="pas1-identifier">LF</span><span class="pas1-symbol">+
+</span><span class="pas1-space">   </span><span class="pas1-string">'#print(&quot;PYTHONPATH =&quot;, os.getenv(&quot;PYTHONPATH&quot;))'</span><span class="pas1-symbol">;
+</span><span class="pas1-space">   
+  </span><span class="pas1-reservedword">try
+</span><span class="pas1-space">    </span><span class="pas1-comment">///  configure the components
+</span><span class="pas1-space">    </span><span class="pas1-comment">//saveString(exepath+'pystrings.py', pystrings.text);
+</span><span class="pas1-space">    </span><span class="pas1-comment">//writeln(getDosOutput('py '+exepath+'pystrings.py', exePath));
+</span><span class="pas1-space">    PyEngine_netA</span><span class="pas1-symbol">.</span><span class="pas1-identifier">DllName</span><span class="pas1-symbol">:=</span><span class="pas1-space"> PYDLL</span><span class="pas1-symbol">;
+</span><span class="pas1-space">    PyEngine_netA</span><span class="pas1-symbol">.</span><span class="pas1-identifier">pythonhome</span><span class="pas1-symbol">:=</span><span class="pas1-space"> PYHOME</span><span class="pas1-symbol">;
+</span><span class="pas1-space">    </span><span class="pas1-comment">//writeln(TPythonModule(PyEngine_netA.IOPythonModule).modulename); 
+</span><span class="pas1-space">              </span><span class="pas1-comment">{TPythonModule}
+</span><span class="pas1-space">    writeln</span><span class="pas1-symbol">(</span><span class="pas1-identifier">FIOPythonModule</span><span class="pas1-symbol">.</span><span class="pas1-identifier">modulename</span><span class="pas1-symbol">);
+</span><span class="pas1-space">    writeln</span><span class="pas1-symbol">(</span><span class="pas1-identifier">objtostr</span><span class="pas1-symbol">(</span><span class="pas1-identifier">PyEngine_netA</span><span class="pas1-symbol">.</span><span class="pas1-identifier">IOPythonModule</span><span class="pas1-symbol">));</span><span class="pas1-space"> 
+    </span><span class="pas1-comment">//PyEngine_netA.modulename 
+</span><span class="pas1-space">   
+    </span><span class="pas1-comment">//PyEngine_netA.IO := PyInpOut_netA;
+</span><span class="pas1-space">    PyEngine_netA</span><span class="pas1-symbol">.</span><span class="pas1-identifier">UseLastKnownVersion </span><span class="pas1-symbol">:=</span><span class="pas1-space"> True</span><span class="pas1-symbol">;
+</span><span class="pas1-space">    writeln</span><span class="pas1-symbol">(</span><span class="pas1-string">'SysVersionFromDLLName2: '</span><span class="pas1-symbol">+</span><span class="pas1-identifier">SysVersionFromDLLName2</span><span class="pas1-symbol">(</span><span class="pas1-identifier">PYDLL</span><span class="pas1-symbol">));
+</span><span class="pas1-space">    </span><span class="pas1-comment">//PyEngine_netA.opendll(PYDLL)
+</span><span class="pas1-space">    PyEngine_netA</span><span class="pas1-symbol">.</span><span class="pas1-identifier">LoadDll</span><span class="pas1-symbol">;
+</span><span class="pas1-space">    </span><span class="pas1-comment">//PyEngine_netA.CheckPython;
+</span><span class="pas1-space">    PyEngine_netA</span><span class="pas1-symbol">.</span><span class="pas1-identifier">IO </span><span class="pas1-symbol">:=</span><span class="pas1-space"> PyInpOut_netA</span><span class="pas1-symbol">;
+</span><span class="pas1-space">    PyEngine_netA</span><span class="pas1-symbol">.</span><span class="pas1-identifier">redirectio </span><span class="pas1-symbol">:=</span><span class="pas1-space"> true</span><span class="pas1-symbol">;
+
+</span><span class="pas1-space">    PyInpOut_netA</span><span class="pas1-symbol">.</span><span class="pas1-identifier">OnSendData</span><span class="pas1-symbol">:=</span><span class="pas1-space"> </span><span class="pas1-symbol">@</span><span class="pas1-identifier">PythonInputOutput_SendData</span><span class="pas1-symbol">;
+</span><span class="pas1-space">    PyInpOut_netA</span><span class="pas1-symbol">.</span><span class="pas1-identifier">OnReceiveData</span><span class="pas1-symbol">:=</span><span class="pas1-space"> </span><span class="pas1-symbol">@</span><span class="pas1-identifier">PythonInputOutput_ReceiveData</span><span class="pas1-symbol">;
+</span><span class="pas1-space">    PyInpOut_netA</span><span class="pas1-symbol">.</span><span class="pas1-identifier">UnicodeIO </span><span class="pas1-symbol">:=</span><span class="pas1-space"> false</span><span class="pas1-symbol">;
+</span><span class="pas1-space">    PyInpOut_netA</span><span class="pas1-symbol">.</span><span class="pas1-identifier">RawOutput </span><span class="pas1-symbol">:=</span><span class="pas1-space"> true</span><span class="pas1-symbol">;
+</span><span class="pas1-space">    </span><span class="pas1-comment">//PyInpOut_netA.Write('print(49+78,&quot;\n&quot;)');
+</span><span class="pas1-space">    </span><span class="pas1-comment">//PyEngine_netA.ExecString('import pyio');
+</span><span class="pas1-space">    PyInpOut_netA</span><span class="pas1-symbol">.</span><span class="pas1-identifier">Writeline</span><span class="pas1-symbol">(</span><span class="pas1-string">'print(49+78+23,&quot;\n&quot;)'</span><span class="pas1-symbol">);
+</span><span class="pas1-space">    PyEngine_netA</span><span class="pas1-symbol">.</span><span class="pas1-identifier">ExecString</span><span class="pas1-symbol">(</span><span class="pas1-identifier">UTF8Encode</span><span class="pas1-symbol">(</span><span class="pas1-identifier">PYCMD2</span><span class="pas1-symbol">));
+</span><span class="pas1-space">    
+    </span><span class="pas1-comment">{with PyEngine_netA do begin
+      ExecString('import subprocess');  
+      ExecString('subprocess.call([&quot;pip&quot;, &quot;install&quot;, &quot;pyio&quot;])')
+    end; }</span><span class="pas1-space"> 
+    </span><span class="pas1-comment">//  println('lang detect: '+eng.EvalStr('detect(&quot;bonjour mes ordinateurs&quot;)'));
+</span><span class="pas1-space">          
+    println</span><span class="pas1-symbol">(</span><span class="pas1-string">'CheckExecSyntax:'</span><span class="pas1-symbol">+</span><span class="pas1-identifier">botostr</span><span class="pas1-symbol">(</span><span class="pas1-identifier">PyEngine_netA</span><span class="pas1-symbol">.</span><span class="pas1-identifier">CheckExecSyntax</span><span class="pas1-symbol">(</span><span class="pas1-identifier">pystrings</span><span class="pas1-symbol">.</span><span class="pas1-identifier">text</span><span class="pas1-symbol">)));
+</span><span class="pas1-space">    PyEngine_netA</span><span class="pas1-symbol">.</span><span class="pas1-identifier">ExecStrings4</span><span class="pas1-symbol">(</span><span class="pas1-identifier">pystrings</span><span class="pas1-symbol">);
+</span><span class="pas1-space">    </span><span class="pas1-comment">//synStringReplace(const S, OldPattern,NewPattern:str;Flags:TReplaceFlags):str
+</span><span class="pas1-space">    println</span><span class="pas1-symbol">(</span><span class="pas1-string">'module list detect: '</span><span class="pas1-symbol">+
+</span><span class="pas1-space">             StringReplace</span><span class="pas1-symbol">(</span><span class="pas1-identifier">PyEngine_netA</span><span class="pas1-symbol">.</span><span class="pas1-identifier">EvalStr</span><span class="pas1-symbol">(</span><span class="pas1-string">'pylist'</span><span class="pas1-symbol">),</span><span class="pas1-string">'\n'</span><span class="pas1-symbol">,</span><span class="pas1-identifier">CR</span><span class="pas1-symbol">+</span><span class="pas1-identifier">LF</span><span class="pas1-symbol">,[</span><span class="pas1-identifier">rfReplaceAll</span><span class="pas1-symbol">]));
+</span><span class="pas1-space">    </span><span class="pas1-comment">//PyInpOut_netA.Read('print(49+78,&quot;\n&quot;)');
+</span><span class="pas1-space">    </span><span class="pas1-comment">//PyInpOut_netA.output:= pyMemo;     
+</span><span class="pas1-space">    </span><span class="pas1-comment">//PyEngine_netA.IO:= PyInpOut_netA;
+
+</span><span class="pas1-space">    </span><span class="pas1-comment">///  execute  the script
+</span><span class="pas1-space">    </span><span class="pas1-comment">//PyEngine_netA.ExecString(UTF8Encode(mmo_pythoncode.text));
+//https://stackoverflow.com/questions/49599004/how-to-convert-a-python-datetime-to-a-delphi-tdatetime#49599145
+</span><span class="pas1-space">    PyEngine_netA</span><span class="pas1-symbol">.</span><span class="pas1-identifier">ExecString</span><span class="pas1-symbol">(</span><span class="pas1-identifier">UTF8Encode</span><span class="pas1-symbol">(</span><span class="pas1-string">'print(49+78),&quot;\n&quot;'</span><span class="pas1-symbol">));
+</span><span class="pas1-space">    PyEngine_netA</span><span class="pas1-symbol">.</span><span class="pas1-identifier">ExecString</span><span class="pas1-symbol">((</span><span class="pas1-string">'from datetime import datetime, timedelta'</span><span class="pas1-symbol">));
+</span><span class="pas1-space">    PyEngine_netA</span><span class="pas1-symbol">.</span><span class="pas1-identifier">ExecString</span><span class="pas1-symbol">(</span><span class="pas1-identifier">UTF8Encode</span><span class="pas1-symbol">(</span><span class="pas1-string">'DELPHI_EPOCH=datetime(1899,12,30)'</span><span class="pas1-symbol">));
+</span><span class="pas1-space">    PyEngine_netA</span><span class="pas1-symbol">.</span><span class="pas1-identifier">ExecString</span><span class="pas1-symbol">(</span><span class="pas1-string">'def datetime_fromdelphi(dvalue):'</span><span class="pas1-symbol">+</span><span class="pas1-identifier">LF</span><span class="pas1-symbol">+
+</span><span class="pas1-space">                                 </span><span class="pas1-string">'  return DELPHI_EPOCH + timedelta(days=dvalue)'</span><span class="pas1-symbol">);
+</span><span class="pas1-space">    println</span><span class="pas1-symbol">(</span><span class="pas1-identifier">PyEngine_netA</span><span class="pas1-symbol">.</span><span class="pas1-identifier">EvalStr</span><span class="pas1-symbol">((</span><span class="pas1-string">'datetime_fromdelphi(43191.68205925926)'</span><span class="pas1-symbol">)));
+</span><span class="pas1-space">                                 
+    </span><span class="pas1-comment">//PyEngine_netA.ExecString(('49+78'));
+</span><span class="pas1-space">    println</span><span class="pas1-symbol">(</span><span class="pas1-identifier">PyEngine_netA</span><span class="pas1-symbol">.</span><span class="pas1-identifier">EvalStr</span><span class="pas1-symbol">((</span><span class="pas1-string">'(49+78+2**5),&quot;\n&quot;'</span><span class="pas1-symbol">+</span><span class="pas1-identifier">LF</span><span class="pas1-symbol">)));
+</span><span class="pas1-space">    println</span><span class="pas1-symbol">(</span><span class="pas1-identifier">PyEngine_netA</span><span class="pas1-symbol">.</span><span class="pas1-identifier">EvalStr</span><span class="pas1-symbol">((</span><span class="pas1-string">'__import__(&quot;sys&quot;).version'</span><span class="pas1-symbol">)));
+</span><span class="pas1-space">  </span><span class="pas1-reservedword">except
+</span><span class="pas1-space">    PyEngine_netA</span><span class="pas1-symbol">.</span><span class="pas1-identifier">raiseError</span><span class="pas1-symbol">;</span><span class="pas1-space">  
+  </span><span class="pas1-reservedword">finally
+</span><span class="pas1-space">    PyEngine_netA</span><span class="pas1-symbol">.</span><span class="pas1-identifier">free</span><span class="pas1-symbol">;
+</span><span class="pas1-space">    PyInpOut_netA</span><span class="pas1-symbol">.</span><span class="pas1-identifier">free</span><span class="pas1-symbol">;
+</span><span class="pas1-space">    FIOPythonModule</span><span class="pas1-symbol">.</span><span class="pas1-identifier">Free</span><span class="pas1-symbol">;
+</span><span class="pas1-space">    pystrings</span><span class="pas1-symbol">.</span><span class="pas1-identifier">Free</span><span class="pas1-symbol">;
+</span><span class="pas1-space">  </span><span class="pas1-reservedword">end</span><span class="pas1-symbol">;
+</span><span class="pas1-reservedword">end</span><span class="pas1-symbol">;</span><span class="pas1-space">  
+
+</span><span class="pas1-reservedword">begin</span><span class="pas1-space">  </span><span class="pas1-comment">//@main
+</span><span class="pas1-space">  </span><span class="pas1-comment">//PythonEngine1.Free;
+</span><span class="pas1-space">  </span><span class="pas1-comment">//myloadscript2:= filetostring(PYSCRIPT2);
+</span><span class="pas1-space">  </span><span class="pas1-comment">//Memo1.beginUpdate;
+</span><span class="pas1-space">  PyForm</span><span class="pas1-symbol">:=</span><span class="pas1-space"> loadForm2</span><span class="pas1-symbol">(300,200,</span><span class="pas1-space"> clgreen</span><span class="pas1-symbol">,</span><span class="pas1-string">'PyFrm4D'</span><span class="pas1-symbol">);
+</span><span class="pas1-space">  pyMemo</span><span class="pas1-symbol">:=</span><span class="pas1-space"> TMemo</span><span class="pas1-symbol">.</span><span class="pas1-identifier">create</span><span class="pas1-symbol">(</span><span class="pas1-identifier">PyForm</span><span class="pas1-symbol">);
+</span><span class="pas1-space">  pyMemo</span><span class="pas1-symbol">.</span><span class="pas1-identifier">parent</span><span class="pas1-symbol">:=</span><span class="pas1-space"> PyForm
+  pymemo</span><span class="pas1-symbol">.</span><span class="pas1-identifier">align</span><span class="pas1-symbol">:=</span><span class="pas1-space"> albottom</span><span class="pas1-symbol">;
+</span><span class="pas1-space">  PyForm</span><span class="pas1-symbol">.</span><span class="pas1-identifier">show</span><span class="pas1-symbol">;
+</span><span class="pas1-space">  
+  PYLaz_P4D_Demo2</span><span class="pas1-symbol">;</span><span class="pas1-space"> 
+  </span><span class="pas1-comment">//Memo1.EndUpdate;
+</span><span class="pas1-space">  
+  callDynPy</span><span class="pas1-symbol">;
+</span><span class="pas1-space">  
+  </span><span class="pas1-comment">//register_PYthonGUI;
+</span><span class="pas1-reservedword">End</span><span class="pas1-symbol">.
+----</span><span class="pas1-identifier">app_template_loaded_code</span><span class="pas1-symbol">----
+----</span><span class="pas1-reservedword">File</span><span class="pas1-space"> newtemplate</span><span class="pas1-symbol">.</span><span class="pas1-identifier">txt </span><span class="pas1-reservedword">not</span><span class="pas1-space"> exists </span><span class="pas1-symbol">-</span><span class="pas1-space"> now saved</span><span class="pas1-symbol">!----
+
+</span><span class="pas1-reservedword">doc</span><span class="pas1-symbol">:</span><span class="pas1-space"> https</span><span class="pas1-symbol">:</span><span class="pas1-comment">//stackoverflow.com/questions/23134820/unhandled-exception-at-multiarray-pyd-the-2nd-time-the-program-runs#23173191
+
+</span><span class="pas1-identifier">https</span><span class="pas1-symbol">:</span><span class="pas1-comment">//stackoverflow.com/questions/16779799/py-initialize-and-py-finalize-and-matplotlib
+
+</span><span class="pas1-identifier">maXbox_Starter86_3_Python4maXbox
+
+</span><span class="pas1-reservedword">Doc</span><span class="pas1-symbol">:</span><span class="pas1-space"> Destroying </span><span class="pas1-reservedword">it</span><span class="pas1-space"> calls Py_Finalize</span><span class="pas1-symbol">,</span><span class="pas1-space"> which frees all memory allocated by the Python DLL</span><span class="pas1-symbol">.
+</span><span class="pas1-reservedword">Or</span><span class="pas1-symbol">,</span><span class="pas1-space"> </span><span class="pas1-reservedword">if</span><span class="pas1-space"> you</span><span class="pas1-string">'re just using the Python API without the VCL wrappers, you can probably just call Py_NewInterpreter on your TPythonInterface object to get a fresh execution environment without necessarily discarding everything done before.
+
+</span><span class="pas1-identifier">Evil eval</span><span class="pas1-symbol">()
+
+</span><span class="pas1-identifier">You should never pass untrusted source </span><span class="pas1-reservedword">to</span><span class="pas1-space"> the eval</span><span class="pas1-symbol">()</span><span class="pas1-space"> directly</span><span class="pas1-symbol">.</span><span class="pas1-space"> </span><span class="pas1-reservedword">As</span><span class="pas1-space"> </span><span class="pas1-reservedword">it</span><span class="pas1-space"> </span><span class="pas1-reservedword">is</span><span class="pas1-space"> quite easy </span><span class="pas1-reservedword">for</span><span class="pas1-space"> the malicious user </span><span class="pas1-reservedword">to</span><span class="pas1-space"> wreak havoc </span><span class="pas1-reservedword">on</span><span class="pas1-space"> your system</span><span class="pas1-symbol">.</span><span class="pas1-space"> </span><span class="pas1-reservedword">For</span><span class="pas1-space"> example</span><span class="pas1-symbol">,</span><span class="pas1-space"> the following code can be used </span><span class="pas1-reservedword">to</span><span class="pas1-space"> delete all the files from the system</span><span class="pas1-symbol">.
+
+1</span><span class="pas1-space"> </span><span class="pas1-symbol">&gt;&gt;&gt;
+2</span><span class="pas1-space"> eval</span><span class="pas1-symbol">(</span><span class="pas1-string">'os.system(&quot;RM -RF /&quot;)'</span><span class="pas1-symbol">)</span><span class="pas1-space"> </span><span class="pas1-character">#</span><span class="pas1-space"> command </span><span class="pas1-reservedword">is</span><span class="pas1-space"> deliberately capitalized
+</span><span class="pas1-number">3</span><span class="pas1-space"> </span><span class="pas1-symbol">&gt;&gt;&gt;
+
+</span><span class="pas1-character">#</span><span class="pas1-space">  demo script
+import matplotlib</span><span class="pas1-symbol">.</span><span class="pas1-identifier">pyplot </span><span class="pas1-reservedword">as</span><span class="pas1-space"> plt
+import numpy </span><span class="pas1-reservedword">as</span><span class="pas1-space"> np
+x </span><span class="pas1-symbol">=</span><span class="pas1-space"> np</span><span class="pas1-symbol">.</span><span class="pas1-identifier">arange</span><span class="pas1-symbol">(0,8*</span><span class="pas1-identifier">np</span><span class="pas1-symbol">.</span><span class="pas1-identifier">pi</span><span class="pas1-symbol">,</span><span class="pas1-float">0.1</span><span class="pas1-symbol">)</span><span class="pas1-space">   </span><span class="pas1-character">#</span><span class="pas1-space"> start</span><span class="pas1-symbol">,</span><span class="pas1-identifier">stop</span><span class="pas1-symbol">,</span><span class="pas1-identifier">step
+y </span><span class="pas1-symbol">=</span><span class="pas1-space"> np</span><span class="pas1-symbol">.</span><span class="pas1-identifier">cos</span><span class="pas1-symbol">(</span><span class="pas1-identifier">x</span><span class="pas1-symbol">)</span><span class="pas1-space"> </span><span class="pas1-symbol">*1/(1+</span><span class="pas1-identifier">x</span><span class="pas1-symbol">)
+</span><span class="pas1-identifier">plt</span><span class="pas1-symbol">.</span><span class="pas1-identifier">plot</span><span class="pas1-symbol">(</span><span class="pas1-identifier">x</span><span class="pas1-symbol">,</span><span class="pas1-identifier">y</span><span class="pas1-symbol">)
+</span><span class="pas1-identifier">plt</span><span class="pas1-symbol">.</span><span class="pas1-identifier">show</span><span class="pas1-symbol">()
+
+
+</span><span class="pas1-reservedword">Ref</span><span class="pas1-symbol">:</span><span class="pas1-space"> https</span><span class="pas1-symbol">:</span><span class="pas1-comment">//sourceforge.net/projects/maxbox/files/Examples/EKON/P4D/python37.dll/download
+</span><span class="pas1-symbol">--------------------------------------------------------
+</span><span class="pas1-identifier">dll </span><span class="pas1-reservedword">EXCEPT</span><span class="pas1-space"> Exception</span><span class="pas1-symbol">:</span><span class="pas1-space"> There </span><span class="pas1-reservedword">is</span><span class="pas1-space"> already one instance </span><span class="pas1-reservedword">of</span><span class="pas1-space"> TPythonEngine running</span><span class="pas1-symbol">.
+</span><span class="pas1-identifier">TRUE
+Exception</span><span class="pas1-symbol">:</span><span class="pas1-space"> Python </span><span class="pas1-reservedword">is</span><span class="pas1-space"> </span><span class="pas1-reservedword">not</span><span class="pas1-space"> properly initialized</span><span class="pas1-symbol">.
+</span><span class="pas1-identifier">PascalScript maXbox4 </span><span class="pas1-symbol">-</span><span class="pas1-space"> RemObjects </span><span class="pas1-symbol">&amp;</span><span class="pas1-space"> SynEdit
+
+dll </span><span class="pas1-reservedword">EXCEPT</span><span class="pas1-space"> Exception</span><span class="pas1-symbol">:</span><span class="pas1-space"> There </span><span class="pas1-reservedword">is</span><span class="pas1-space"> already one instance </span><span class="pas1-reservedword">of</span><span class="pas1-space"> TPythonEngine running</span><span class="pas1-symbol">.
+</span><span class="pas1-identifier">TRUE
+Exception</span><span class="pas1-symbol">:</span><span class="pas1-space"> Python </span><span class="pas1-reservedword">is</span><span class="pas1-space"> </span><span class="pas1-reservedword">not</span><span class="pas1-space"> properly initialized</span><span class="pas1-symbol">.
+
+</span><span class="pas1-identifier">dll </span><span class="pas1-reservedword">EXCEPT</span><span class="pas1-space"> Exception</span><span class="pas1-symbol">:</span><span class="pas1-space"> Access violation at address </span><span class="pas1-number">00345</span><span class="pas1-identifier">A76 </span><span class="pas1-reservedword">in</span><span class="pas1-space"> module </span><span class="pas1-string">'maXbox4.exe'</span><span class="pas1-symbol">.</span><span class="pas1-space"> Read </span><span class="pas1-reservedword">of</span><span class="pas1-space"> address </span><span class="pas1-float">4365636E.
+</span><span class="pas1-identifier">TRUE
+Exception</span><span class="pas1-symbol">:</span><span class="pas1-space"> Access violation at address </span><span class="pas1-number">6</span><span class="pas1-identifier">BA3BA66 </span><span class="pas1-reservedword">in</span><span class="pas1-space"> module </span><span class="pas1-string">'python36.dll'</span><span class="pas1-symbol">.</span><span class="pas1-space"> Read </span><span class="pas1-reservedword">of</span><span class="pas1-space"> address </span><span class="pas1-number">000000</span><span class="pas1-identifier">AD</span><span class="pas1-symbol">.
+
+</span><span class="pas1-identifier">mapdll </span><span class="pas1-reservedword">EXCEPT</span><span class="pas1-space"> Exception</span><span class="pas1-symbol">:</span><span class="pas1-space"> There </span><span class="pas1-reservedword">is</span><span class="pas1-space"> already one instance </span><span class="pas1-reservedword">of</span><span class="pas1-space"> TPythonEngine running</span><span class="pas1-symbol">.
+</span><span class="pas1-identifier">PythonOK TRUE
+ImportEXCEPT Exception</span><span class="pas1-symbol">:</span><span class="pas1-space"> Access violation at address </span><span class="pas1-number">6</span><span class="pas1-identifier">BA3BA66 </span><span class="pas1-reservedword">in</span><span class="pas1-space"> module </span><span class="pas1-string">'python36.dll'</span><span class="pas1-symbol">.</span><span class="pas1-space"> Read </span><span class="pas1-reservedword">of</span><span class="pas1-space"> address </span><span class="pas1-number">000000</span><span class="pas1-identifier">AC</span><span class="pas1-symbol">.
+</span><span class="pas1-space"> mX4 executed</span><span class="pas1-symbol">:</span><span class="pas1-space"> </span><span class="pas1-number">26/07/2021</span><span class="pas1-space"> </span><span class="pas1-number">13:30:51</span><span class="pas1-space">  Runtime</span><span class="pas1-symbol">:</span><span class="pas1-space"> </span><span class="pas1-number">0:0:</span><span class="pas1-float">2.48</span><span class="pas1-space">  Memload</span><span class="pas1-symbol">:</span><span class="pas1-space"> </span><span class="pas1-number">71%</span><span class="pas1-space"> use
+ 
+Example </span><span class="pas1-number">3:</span><span class="pas1-space"> Python multithreading
+
+All the programs above </span><span class="pas1-reservedword">in</span><span class="pas1-space"> this article are single</span><span class="pas1-symbol">-</span><span class="pas1-identifier">threaded programs</span><span class="pas1-symbol">.</span><span class="pas1-space"> Here</span><span class="pas1-string">'s an example of a multithreaded Python program.
+
+
+</span><span class="pas1-identifier">import threading 
+  
+</span><span class="pas1-reservedword">def</span><span class="pas1-space"> print_hello_three_times</span><span class="pas1-symbol">():
+</span><span class="pas1-space">  </span><span class="pas1-reservedword">for</span><span class="pas1-space"> i </span><span class="pas1-reservedword">in</span><span class="pas1-space"> range</span><span class="pas1-symbol">(3):
+</span><span class="pas1-space">    print</span><span class="pas1-symbol">(&quot;</span><span class="pas1-identifier">Hello</span><span class="pas1-symbol">&quot;)
+</span><span class="pas1-space">  
+</span><span class="pas1-reservedword">def</span><span class="pas1-space"> print_hi_three_times</span><span class="pas1-symbol">():</span><span class="pas1-space"> 
+    </span><span class="pas1-reservedword">for</span><span class="pas1-space"> i </span><span class="pas1-reservedword">in</span><span class="pas1-space"> range</span><span class="pas1-symbol">(3):</span><span class="pas1-space"> 
+      print</span><span class="pas1-symbol">(&quot;</span><span class="pas1-identifier">Hi</span><span class="pas1-symbol">&quot;)</span><span class="pas1-space"> 
+
+t1 </span><span class="pas1-symbol">=</span><span class="pas1-space"> threading</span><span class="pas1-symbol">.</span><span class="pas1-identifier">Thread</span><span class="pas1-symbol">(</span><span class="pas1-identifier">target</span><span class="pas1-symbol">=</span><span class="pas1-identifier">print_hello_three_times</span><span class="pas1-symbol">)</span><span class="pas1-space">  
+t2 </span><span class="pas1-symbol">=</span><span class="pas1-space"> threading</span><span class="pas1-symbol">.</span><span class="pas1-identifier">Thread</span><span class="pas1-symbol">(</span><span class="pas1-identifier">target</span><span class="pas1-symbol">=</span><span class="pas1-identifier">print_hi_three_times</span><span class="pas1-symbol">)</span><span class="pas1-space">  
+
+t1</span><span class="pas1-symbol">.</span><span class="pas1-identifier">start</span><span class="pas1-symbol">()
+</span><span class="pas1-identifier">t2</span><span class="pas1-symbol">.</span><span class="pas1-identifier">start</span><span class="pas1-symbol">()
+
+</span><span class="pas1-identifier">This </span><span class="pas1-reservedword">package</span><span class="pas1-space"> implements JSON support </span><span class="pas1-reservedword">for</span><span class="pas1-space"> FPC</span><span class="pas1-symbol">.
+
+</span><span class="pas1-identifier">You might want </span><span class="pas1-reservedword">to</span><span class="pas1-space"> have a look at the lazarus jsonviewer tool</span><span class="pas1-symbol">,</span><span class="pas1-space"> written </span><span class="pas1-reservedword">using
+</span><span class="pas1-identifier">fpJSON </span><span class="pas1-symbol">(</span><span class="pas1-identifier">see lazarus</span><span class="pas1-symbol">/</span><span class="pas1-identifier">tools</span><span class="pas1-symbol">/</span><span class="pas1-identifier">jsonviewer</span><span class="pas1-symbol">).</span><span class="pas1-space"> </span><span class="pas1-reservedword">It</span><span class="pas1-space"> visualizes the fpJSON data </span><span class="pas1-reservedword">and
+</span><span class="pas1-identifier">shows how </span><span class="pas1-reservedword">to</span><span class="pas1-space"> </span><span class="pas1-reservedword">program</span><span class="pas1-space"> </span><span class="pas1-reservedword">using</span><span class="pas1-space"> fpjson</span><span class="pas1-symbol">.
+
+</span><span class="pas1-identifier">JSON support consists </span><span class="pas1-reservedword">of</span><span class="pas1-space"> </span><span class="pas1-number">3</span><span class="pas1-space"> parts</span><span class="pas1-symbol">:
+
+</span><span class="pas1-reservedword">unit</span><span class="pas1-space"> fpJSON </span><span class="pas1-reservedword">contains</span><span class="pas1-space"> the data representation</span><span class="pas1-symbol">.</span><span class="pas1-space"> Basically</span><span class="pas1-symbol">,</span><span class="pas1-space"> </span><span class="pas1-reservedword">it</span><span class="pas1-space"> defines a </span><span class="pas1-reservedword">set</span><span class="pas1-space"> </span><span class="pas1-reservedword">of
+</span><span class="pas1-identifier">classes</span><span class="pas1-symbol">:
+
+</span><span class="pas1-identifier">TJSONData
+</span><span class="pas1-symbol">+-</span><span class="pas1-space"> TJSONNumber
+   </span><span class="pas1-symbol">+-</span><span class="pas1-space"> TJSONIntegerNumber
+   </span><span class="pas1-symbol">+-</span><span class="pas1-space"> TJSONFloatNumber
+   </span><span class="pas1-symbol">+-</span><span class="pas1-space"> TJSONInt64Number
+</span><span class="pas1-symbol">+-</span><span class="pas1-space"> TJSONString
+</span><span class="pas1-symbol">+-</span><span class="pas1-space"> TJSONBoolean
+</span><span class="pas1-symbol">+-</span><span class="pas1-space"> TJSONNull
+</span><span class="pas1-symbol">+-</span><span class="pas1-space"> TJSONObject
+</span><span class="pas1-symbol">+-</span><span class="pas1-space"> TJSONArray
+
+The TJSONData</span><span class="pas1-symbol">.</span><span class="pas1-identifier">JSONType </span><span class="pas1-reservedword">property</span><span class="pas1-space"> </span><span class="pas1-reservedword">is</span><span class="pas1-space"> an enumerated</span><span class="pas1-symbol">:
+</span><span class="pas1-identifier">TJSONtype </span><span class="pas1-symbol">=</span><span class="pas1-space"> </span><span class="pas1-symbol">(</span><span class="pas1-identifier">jtUnknown</span><span class="pas1-symbol">,</span><span class="pas1-space"> jtNumber</span><span class="pas1-symbol">,</span><span class="pas1-space"> jtString</span><span class="pas1-symbol">,</span><span class="pas1-space"> jtBoolean</span><span class="pas1-symbol">,</span><span class="pas1-space"> jtNull</span><span class="pas1-symbol">,</span><span class="pas1-space"> jtArray</span><span class="pas1-symbol">,</span><span class="pas1-space"> jtObject</span><span class="pas1-symbol">);
+
+</span><span class="pas1-identifier">Which allows </span><span class="pas1-reservedword">to</span><span class="pas1-space"> determine the </span><span class="pas1-reservedword">type</span><span class="pas1-space"> </span><span class="pas1-reservedword">of</span><span class="pas1-space"> a value</span><span class="pas1-symbol">.
+
+</span><span class="pas1-identifier">Page </span><span class="pas1-number">7:</span><span class="pas1-space"> But the eval</span><span class="pas1-symbol">-</span><span class="pas1-identifier">uation </span><span class="pas1-reservedword">of</span><span class="pas1-space"> </span><span class="pas1-symbol">-&gt;</span><span class="pas1-space"> But the evaluation </span><span class="pas1-reservedword">of
+</span><span class="pas1-identifier">page </span><span class="pas1-number">8:</span><span class="pas1-space"> Ans here</span><span class="pas1-string">'s the -&gt; And here'</span><span class="pas1-identifier">s the
+page </span><span class="pas1-number">10:</span><span class="pas1-space"> The mentioned windows dll </span><span class="pas1-reservedword">file</span><span class="pas1-space"> </span><span class="pas1-reservedword">for</span><span class="pas1-space"> Python</span><span class="pas1-symbol">.</span><span class="pas1-space"> </span><span class="pas1-symbol">&gt;</span><span class="pas1-space"> The mentioned windows dll </span><span class="pas1-reservedword">file</span><span class="pas1-space"> from Python</span><span class="pas1-symbol">.
+</span><span class="pas1-identifier">page </span><span class="pas1-number">10:</span><span class="pas1-space"> </span><span class="pas1-symbol">(</span><span class="pas1-identifier">I</span><span class="pas1-string">'ll show that in the Tutor III). -&gt; (I'</span><span class="pas1-identifier">ll show that </span><span class="pas1-reservedword">in</span><span class="pas1-space"> the Part </span><span class="pas1-number">3).
+</span><span class="pas1-identifier">page </span><span class="pas1-number">14:</span><span class="pas1-space"> so we use the same inter</span><span class="pas1-symbol">-</span><span class="pas1-identifier">preter </span><span class="pas1-reservedword">as</span><span class="pas1-space"> from a shell </span><span class="pas1-symbol">-&gt;</span><span class="pas1-space"> so we use the same  from a shell
+
+</span><span class="pas1-reservedword">procedure</span><span class="pas1-space"> TPythonEngine</span><span class="pas1-symbol">.</span><span class="pas1-identifier">DoRedirectIO</span><span class="pas1-symbol">;
+</span><span class="pas1-reservedword">const
+</span><span class="pas1-space">  code </span><span class="pas1-symbol">=</span><span class="pas1-space"> </span><span class="pas1-string">'import sys'</span><span class="pas1-symbol">+</span><span class="pas1-identifier">LF</span><span class="pas1-symbol">+
+</span><span class="pas1-space">         </span><span class="pas1-string">'class DebugOutput:'</span><span class="pas1-symbol">+</span><span class="pas1-identifier">LF</span><span class="pas1-symbol">+
+</span><span class="pas1-space">         </span><span class="pas1-string">'  pyio = __import__(&quot;pyio&quot;)'</span><span class="pas1-symbol">+</span><span class="pas1-identifier">LF</span><span class="pas1-symbol">+
+</span><span class="pas1-space">         </span><span class="pas1-string">'  softspace=0'</span><span class="pas1-symbol">+</span><span class="pas1-identifier">LF</span><span class="pas1-symbol">+
+</span><span class="pas1-space">         </span><span class="pas1-string">'  encoding=None'</span><span class="pas1-symbol">+</span><span class="pas1-identifier">LF</span><span class="pas1-symbol">+
+</span><span class="pas1-space">         </span><span class="pas1-string">'  def write(self,message):'</span><span class="pas1-symbol">+</span><span class="pas1-identifier">LF</span><span class="pas1-symbol">+
+</span><span class="pas1-space">         </span><span class="pas1-string">'     self.pyio.write(message)'</span><span class="pas1-symbol">+</span><span class="pas1-identifier">LF</span><span class="pas1-symbol">+
+</span><span class="pas1-space">         </span><span class="pas1-string">'  def readline(self, size=None):'</span><span class="pas1-symbol">+</span><span class="pas1-identifier">LF</span><span class="pas1-symbol">+
+</span><span class="pas1-space">         </span><span class="pas1-string">'     return self.pyio.read(size)'</span><span class="pas1-symbol">+</span><span class="pas1-identifier">LF</span><span class="pas1-symbol">+
+</span><span class="pas1-space">         </span><span class="pas1-string">'  def flush(self):'</span><span class="pas1-space"> </span><span class="pas1-symbol">+</span><span class="pas1-space"> LF </span><span class="pas1-symbol">+
+</span><span class="pas1-space">         </span><span class="pas1-string">'     pass'</span><span class="pas1-space"> </span><span class="pas1-symbol">+</span><span class="pas1-space"> LF </span><span class="pas1-symbol">+
+</span><span class="pas1-space">         </span><span class="pas1-string">'  def isatty(self):'</span><span class="pas1-space"> </span><span class="pas1-symbol">+</span><span class="pas1-space"> LF </span><span class="pas1-symbol">+
+</span><span class="pas1-space">         </span><span class="pas1-string">'     return True'</span><span class="pas1-space"> </span><span class="pas1-symbol">+</span><span class="pas1-space"> LF </span><span class="pas1-symbol">+
+</span><span class="pas1-space">         </span><span class="pas1-string">'sys.old_stdin=sys.stdin'</span><span class="pas1-symbol">+</span><span class="pas1-identifier">LF</span><span class="pas1-symbol">+
+</span><span class="pas1-space">         </span><span class="pas1-string">'sys.old_stdout=sys.stdout'</span><span class="pas1-symbol">+</span><span class="pas1-identifier">LF</span><span class="pas1-symbol">+
+</span><span class="pas1-space">         </span><span class="pas1-string">'sys.old_stderr=sys.stderr'</span><span class="pas1-symbol">+</span><span class="pas1-identifier">LF</span><span class="pas1-symbol">+
+</span><span class="pas1-space">         </span><span class="pas1-string">'sys.stdin=sys.stderr=sys.stdout=DebugOutput()'</span><span class="pas1-symbol">+</span><span class="pas1-identifier">LF</span><span class="pas1-symbol">+</span><span class="pas1-character">#0</span><span class="pas1-symbol">;
+</span><span class="pas1-reservedword">begin
+</span><span class="pas1-space">  </span><span class="pas1-reservedword">if</span><span class="pas1-space"> csDesigning </span><span class="pas1-reservedword">in</span><span class="pas1-space"> ComponentState </span><span class="pas1-reservedword">then
+</span><span class="pas1-space">    Exit</span><span class="pas1-symbol">;
+</span><span class="pas1-space">  CheckPython</span><span class="pas1-symbol">;
+</span><span class="pas1-space">  </span><span class="pas1-reservedword">if</span><span class="pas1-space"> </span><span class="pas1-reservedword">not</span><span class="pas1-space"> Assigned</span><span class="pas1-symbol">(</span><span class="pas1-identifier">FIOPythonModule</span><span class="pas1-symbol">)</span><span class="pas1-space"> </span><span class="pas1-reservedword">then
+</span><span class="pas1-space">  </span><span class="pas1-reservedword">begin
+</span><span class="pas1-space">    </span><span class="pas1-comment">// create a new module called pyio
+</span><span class="pas1-space">    FIOPythonModule </span><span class="pas1-symbol">:=</span><span class="pas1-space"> TPythonModule</span><span class="pas1-symbol">.</span><span class="pas1-identifier">Create</span><span class="pas1-symbol">(</span><span class="pas1-space"> Self </span><span class="pas1-symbol">);
+</span><span class="pas1-space">    </span><span class="pas1-reservedword">with</span><span class="pas1-space"> FIOPythonModule </span><span class="pas1-reservedword">as</span><span class="pas1-space"> TPythonModule </span><span class="pas1-reservedword">do
+</span><span class="pas1-space">      </span><span class="pas1-reservedword">begin
+</span><span class="pas1-space">        Engine </span><span class="pas1-symbol">:=</span><span class="pas1-space"> Self</span><span class="pas1-symbol">;
+</span><span class="pas1-space">        ModuleName </span><span class="pas1-symbol">:=</span><span class="pas1-space"> </span><span class="pas1-string">'pyio'</span><span class="pas1-symbol">;
+</span><span class="pas1-space">        AddMethod</span><span class="pas1-symbol">(</span><span class="pas1-space"> </span><span class="pas1-string">'write'</span><span class="pas1-symbol">,</span><span class="pas1-space"> pyio_write</span><span class="pas1-symbol">,</span><span class="pas1-space"> </span><span class="pas1-string">'write(String) -&gt; None'</span><span class="pas1-space"> </span><span class="pas1-symbol">);
+</span><span class="pas1-space">        AddMethod</span><span class="pas1-symbol">(</span><span class="pas1-space"> </span><span class="pas1-string">'read'</span><span class="pas1-symbol">,</span><span class="pas1-space">  pyio_read</span><span class="pas1-symbol">,</span><span class="pas1-space">  </span><span class="pas1-string">'read() -&gt; String'</span><span class="pas1-space"> </span><span class="pas1-symbol">);
+</span><span class="pas1-space">        AddMethod</span><span class="pas1-symbol">(</span><span class="pas1-space"> </span><span class="pas1-string">'SetDelayWrites'</span><span class="pas1-symbol">,</span><span class="pas1-space">  pyio_SetDelayWrites</span><span class="pas1-symbol">,</span><span class="pas1-space">  </span><span class="pas1-string">'SetDelayWrites(Boolean) -&gt; None'</span><span class="pas1-space"> </span><span class="pas1-symbol">);
+</span><span class="pas1-space">        AddMethod</span><span class="pas1-symbol">(</span><span class="pas1-space"> </span><span class="pas1-string">'SetMaxLines'</span><span class="pas1-symbol">,</span><span class="pas1-space">  pyio_SetMaxLines</span><span class="pas1-symbol">,</span><span class="pas1-space">  </span><span class="pas1-string">'SetMaxLines(Integer) -&gt; None'</span><span class="pas1-space"> </span><span class="pas1-symbol">);
+</span><span class="pas1-space">        AddMethod</span><span class="pas1-symbol">(</span><span class="pas1-space"> </span><span class="pas1-string">'GetTypesStats'</span><span class="pas1-symbol">,</span><span class="pas1-space">  pyio_GetTypesStats</span><span class="pas1-symbol">,</span><span class="pas1-space">  </span><span class="pas1-string">'GetTypesStats( [type name] ) -&gt; a list of tuple (TypeName, InstanceCount, CreateHits, DeleteHits)'</span><span class="pas1-space"> </span><span class="pas1-symbol">);
+</span><span class="pas1-space">      </span><span class="pas1-reservedword">end</span><span class="pas1-symbol">;
+</span><span class="pas1-space">  </span><span class="pas1-reservedword">end</span><span class="pas1-symbol">;
+</span><span class="pas1-space">  </span><span class="pas1-reservedword">with</span><span class="pas1-space"> FIOPythonModule </span><span class="pas1-reservedword">as</span><span class="pas1-space"> TPythonModule </span><span class="pas1-reservedword">do
+</span><span class="pas1-space">    </span><span class="pas1-reservedword">if</span><span class="pas1-space"> </span><span class="pas1-reservedword">not</span><span class="pas1-space"> Initialized </span><span class="pas1-reservedword">then
+</span><span class="pas1-space">      Initialize</span><span class="pas1-symbol">;
+</span><span class="pas1-space">  </span><span class="pas1-comment">// execute the code
+</span><span class="pas1-space">  ExecString</span><span class="pas1-symbol">(</span><span class="pas1-identifier">code</span><span class="pas1-symbol">);
+</span><span class="pas1-space">  FIORedirected </span><span class="pas1-symbol">:=</span><span class="pas1-space"> True</span><span class="pas1-symbol">;
+</span><span class="pas1-reservedword">end</span><span class="pas1-symbol">;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</span><span class="pas1-space">                   
+
+
+
+  
+
+
+    
+</span></code></pre><!--EndFragment--></body>
+</html>

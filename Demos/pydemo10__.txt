@@ -1,0 +1,252 @@
+PROGRAM SEPDemo_App_mX4_PythonTemplate_URLLib_ISBN_Agent;
+//https://pythonprogramming.net/urllib-tutorial-python-3/
+//https://gist.github.com/AO8/faa3f52d3d5eac63820cfa7ec2b24aa7
+
+//<Constant declarations> 
+//Please check providers list below: ['mymemory', 'microsoft', 'deepl', 'libre'].
+{TYPE 
+<Type declarations>} 
+
+Const PYHOME32 = 'C:\Users\max\AppData\Local\Programs\Python\Python36-32\'; 
+      PYDLL32  = 'C:\Users\max\AppData\Local\Programs\Python\Python36-32\python36.dll'; 
+      PYHOME64 = 'C:\Users\max\AppData\Local\Programs\Python\Python36\'; 
+      PYDLL64  = 'C:\Users\max\AppData\Local\Programs\Python\Python36\python36.dll'; 
+
+Var 
+//<Variable declarations>
+  i: integer; eng: TPythonEngine;
+
+//<FUNCTION>
+//<PROCEDURE> 
+//Generate public key and private key
+
+Const PYBC =  'from bitcoin import *'+LF+
+              'my_private_key = random_key()'+LF+
+              'my_public_key = privtopub(my_private_key)'+LF+
+              'my_bitcoin_addr = pubtoaddr(my_public_key)'+LF+
+              'print(my_bitcoin_addr)';
+              
+Const PYTURTLE = 'from turtle import *      '+LF+
+                 'color("red", "yellow")    '+LF+
+                 's = Screen()              '+LF+
+                 's.setup(700,500)          '+LF+
+                 's.bgcolor("black")        '+LF+
+                 '#speed(5)                  '+LF+
+                 'begin_fill()              '+LF+
+                 'while True:               '+LF+
+                 '    forward(250)          '+LF+
+                 '    left(170)             '+LF+
+                 '    if abs(pos()) < 1:    '+LF+
+                 '         break            '+LF+
+                 'end_fill()                '+LF+
+                 'done()                    '; 
+
+//https://gist.github.com/AO8/faa3f52d3d5eac63820cfa7ec2b24aa7                 
+Const ISBNAGENT = 
+  //'while True: '+LF+
+
+  'import urllib.request, json, textwrap' +LF+
+  'base_api_link="https://www.googleapis.com/books/v1/volumes?q=isbn:"   '+LF+
+  'user_input = ("3935042469").strip()                                   '+LF+
+
+  'with urllib.request.urlopen(base_api_link + user_input) as f:         '+LF+
+  '    text = f.read()                                                   '+LF+
+
+  'decoded_text = text.decode("utf-8")                                   '+LF+
+  'obj = json.loads(decoded_text) # deserializes decoded_textto Py object'+LF+
+  'volume_info = obj["items"][0]                                         '+LF+
+  'authors = obj["items"][0]["volumeInfo"]["authors"]                    '+LF+
+
+  '# displays title, summary, author, domain, page count and language    '+LF+
+  'print("\nTitle:", volume_info["volumeInfo"]["title"])                 '+LF+
+  'print("\nSummary:\n")                                                 '+LF+
+  'print(textwrap.fill(volume_info["saleInfo"]["country"],width=65))     '+LF+
+  'print("\nAuthor(s):", ",".join(authors))                              '+LF+
+  'print("\nPublic Domain:", volume_info["accessInfo"]["publicDomain"])  '+LF+
+  'print("\nPage count:", volume_info["volumeInfo"]["pageCount"])        '+LF+
+  'print("\nLanguage:", volume_info["volumeInfo"]["language"])           '+LF+
+  'print("\n***")                                                        ';
+     
+                 
+Const USERAGENT = 'Mozilla/5.0 (X11; Linux i686) AppleWebKit/537.17 (KHTML, maXbox4) Chrome/24.0.1312.27 Safari/537.17'; 
+
+Const WEBURL = 'https://www.amazon.com/Patterns-konkret-Max-Kleiner/dp/3935042469'; 
+
+Const REXDEF = 'def striphtml(data):      '+LF+
+               '  p = re.compile(r"<.*?>")'+LF+
+               '  return p.sub("", data)  ';  
+               
+function ValidISBN_10(const aISBN: string): boolean;
+var
+  hNumber,
+  hCheckDigit: string;
+  hCheckValue,
+  hCheckSum,
+  Err: integer;
+  i,Cnt: Word;
+begin
+  Result := false;
+  hCheckDigit := Copy(aISBN, Length(aISBN), 1);
+  {Get rest of ISBN, minus check digit and its hyphen}
+  hNumber := Copy(aISBN, 1, Length(aISBN) - 2);
+  {Length of ISBN remainder must be 11 and check digit
+   between 9 and 9 or X}
+  if (Length(hNumber)=11)and(Pos(hCheckDigit,
+      '0123456789X') > 0) then begin
+    {Get numeric value for check digit}
+    if (hCheckDigit = 'X') then
+      hCheckSum := 10
+    else
+      Val(hCheckDigit, hCheckSum, Err);
+      {Iterate through ISBN remainder, applying decode
+      algorithm}
+    Cnt := 1;
+    for i := 1 to 12 do begin
+      {Act only if current character is between "0" and "9"
+      to exclude hyphens}
+      if (Pos(hNumber[i], '0123456789') > 0) then begin
+        Val(hNumber[i], hCheckValue, Err);
+        {Algorithm for each character in ISBN remainder, Cnt
+        is the nth character so processed}
+        hCheckSum := hCheckSum + hCheckValue * (11 - Cnt);
+        Inc(Cnt);
+      end;
+    end;
+    {Verify final value is evenly divisible by 11}
+    if (hCheckSum mod 11 = 0) then
+      Result := true
+    else
+      Result := false;
+  end;
+end;    
+
+{Funktion validiert ISBN-13
+Gültig ab 1.1.2007
+Wenn streng = True, wird die Voranstellung von 'ISBN ' und die korrekte
+Verwendung der Bindestriche verlangt}
+function ValidISBN_13(const s: string; streng: Boolean): Boolean;
+var
+  i, x, n: Integer;
+  tmp: string;
+begin
+  Result:= True;
+  writeln(s[9])
+  if (not streng) or ((Copy(s, 1, 5) = 'ISBN ') and (Length(s) = 22)
+    and (s[9] = '-') and (s[21] = '-')) then begin
+    for i:= 1 to Length(s) do
+      if s[i] in StrToCharSet(DIGISET) then //['0'..'9'] then
+        tmp:= tmp + s[i]
+      else
+        if streng then
+          if (s[i] = '-') then
+            Inc(n)
+          else if (i > 5) then
+            Result:= False;
+    if (Result) and ((not streng) or (n = 4)) then begin
+      if Length(tmp) = 13 then begin
+        for i:= 1 to 12 do
+          if i div 2 = i/2 then
+            x:= x + StrToInt(tmp[i]) * 3
+          else
+            x:= x + StrToInt(tmp[i]);
+        if StrToInt(tmp[13]) > ((10 - (x mod 10)) mod 10) then  //> <
+          Result := False;
+      end else
+        Result:= False;
+    end else
+      Result:= False;
+  end else
+    Result:= False;
+end; 
+
+{procedure InitSockets;
+var Data: WSAData;
+begin
+  WSAStartup( MakeWord(1,1), Data);  //Das wäre dann Version 1.1
+end;}               
+                         
+Begin  //@Main
+//<Executable statements>
+
+//https://www.amazon.com/Patterns-konkret-Max-Kleiner/dp/3935042469
+{ ISBN-10 ? : 3935042469
+  ISBN-13 ? : 978-3935042468} 
+
+  writeln(botostr(ValidISBN_13('ISBN 978-3-9350-4246-8', True)));
+  writeln(botostr(IsValidISBN2('3935042469')));
+  
+  writeln(botostr(ValidISBN_13('ISBN 978-3-7657-2780-1', True))); //liefert True zurück
+  writeln(botostr(ValidISBN_13('ISBN 978-3-7657-2780-1', False))); //liefert True zurück
+  
+  writeln(botostr(IsValidISBN('9783765727801')));
+  writeln(botostr(IsValidISBN('3765727806')));    //ISBN 13<-->10 converters
+  writeln(botostr(IsValidISBN2('3765727806'))); //--
+
+  //writeln(botostr(ValidISBN_13('9783765727801', false)));
+  
+  eng:= TPythonEngine.Create(Nil);
+  eng.pythonhome:= PYHOME32;
+  eng.opendll(PYDLL32)
+  //eng.IO:= pyMemo;
+  try
+    eng.Execstring('import base64'+LF+'import urllib.parse');
+    eng.Execstring('import urllib.request'+LF+'import os,re,textwrap,json');
+    eng.Execstring(REXDEF);
+ 
+    eng.Execstring('url = "https://www.google.com/search"'+LF+
+                   'url2= "https://www.google.com/search?q=python+maxbox"'+LF+
+                   'url3= "'+WEBURL+'"'+LF+
+                   'values = {"q" : "python programming tutorials"}'+LF+
+                   'uheaders = {}');
+                              
+    eng.Execstring('data = urllib.parse.urlencode(values)'+LF+
+                   'data = data.encode("utf-8") # data should be bytes'+LF+
+                   'uheaders["User-Agent"] = "'+USERAGENT+'"'+LF+
+                // 'req= urllib.request.Request(url,data,headers=uheaders)'+LF+
+                   'req = urllib.request.Request(url3, headers= uheaders)'+LF+
+                   'resp = urllib.request.urlopen(req)'); 
+                     
+    println(eng.evalStr('striphtml(str(resp.read()))'));  
+    
+    //eng.Execstring(ISBNAGENT);   
+    saveString(exepath+'py_isbnagent.py', ISBNAGENT);
+    writeln(getDosOutput('py '+exepath+'py_isbnagent.py', exePath));          
+
+//Turns out Google will return a 405, method not allowed. Google is not happy with request!
+//Exception: <class 'urllib.error.HTTPError'>: HTTP Error 429: Too Many Requests.
+                                         
+  except
+    eng.raiseError;
+  finally
+    eng.Free;
+    //aPythonVersion.Free;
+  end;    
+  //maXcalcF('2^64 /(60*60*24*365)')  
+//<Definitions>  
+End. 
+
+Ref:  https://www.sonarqube.org/features/multi-languages/python/
+
+Ref code:  
+Patterns konkret.
+ISBN-13: 9783935042468
+ISBN-10: 3935042469
+Author: Kleiner, Max
+Binding: Paperback
+Publisher: Software + Support
+Published: September 2003
+
+https://mymemory.translated.net/doc/spec.php
+Hello PyWorld_, 
+This data will be written on the file.
+Hola PyWorld_,&#10; Estos datos se escribirán en el archivo.
+
+MYMEMORY WARNING: YOU USED ALL AVAILABLE FREE TRANSLATIONS FOR TODAY. NEXT AVAILABLE IN  02
+ HOURS 49 MINUTES 44 SECONDSVISIT HTTPS://MYMEMORY.TRANSLATED.NET/DOC/USAGELIMITS.PHP TO TRANSLATE MORE
+
+Install a 32-bit package with a 64 pip installer -t (Target)
+C:\Users\max\AppData\Local\Programs\Python\Python36-32>pip3 install -t C:\Users\
+max\AppData\Local\Programs\Python\Python36-32\Lib bitcoin
+ 
+----app_template_loaded_code----
+----File newtemplate.txt not exists - now saved!----

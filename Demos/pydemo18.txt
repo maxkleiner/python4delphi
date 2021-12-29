@@ -1,0 +1,48 @@
+PROGRAM SEPDemo__PythonTemplate_ImportModuleDataHistogramShell;
+{Purpose: shows running dlls from process!}
+
+Const PYHOME32 = 'C:\Users\max\AppData\Local\Programs\Python\Python36-32\'; 
+      PYDLL32  = 'C:\Users\max\AppData\Local\Programs\Python\Python36-32\python36.dll'; 
+      PYMODULE = 'C:\maXbox\mX47464\maxbox4\examples\histogram15.py';
+
+      REXDEF= 'def striphtml(data):       '+LF+
+               '  p = re.compile(r"<.*?>")'+LF+
+               '  return p.sub("", data)  ';  
+               
+Begin  //@Main
+  with TPythonEngine.Create(Nil) do begin
+    pythonhome:= PYHOME32;
+    opendll(PYDLL32)
+    try
+      execString('import psutil, os')
+      execString('dlst = []'+CRLF+'p = psutil.Process(os.getpid())');
+      execString('for dll in p.memory_maps():'+CRLF+' print(dll.path)');
+      execString('for dll in p.memory_maps():'+CRLF+' dlst.append(dll.path)');
+      //println(eg.evalStr(' print(dll.path)'));
+      println(evalStr('dlst'));
+      println('dll list detect: '+
+                StringReplace(EvalStr('dlst'),',',CR+LF,[rfReplaceAll]));   //}
+      println(evalStr('p'));          
+    except
+      raiseError;
+    finally                         
+      Free;
+    end;
+  end;  
+//<Definitions>  
+End. 
+
+Ref:  https://www.sonarqube.org/features/multi-languages/python/
+C:\maXbox\mX39998\maxbox3>pip3 install -U -t C:\Users\max\AppData\Local\Programs
+\Python\Python36-32\Lib https://files.pythonhosted.org/packages/19/29/f7a38ee300
+83f2caa14cc77a6d34c4d5cfd1a69641e87bf1b3d6ba90d0ba/psutil-5.8.0-cp36-cp36m-win32.whl
+Collecting psutil==5.8.0
+  Using cached psutil-5.8.0-cp36-cp36m-win32.whl (240 kB)
+ERROR: distributed 2.22.0 has requirement cloudpickle>=1.5.0, but you'll have cl
+oudpickle 0.5.3 which is incompatible.
+Installing collected packages: psutil
+Successfully installed psutil-5.8.0
+----File newtemplate.txt not exists - now saved!----
+        
+   
+   

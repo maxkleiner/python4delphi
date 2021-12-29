@@ -1,0 +1,101 @@
+PROGRAM SEPDemo_App_mX4_PythonTemplate_URLLib_Agent;
+//https://pythonprogramming.net/urllib-tutorial-python-3/
+
+//<Constant declarations> 
+//Please check providers list below: ['mymemory', 'microsoft', 'deepl', 'libre'].
+{TYPE 
+<Type declarations>} 
+
+Const PYHOME32 = 'C:\Users\max\AppData\Local\Programs\Python\Python36-32\'; 
+      PYDLL32  = 'C:\Users\max\AppData\Local\Programs\Python\Python36-32\python36.dll'; 
+      PYHOME64 = 'C:\Users\max\AppData\Local\Programs\Python\Python36\'; 
+      PYDLL64  = 'C:\Users\max\AppData\Local\Programs\Python\Python36\python36.dll'; 
+
+Var 
+//<Variable declarations>
+  i: integer; eng: TPythonEngine;
+
+//<FUNCTION>
+//<PROCEDURE> 
+//Generate public key and private key
+
+Const PYBC =  'from bitcoin import *'+LF+
+              'my_private_key = random_key()'+LF+
+              'my_public_key = privtopub(my_private_key)'+LF+
+              'my_bitcoin_addr = pubtoaddr(my_public_key)'+LF+
+              'print(my_bitcoin_addr)';
+              
+Const PYTURTLE = 'from turtle import *      '+LF+
+                 'color("red", "yellow")    '+LF+
+                 's = Screen()              '+LF+
+                 's.setup(700,500)          '+LF+
+                 's.bgcolor("black")        '+LF+
+                 '#speed(5)                  '+LF+
+                 'begin_fill()              '+LF+
+                 'while True:               '+LF+
+                 '    forward(250)          '+LF+
+                 '    left(170)             '+LF+
+                 '    if abs(pos()) < 1:    '+LF+
+                 '         break            '+LF+
+                 'end_fill()                '+LF+
+                 'done()                    ';  
+                 
+Const USERAGENT = 'Mozilla/5.0 (X11; Linux i686) AppleWebKit/537.17 (KHTML, maXbox4) Chrome/24.0.1312.27 Safari/537.17';   
+
+Const REXDEF = 'def striphtml(data):      '+LF+
+               '  p = re.compile(r"<.*?>")'+LF+
+               '  return p.sub("", data)  ';       
+                         
+Begin  //@Main
+//<Executable statements>
+  eng:= TPythonEngine.Create(Nil);
+  eng.pythonhome:= PYHOME32;
+  eng.opendll(PYDLL32)
+  //eng.IO:= pyMemo;
+  try
+    eng.Execstring('import base64'+LF+'import urllib.parse');
+    eng.Execstring('import urllib.request'+LF+'import os, re');
+    eng.Execstring(REXDEF);
+ 
+    eng.Execstring('url = "https://www.google.com/search"'+LF+
+                   'url2= "https://www.google.com/search?q=python+maxbox"'+LF+
+                   'values = {"q" : "python programming tutorials"}'+LF+
+                   'uheaders = {}');
+                              
+    eng.Execstring('data = urllib.parse.urlencode(values)'+LF+
+                   'data = data.encode("utf-8") # data should be bytes'+LF+
+                   'uheaders["User-Agent"] = "'+USERAGENT+'"'+LF+
+                // 'req= urllib.request.Request(url,data,headers=uheaders)'+LF+
+                   'req = urllib.request.Request(url2, headers= uheaders)'+LF+
+                   'resp = urllib.request.urlopen(req)'); 
+                     
+    println(eng.evalStr('striphtml(str(resp.read()))'));               
+
+//Turns out Google will return a 405, method not allowed. Google is not happy with request!
+                                         
+  except
+    eng.raiseError;
+  finally
+    eng.Free;
+    //aPythonVersion.Free;
+  end;    
+  //maXcalcF('2^64 /(60*60*24*365)')  
+//<Definitions>  
+End. 
+
+Ref:  https://www.sonarqube.org/features/multi-languages/python/
+
+Ref code:  https://mymemory.translated.net/doc/spec.php
+Hello PyWorld_, 
+This data will be written on the file.
+Hola PyWorld_,&#10; Estos datos se escribirán en el archivo.
+
+MYMEMORY WARNING: YOU USED ALL AVAILABLE FREE TRANSLATIONS FOR TODAY. NEXT AVAILABLE IN  02
+ HOURS 49 MINUTES 44 SECONDSVISIT HTTPS://MYMEMORY.TRANSLATED.NET/DOC/USAGELIMITS.PHP TO TRANSLATE MORE
+
+Install a 32-bit package with a 64 pip installer -t (Target)
+C:\Users\max\AppData\Local\Programs\Python\Python36-32>pip3 install -t C:\Users\
+max\AppData\Local\Programs\Python\Python36-32\Lib bitcoin
+ 
+----app_template_loaded_code----
+----File newtemplate.txt not exists - now saved!----

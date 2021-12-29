@@ -1,0 +1,233 @@
+Version:0.9
+StartHTML:0000000105
+EndHTML:0000044326
+StartFragment:0000001053
+EndFragment:0000044310
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>mXScriptasHTML</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta name="generator" content="SynEdit HTML exporter" />
+<style type="text/css">
+<!--
+body { color: #000000; background-color: #FFFFFF; }
+.pas1-assembler { }
+.pas1-character { color: #0066CC; text-decoration: underline; }
+.pas1-comment { color: #000080; font-style: italic; }
+.pas1-float { color: #00FF00; }
+.pas1-hexadecimal { color: #FF00FF; }
+.pas1-identifier { }
+.pas1-number { color: #FF0000; }
+.pas1-preprocessor { font-style: italic; }
+.pas1-reservedword { color: #000080; font-weight: bold; }
+.pas1-space { }
+.pas1-string { color: #008080; }
+.pas1-symbol { color: #FF0000; }
+-->
+</style>
+</head>
+<body>
+<!--StartFragment--><pre><code><span class="pas1-reservedword">Program</span><span class="pas1-space"> Python_Delphi_PrimeTime30_Compare</span><span class="pas1-symbol">;
+
+</span><span class="pas1-comment">//https://arutselvan99.medium.com/python-why-is-faster-than-list-1b52d0ea9ac9
+//https://www.programiz.com/python-programming/time/sleep
+//Note: modify PYHOME and PYDLL :
+
+</span><span class="pas1-reservedword">Const</span><span class="pas1-space"> </span><span class="pas1-comment">//PYHOME = 'C:\Users\breitsch\AppData\Local\Programs\Python\Python37-32\';
+</span><span class="pas1-space">    PYHOME </span><span class="pas1-symbol">=</span><span class="pas1-space"> </span><span class="pas1-string">'C:\Users\max\AppData\Local\Programs\Python\Python36-32\'</span><span class="pas1-symbol">;
+</span><span class="pas1-space">    PYDLL  </span><span class="pas1-symbol">=</span><span class="pas1-space"> </span><span class="pas1-string">'C:\Users\max\AppData\Local\Programs\Python\Python36-32\python36.dll'</span><span class="pas1-symbol">;</span><span class="pas1-space"> 
+    PYSCRIPT </span><span class="pas1-symbol">=</span><span class="pas1-space"> </span><span class="pas1-string">'C:\maXbox\maxbox3\maxbox3\maXbox3\examples\module1maxbox1.py'</span><span class="pas1-symbol">;
+</span><span class="pas1-space">    LB</span><span class="pas1-symbol">=</span><span class="pas1-space"> CR</span><span class="pas1-symbol">+</span><span class="pas1-identifier">LF</span><span class="pas1-symbol">;
+</span><span class="pas1-space">       
+</span><span class="pas1-reservedword">const</span><span class="pas1-space"> PRIME </span><span class="pas1-symbol">=</span><span class="pas1-space">  </span><span class="pas1-string">'def py_is_prime(n):'</span><span class="pas1-symbol">+</span><span class="pas1-identifier">LB</span><span class="pas1-symbol">+
+</span><span class="pas1-space">               </span><span class="pas1-string">'  import math'</span><span class="pas1-symbol">+</span><span class="pas1-identifier">LB</span><span class="pas1-symbol">+
+</span><span class="pas1-space">               </span><span class="pas1-string">'  &quot;&quot;&quot; totally naive implementation &quot;&quot;&quot;'</span><span class="pas1-symbol">+</span><span class="pas1-identifier">LB</span><span class="pas1-symbol">+
+</span><span class="pas1-space">               </span><span class="pas1-string">'  if n &lt;= 1:'</span><span class="pas1-symbol">+</span><span class="pas1-identifier">LB</span><span class="pas1-symbol">+
+</span><span class="pas1-space">               </span><span class="pas1-string">'    return False'</span><span class="pas1-symbol">+</span><span class="pas1-identifier">LB</span><span class="pas1-symbol">+
+</span><span class="pas1-space">               </span><span class="pas1-string">'  q = math.floor(math.sqrt(n))'</span><span class="pas1-symbol">+</span><span class="pas1-identifier">LB</span><span class="pas1-symbol">+
+</span><span class="pas1-space">               </span><span class="pas1-string">'  for i in range(2, q + 1):'</span><span class="pas1-symbol">+</span><span class="pas1-identifier">LB</span><span class="pas1-symbol">+
+</span><span class="pas1-space">               </span><span class="pas1-string">'    if (n % i == 0):'</span><span class="pas1-symbol">+</span><span class="pas1-identifier">LB</span><span class="pas1-symbol">+
+</span><span class="pas1-space">               </span><span class="pas1-string">'      return False'</span><span class="pas1-symbol">+</span><span class="pas1-identifier">LB</span><span class="pas1-symbol">+
+</span><span class="pas1-space">               </span><span class="pas1-string">'  return True'</span><span class="pas1-symbol">;
+
+</span><span class="pas1-comment">//   Delphi func with exit()
+</span><span class="pas1-reservedword">function</span><span class="pas1-space"> D_IsPrime</span><span class="pas1-symbol">(</span><span class="pas1-identifier">x</span><span class="pas1-symbol">:</span><span class="pas1-space"> Integer</span><span class="pas1-symbol">):</span><span class="pas1-space"> Boolean</span><span class="pas1-symbol">;
+</span><span class="pas1-reservedword">var</span><span class="pas1-space"> q</span><span class="pas1-symbol">,</span><span class="pas1-space"> i</span><span class="pas1-symbol">:</span><span class="pas1-space"> integer</span><span class="pas1-symbol">;
+</span><span class="pas1-reservedword">begin</span><span class="pas1-space"> 
+  </span><span class="pas1-reservedword">if</span><span class="pas1-space"> </span><span class="pas1-symbol">(</span><span class="pas1-identifier">x </span><span class="pas1-symbol">&lt;=</span><span class="pas1-space"> </span><span class="pas1-number">1)</span><span class="pas1-space"> </span><span class="pas1-reservedword">then</span><span class="pas1-space"> </span><span class="pas1-reservedword">begin
+</span><span class="pas1-space">    result</span><span class="pas1-symbol">:=</span><span class="pas1-space"> false
+    Exit</span><span class="pas1-symbol">;
+</span><span class="pas1-space">  </span><span class="pas1-reservedword">end</span><span class="pas1-symbol">;</span><span class="pas1-space">  
+  q</span><span class="pas1-symbol">:=</span><span class="pas1-space"> Floor</span><span class="pas1-symbol">(</span><span class="pas1-identifier">Sqrt</span><span class="pas1-symbol">(</span><span class="pas1-identifier">x</span><span class="pas1-symbol">));</span><span class="pas1-space"> 
+     </span><span class="pas1-reservedword">for</span><span class="pas1-space"> i</span><span class="pas1-symbol">:=</span><span class="pas1-space"> </span><span class="pas1-number">2</span><span class="pas1-space"> </span><span class="pas1-reservedword">to</span><span class="pas1-space"> q </span><span class="pas1-reservedword">do</span><span class="pas1-space"> 
+       </span><span class="pas1-reservedword">if</span><span class="pas1-space"> </span><span class="pas1-symbol">(</span><span class="pas1-identifier">x </span><span class="pas1-reservedword">mod</span><span class="pas1-space"> i </span><span class="pas1-symbol">=</span><span class="pas1-space"> </span><span class="pas1-number">0)</span><span class="pas1-space"> </span><span class="pas1-reservedword">then</span><span class="pas1-space"> </span><span class="pas1-reservedword">begin
+</span><span class="pas1-space">        result</span><span class="pas1-symbol">:=</span><span class="pas1-space"> false</span><span class="pas1-symbol">;
+</span><span class="pas1-space">        Exit</span><span class="pas1-symbol">;
+</span><span class="pas1-space">       </span><span class="pas1-reservedword">end</span><span class="pas1-symbol">;
+</span><span class="pas1-space">    result</span><span class="pas1-symbol">:=</span><span class="pas1-space"> True
+    Exit</span><span class="pas1-symbol">;
+</span><span class="pas1-space">  </span><span class="pas1-reservedword">end</span><span class="pas1-symbol">;
+</span><span class="pas1-space">  
+</span><span class="pas1-reservedword">function</span><span class="pas1-space"> D_IsPrime2Slow</span><span class="pas1-symbol">(</span><span class="pas1-identifier">N</span><span class="pas1-symbol">:</span><span class="pas1-space"> Integer</span><span class="pas1-symbol">):</span><span class="pas1-space"> Boolean</span><span class="pas1-symbol">;
+</span><span class="pas1-reservedword">var</span><span class="pas1-space"> M</span><span class="pas1-symbol">:</span><span class="pas1-space"> Integer</span><span class="pas1-symbol">;
+</span><span class="pas1-reservedword">begin
+</span><span class="pas1-space">  synAssert</span><span class="pas1-symbol">(</span><span class="pas1-identifier">N </span><span class="pas1-symbol">&gt;</span><span class="pas1-space"> </span><span class="pas1-number">0);
+</span><span class="pas1-space">  </span><span class="pas1-reservedword">if</span><span class="pas1-space"> N </span><span class="pas1-symbol">=</span><span class="pas1-space"> </span><span class="pas1-number">1</span><span class="pas1-space"> </span><span class="pas1-reservedword">then</span><span class="pas1-space"> </span><span class="pas1-reservedword">begin</span><span class="pas1-comment">// annoying special case
+</span><span class="pas1-space">    Result </span><span class="pas1-symbol">:=</span><span class="pas1-space"> False</span><span class="pas1-symbol">;
+</span><span class="pas1-space">    exit</span><span class="pas1-symbol">;
+</span><span class="pas1-space">  </span><span class="pas1-reservedword">end</span><span class="pas1-symbol">;
+</span><span class="pas1-space">  </span><span class="pas1-comment">//for M := 2 to (N div 2) do begin
+</span><span class="pas1-space">  </span><span class="pas1-reservedword">for</span><span class="pas1-space"> M </span><span class="pas1-symbol">:=</span><span class="pas1-space"> </span><span class="pas1-number">2</span><span class="pas1-space"> </span><span class="pas1-reservedword">to</span><span class="pas1-space"> floor</span><span class="pas1-symbol">(</span><span class="pas1-identifier">Sqrt</span><span class="pas1-symbol">(</span><span class="pas1-identifier">N</span><span class="pas1-symbol">))</span><span class="pas1-space"> </span><span class="pas1-reservedword">do</span><span class="pas1-space"> </span><span class="pas1-reservedword">begin
+</span><span class="pas1-space">    </span><span class="pas1-reservedword">if</span><span class="pas1-space"> N </span><span class="pas1-reservedword">mod</span><span class="pas1-space"> M </span><span class="pas1-symbol">=</span><span class="pas1-space"> </span><span class="pas1-number">0</span><span class="pas1-space"> </span><span class="pas1-reservedword">then</span><span class="pas1-space"> </span><span class="pas1-reservedword">begin
+</span><span class="pas1-space">      Result </span><span class="pas1-symbol">:=</span><span class="pas1-space"> False</span><span class="pas1-symbol">;
+</span><span class="pas1-space">      exit</span><span class="pas1-symbol">;
+</span><span class="pas1-space">    </span><span class="pas1-reservedword">end</span><span class="pas1-symbol">;
+</span><span class="pas1-space">  </span><span class="pas1-reservedword">end</span><span class="pas1-symbol">;
+</span><span class="pas1-space">  Result</span><span class="pas1-symbol">:=</span><span class="pas1-space"> True</span><span class="pas1-symbol">;
+</span><span class="pas1-reservedword">end</span><span class="pas1-symbol">;</span><span class="pas1-space"> 
+  
+</span><span class="pas1-comment">{ Returns a count of the number of occurences of SubText in Text }
+</span><span class="pas1-reservedword">function</span><span class="pas1-space"> CountOccurences</span><span class="pas1-symbol">(</span><span class="pas1-space"> </span><span class="pas1-reservedword">const</span><span class="pas1-space"> SubText</span><span class="pas1-symbol">:</span><span class="pas1-space"> </span><span class="pas1-reservedword">string</span><span class="pas1-symbol">;
+</span><span class="pas1-space">                          </span><span class="pas1-reservedword">const</span><span class="pas1-space"> Text</span><span class="pas1-symbol">:</span><span class="pas1-space"> </span><span class="pas1-reservedword">string</span><span class="pas1-symbol">):</span><span class="pas1-space"> Integer</span><span class="pas1-symbol">;
+</span><span class="pas1-reservedword">begin
+</span><span class="pas1-space">  Result </span><span class="pas1-symbol">:=</span><span class="pas1-space"> Pos</span><span class="pas1-symbol">(</span><span class="pas1-identifier">SubText</span><span class="pas1-symbol">,</span><span class="pas1-space"> Text</span><span class="pas1-symbol">);</span><span class="pas1-space"> 
+  </span><span class="pas1-reservedword">if</span><span class="pas1-space"> Result </span><span class="pas1-symbol">&gt;</span><span class="pas1-space"> </span><span class="pas1-number">0</span><span class="pas1-space"> </span><span class="pas1-reservedword">then
+</span><span class="pas1-space">    Result</span><span class="pas1-symbol">:=</span><span class="pas1-space"> </span><span class="pas1-symbol">(</span><span class="pas1-identifier">Length</span><span class="pas1-symbol">(</span><span class="pas1-identifier">Text</span><span class="pas1-symbol">)-</span><span class="pas1-identifier">Length</span><span class="pas1-symbol">(</span><span class="pas1-identifier">StringReplace</span><span class="pas1-symbol">(</span><span class="pas1-identifier">Text</span><span class="pas1-symbol">,</span><span class="pas1-identifier">SubText</span><span class="pas1-symbol">,</span><span class="pas1-string">''</span><span class="pas1-symbol">,
+</span><span class="pas1-space">                             </span><span class="pas1-symbol">[</span><span class="pas1-identifier">rfReplaceAll</span><span class="pas1-symbol">])))</span><span class="pas1-space"> </span><span class="pas1-reservedword">div</span><span class="pas1-space">  Length</span><span class="pas1-symbol">(</span><span class="pas1-identifier">subtext</span><span class="pas1-symbol">);
+</span><span class="pas1-reservedword">end</span><span class="pas1-symbol">;</span><span class="pas1-space">  </span><span class="pas1-comment">{ CountOccurences }
+</span><span class="pas1-space">  
+</span><span class="pas1-reservedword">const</span><span class="pas1-space"> ATIME</span><span class="pas1-symbol">=</span><span class="pas1-string">'while True: '</span><span class="pas1-symbol">+</span><span class="pas1-identifier">LB</span><span class="pas1-symbol">+</span><span class="pas1-space"> 
+            </span><span class="pas1-string">'  localtime = time.localtime()'</span><span class="pas1-symbol">+</span><span class="pas1-identifier">LB</span><span class="pas1-symbol">+</span><span class="pas1-space"> 
+            </span><span class="pas1-string">'  result = time.strftime(&quot;%I:%M:%S %p&quot;, localtime)'</span><span class="pas1-symbol">+</span><span class="pas1-identifier">LB</span><span class="pas1-symbol">+</span><span class="pas1-space"> 
+            </span><span class="pas1-string">'  print(result, end=&quot;&quot;, flush=True)'</span><span class="pas1-symbol">+</span><span class="pas1-identifier">LB</span><span class="pas1-symbol">+</span><span class="pas1-space"> 
+            </span><span class="pas1-string">'  print(&quot;\r&quot;, end=&quot;&quot;, flush=True)'</span><span class="pas1-symbol">+</span><span class="pas1-identifier">LB</span><span class="pas1-symbol">+</span><span class="pas1-space"> 
+            </span><span class="pas1-string">'  time.sleep(1)'</span><span class="pas1-symbol">;</span><span class="pas1-space">                        
+              
+</span><span class="pas1-reservedword">var</span><span class="pas1-space">  PyForm</span><span class="pas1-symbol">:</span><span class="pas1-space"> TForm</span><span class="pas1-symbol">;</span><span class="pas1-space"> pyMemo</span><span class="pas1-symbol">:</span><span class="pas1-space"> TMemo</span><span class="pas1-symbol">;</span><span class="pas1-space"> pyval</span><span class="pas1-symbol">:</span><span class="pas1-space"> variant</span><span class="pas1-symbol">;
+</span><span class="pas1-space">     eng</span><span class="pas1-symbol">:</span><span class="pas1-space"> TPythonEngine</span><span class="pas1-symbol">;</span><span class="pas1-space"> aPythonVersion</span><span class="pas1-symbol">:</span><span class="pas1-space"> TPythonVersion</span><span class="pas1-symbol">;
+</span><span class="pas1-space">     PythonVersions</span><span class="pas1-symbol">:</span><span class="pas1-space"> TPythonVersions</span><span class="pas1-symbol">;</span><span class="pas1-space"> AllUserInstall</span><span class="pas1-symbol">:</span><span class="pas1-space"> Boolean</span><span class="pas1-symbol">;
+</span><span class="pas1-space">     apd</span><span class="pas1-symbol">:</span><span class="pas1-space"> TApdMeter</span><span class="pas1-symbol">;</span><span class="pas1-space"> primelist</span><span class="pas1-symbol">:</span><span class="pas1-space"> TStringlist</span><span class="pas1-symbol">;</span><span class="pas1-space"> sw</span><span class="pas1-symbol">:</span><span class="pas1-space"> TStopWatch</span><span class="pas1-symbol">;</span><span class="pas1-space"> mpr</span><span class="pas1-symbol">:</span><span class="pas1-space"> TPrimes</span><span class="pas1-symbol">;
+
+</span><span class="pas1-reservedword">begin</span><span class="pas1-space">  </span><span class="pas1-comment">//@main
+</span><span class="pas1-space">  </span><span class="pas1-comment">//myloadscript2:= filetostring(PYSCRIPT2);
+</span><span class="pas1-space">  PyForm</span><span class="pas1-symbol">:=</span><span class="pas1-space"> loadForm2</span><span class="pas1-symbol">(200,300,</span><span class="pas1-space"> clgreen</span><span class="pas1-symbol">,</span><span class="pas1-string">'PyFrm4D_VersionThread_Tester_EKON25'</span><span class="pas1-symbol">);
+</span><span class="pas1-space">  pyMemo</span><span class="pas1-symbol">:=</span><span class="pas1-space"> TMemo</span><span class="pas1-symbol">.</span><span class="pas1-identifier">create</span><span class="pas1-symbol">(</span><span class="pas1-identifier">PyForm</span><span class="pas1-symbol">);
+</span><span class="pas1-space">  apd</span><span class="pas1-symbol">:=</span><span class="pas1-space"> TApdMeter</span><span class="pas1-symbol">.</span><span class="pas1-identifier">create</span><span class="pas1-symbol">(</span><span class="pas1-identifier">pyform</span><span class="pas1-symbol">);
+</span><span class="pas1-space">  </span><span class="pas1-comment">//apd.color:= clyellow;
+</span><span class="pas1-space">  apd</span><span class="pas1-symbol">.</span><span class="pas1-identifier">parent</span><span class="pas1-symbol">:=</span><span class="pas1-space"> pyform</span><span class="pas1-symbol">;
+</span><span class="pas1-space">  apd</span><span class="pas1-symbol">.</span><span class="pas1-identifier">barcolor</span><span class="pas1-symbol">:=</span><span class="pas1-space"> clred</span><span class="pas1-symbol">;
+</span><span class="pas1-space">  apd</span><span class="pas1-symbol">.</span><span class="pas1-identifier">position</span><span class="pas1-symbol">:=</span><span class="pas1-space"> </span><span class="pas1-number">30;
+</span><span class="pas1-space">  apd</span><span class="pas1-symbol">.</span><span class="pas1-identifier">SetBounds</span><span class="pas1-symbol">(10,100,</span><span class="pas1-space"> </span><span class="pas1-number">150,</span><span class="pas1-space"> </span><span class="pas1-number">150);
+</span><span class="pas1-space">  apd</span><span class="pas1-symbol">.</span><span class="pas1-identifier">visible</span><span class="pas1-symbol">:=</span><span class="pas1-space"> true</span><span class="pas1-symbol">;
+</span><span class="pas1-space">  pyMemo</span><span class="pas1-symbol">.</span><span class="pas1-identifier">parent</span><span class="pas1-symbol">:=</span><span class="pas1-space"> PyForm
+  PyForm</span><span class="pas1-symbol">.</span><span class="pas1-identifier">show</span><span class="pas1-symbol">;
+</span><span class="pas1-space">  aPythonVersion</span><span class="pas1-symbol">:=</span><span class="pas1-space"> TPythonVersion</span><span class="pas1-symbol">.</span><span class="pas1-identifier">create</span><span class="pas1-symbol">;
+</span><span class="pas1-space">  
+ </span><span class="pas1-comment">//3. replace maps demo
+</span><span class="pas1-space">  eng</span><span class="pas1-symbol">:=</span><span class="pas1-space"> TPythonEngine</span><span class="pas1-symbol">.</span><span class="pas1-identifier">Create</span><span class="pas1-symbol">(</span><span class="pas1-reservedword">Nil</span><span class="pas1-symbol">);
+</span><span class="pas1-space">  eng</span><span class="pas1-symbol">.</span><span class="pas1-identifier">pythonhome</span><span class="pas1-symbol">:=</span><span class="pas1-space"> PYHOME</span><span class="pas1-symbol">;
+</span><span class="pas1-space">  eng</span><span class="pas1-symbol">.</span><span class="pas1-identifier">opendll</span><span class="pas1-symbol">(</span><span class="pas1-identifier">PYDLL</span><span class="pas1-symbol">)
+</span><span class="pas1-space">  </span><span class="pas1-comment">//eng.free;
+</span><span class="pas1-space">  </span><span class="pas1-comment">//eng.IO:= pyMemo;
+</span><span class="pas1-space">  </span><span class="pas1-reservedword">try
+</span><span class="pas1-space">    eng</span><span class="pas1-symbol">.</span><span class="pas1-identifier">Execstring</span><span class="pas1-symbol">(</span><span class="pas1-string">'pets= (&quot;bird&quot;,&quot;snake&quot;,&quot;dog&quot;,&quot;turtle&quot;,&quot;cat&quot;,&quot;hamster&quot;,&quot;monster&quot;)'</span><span class="pas1-symbol">);
+</span><span class="pas1-space">    </span><span class="pas1-comment">// eng.Execstring('val.sort(key=lambda x: x[2],reverse=False)');
+</span><span class="pas1-space">    eng</span><span class="pas1-symbol">.</span><span class="pas1-identifier">Execstring</span><span class="pas1-symbol">(</span><span class="pas1-string">'uppercased_pets = list(map(str.upper, pets))'</span><span class="pas1-symbol">);
+</span><span class="pas1-space">    println</span><span class="pas1-symbol">(</span><span class="pas1-string">'Tip replace maps: '</span><span class="pas1-symbol">+</span><span class="pas1-identifier">eng</span><span class="pas1-symbol">.</span><span class="pas1-identifier">EvalStr</span><span class="pas1-symbol">(</span><span class="pas1-string">'uppercased_pets'</span><span class="pas1-symbol">));
+</span><span class="pas1-space">    pyMemo</span><span class="pas1-symbol">.</span><span class="pas1-identifier">lines</span><span class="pas1-symbol">.</span><span class="pas1-identifier">add</span><span class="pas1-symbol">(</span><span class="pas1-identifier">eng</span><span class="pas1-symbol">.</span><span class="pas1-identifier">EvalStr</span><span class="pas1-symbol">(</span><span class="pas1-string">'list(map(str.upper, pets))'</span><span class="pas1-symbol">));
+</span><span class="pas1-space">     
+    eng</span><span class="pas1-symbol">.</span><span class="pas1-identifier">Execstr</span><span class="pas1-symbol">(</span><span class="pas1-string">'import dis, winsound, time'</span><span class="pas1-symbol">);
+</span><span class="pas1-space">    println</span><span class="pas1-symbol">(</span><span class="pas1-string">'disassemble call1: '</span><span class="pas1-symbol">+</span><span class="pas1-identifier">eng</span><span class="pas1-symbol">.</span><span class="pas1-identifier">EvalStr</span><span class="pas1-symbol">(</span><span class="pas1-string">'(dis.dis(lambda: []))'</span><span class="pas1-symbol">));</span><span class="pas1-space"> 
+    println</span><span class="pas1-symbol">(</span><span class="pas1-string">'disassemble call2: '</span><span class="pas1-symbol">+</span><span class="pas1-identifier">eng</span><span class="pas1-symbol">.</span><span class="pas1-identifier">EvalStr</span><span class="pas1-symbol">(</span><span class="pas1-string">'(dis.dis(lambda: list()))'</span><span class="pas1-symbol">));</span><span class="pas1-space"> 
+     
+    </span><span class="pas1-comment">//eng.Execstring(ATIME);
+</span><span class="pas1-space">    eng</span><span class="pas1-symbol">.</span><span class="pas1-identifier">Execstring</span><span class="pas1-symbol">(</span><span class="pas1-identifier">PRIME</span><span class="pas1-symbol">);
+</span><span class="pas1-space">    println</span><span class="pas1-symbol">(</span><span class="pas1-string">'primetest: '</span><span class="pas1-symbol">+</span><span class="pas1-identifier">eng</span><span class="pas1-symbol">.</span><span class="pas1-identifier">EvalStr</span><span class="pas1-symbol">(</span><span class="pas1-string">'py_is_prime(4703)'</span><span class="pas1-symbol">));
+</span><span class="pas1-space">    primelist</span><span class="pas1-symbol">:=</span><span class="pas1-space"> TStringlist</span><span class="pas1-symbol">.</span><span class="pas1-identifier">create</span><span class="pas1-symbol">;
+</span><span class="pas1-space">    </span><span class="pas1-comment">//https://www.wolframalpha.com/input/?i=primes+between+4700+and+4800
+</span><span class="pas1-space">    sw</span><span class="pas1-symbol">:=</span><span class="pas1-space"> TStopWatch</span><span class="pas1-symbol">.</span><span class="pas1-identifier">Create</span><span class="pas1-symbol">();
+</span><span class="pas1-space">    sw</span><span class="pas1-symbol">.</span><span class="pas1-identifier">Start</span><span class="pas1-symbol">;
+</span><span class="pas1-space">    </span><span class="pas1-reservedword">for</span><span class="pas1-space"> </span><span class="pas1-reservedword">it</span><span class="pas1-symbol">:=</span><span class="pas1-space"> </span><span class="pas1-number">1000</span><span class="pas1-space"> </span><span class="pas1-reservedword">to</span><span class="pas1-space"> </span><span class="pas1-number">11000</span><span class="pas1-space"> </span><span class="pas1-reservedword">do</span><span class="pas1-space"> 
+      </span><span class="pas1-comment">//println(+itoa(it)+' primetest: '+eng.EvalStr('py_is_prime('+itoa(it)+')'));
+</span><span class="pas1-space">       primelist</span><span class="pas1-symbol">.</span><span class="pas1-identifier">add</span><span class="pas1-symbol">(</span><span class="pas1-identifier">eng</span><span class="pas1-symbol">.</span><span class="pas1-identifier">EvalStr</span><span class="pas1-symbol">(</span><span class="pas1-string">'py_is_prime('</span><span class="pas1-symbol">+</span><span class="pas1-identifier">itoa</span><span class="pas1-symbol">(</span><span class="pas1-reservedword">it</span><span class="pas1-symbol">)+</span><span class="pas1-string">')'</span><span class="pas1-symbol">));
+</span><span class="pas1-space">    </span><span class="pas1-comment">//writeln('count primes1: '+itoa(CountOccurences('True',primelist.text)));
+</span><span class="pas1-space">    println</span><span class="pas1-symbol">(</span><span class="pas1-string">'count primes1: '</span><span class="pas1-symbol">+</span><span class="pas1-identifier">itoa</span><span class="pas1-symbol">(</span><span class="pas1-identifier">SubstringCount</span><span class="pas1-symbol">(</span><span class="pas1-string">'True'</span><span class="pas1-symbol">,</span><span class="pas1-space"> primelist</span><span class="pas1-symbol">.</span><span class="pas1-identifier">text</span><span class="pas1-symbol">)));
+</span><span class="pas1-space">    sw</span><span class="pas1-symbol">.</span><span class="pas1-identifier">Stop</span><span class="pas1-symbol">;
+</span><span class="pas1-space">    </span><span class="pas1-comment">//sw.ElapsedMilliseconds;
+</span><span class="pas1-space">    writeln</span><span class="pas1-symbol">(</span><span class="pas1-string">'Stop Watch Prime Tester1: '</span><span class="pas1-symbol">+</span><span class="pas1-identifier">sw</span><span class="pas1-symbol">.</span><span class="pas1-identifier">getValueStr</span><span class="pas1-symbol">)
+</span><span class="pas1-space">    primelist</span><span class="pas1-symbol">.</span><span class="pas1-identifier">clear</span><span class="pas1-symbol">;
+</span><span class="pas1-space">    sw</span><span class="pas1-symbol">.</span><span class="pas1-identifier">Start</span><span class="pas1-symbol">;
+</span><span class="pas1-space">    </span><span class="pas1-reservedword">for</span><span class="pas1-space"> </span><span class="pas1-reservedword">it</span><span class="pas1-symbol">:=</span><span class="pas1-space"> </span><span class="pas1-number">1000</span><span class="pas1-space"> </span><span class="pas1-reservedword">to</span><span class="pas1-space"> </span><span class="pas1-number">11000</span><span class="pas1-space"> </span><span class="pas1-reservedword">do</span><span class="pas1-space"> 
+      primelist</span><span class="pas1-symbol">.</span><span class="pas1-identifier">add</span><span class="pas1-symbol">(</span><span class="pas1-identifier">botostr</span><span class="pas1-symbol">(</span><span class="pas1-identifier">D_IsPrime</span><span class="pas1-symbol">(</span><span class="pas1-reservedword">it</span><span class="pas1-symbol">)));
+</span><span class="pas1-space">    writeln</span><span class="pas1-symbol">(</span><span class="pas1-string">'count primes2: '</span><span class="pas1-symbol">+</span><span class="pas1-identifier">itoa</span><span class="pas1-symbol">(</span><span class="pas1-identifier">SubstringCount</span><span class="pas1-symbol">(</span><span class="pas1-string">'TRUE'</span><span class="pas1-symbol">,</span><span class="pas1-space"> primelist</span><span class="pas1-symbol">.</span><span class="pas1-identifier">text</span><span class="pas1-symbol">)));
+</span><span class="pas1-space">    sw</span><span class="pas1-symbol">.</span><span class="pas1-identifier">stop</span><span class="pas1-symbol">;
+</span><span class="pas1-space">    writeln</span><span class="pas1-symbol">(</span><span class="pas1-string">'Stop Watch Prime Tester2: '</span><span class="pas1-symbol">+</span><span class="pas1-identifier">sw</span><span class="pas1-symbol">.</span><span class="pas1-identifier">getValueStr</span><span class="pas1-symbol">);
+</span><span class="pas1-space">    primelist</span><span class="pas1-symbol">.</span><span class="pas1-identifier">clear</span><span class="pas1-symbol">;
+</span><span class="pas1-space">    mpr</span><span class="pas1-symbol">:=</span><span class="pas1-space"> TPrimes</span><span class="pas1-symbol">.</span><span class="pas1-identifier">create</span><span class="pas1-symbol">;
+</span><span class="pas1-space">    sw</span><span class="pas1-symbol">.</span><span class="pas1-identifier">Start</span><span class="pas1-symbol">;
+</span><span class="pas1-space">    writeln</span><span class="pas1-symbol">(</span><span class="pas1-string">'compiled pretest '</span><span class="pas1-symbol">+</span><span class="pas1-identifier">botostr</span><span class="pas1-symbol">(</span><span class="pas1-identifier">mpr</span><span class="pas1-symbol">.</span><span class="pas1-identifier">isprime</span><span class="pas1-symbol">(4703)))
+</span><span class="pas1-space">    </span><span class="pas1-reservedword">for</span><span class="pas1-space"> </span><span class="pas1-reservedword">it</span><span class="pas1-symbol">:=</span><span class="pas1-space"> </span><span class="pas1-number">1000</span><span class="pas1-space"> </span><span class="pas1-reservedword">to</span><span class="pas1-space"> </span><span class="pas1-number">11000</span><span class="pas1-space"> </span><span class="pas1-reservedword">do</span><span class="pas1-space"> 
+      primelist</span><span class="pas1-symbol">.</span><span class="pas1-identifier">add</span><span class="pas1-symbol">(</span><span class="pas1-identifier">botostr</span><span class="pas1-symbol">(</span><span class="pas1-identifier">mpr</span><span class="pas1-symbol">.</span><span class="pas1-identifier">IsPrime</span><span class="pas1-symbol">(</span><span class="pas1-reservedword">it</span><span class="pas1-symbol">)));
+</span><span class="pas1-space">    </span><span class="pas1-comment">{for it:= 0 to 500000 do begin 
+       if it mod 100000 = 0 then apd.position:= apd.position+10;
+       primelist.add(botostr(mpr.IsPrime(it)));
+    end; }</span><span class="pas1-space">  
+    writeln</span><span class="pas1-symbol">(</span><span class="pas1-string">'count primes3: '</span><span class="pas1-symbol">+</span><span class="pas1-identifier">itoa</span><span class="pas1-symbol">(</span><span class="pas1-identifier">SubstringCount</span><span class="pas1-symbol">(</span><span class="pas1-string">'TRUE'</span><span class="pas1-symbol">,</span><span class="pas1-space"> primelist</span><span class="pas1-symbol">.</span><span class="pas1-identifier">text</span><span class="pas1-symbol">)));</span><span class="pas1-space">   
+    sw</span><span class="pas1-symbol">.</span><span class="pas1-identifier">stop</span><span class="pas1-symbol">;
+</span><span class="pas1-space">    writeln</span><span class="pas1-symbol">(</span><span class="pas1-string">'Stop Watch Prime Tester3: '</span><span class="pas1-symbol">+</span><span class="pas1-identifier">sw</span><span class="pas1-symbol">.</span><span class="pas1-identifier">getValueStr</span><span class="pas1-symbol">);
+</span><span class="pas1-space">    
+    </span><span class="pas1-reservedword">if</span><span class="pas1-space"> PythonVersionFromPath</span><span class="pas1-symbol">(</span><span class="pas1-identifier">PYHOME</span><span class="pas1-symbol">,</span><span class="pas1-space"> aPythonVersion</span><span class="pas1-symbol">,</span><span class="pas1-space"> false</span><span class="pas1-symbol">)</span><span class="pas1-space"> </span><span class="pas1-reservedword">then</span><span class="pas1-space"> </span><span class="pas1-reservedword">begin
+</span><span class="pas1-space">      aPythonVersion</span><span class="pas1-symbol">.</span><span class="pas1-identifier">AssignTo</span><span class="pas1-symbol">(</span><span class="pas1-identifier">eng</span><span class="pas1-symbol">)</span><span class="pas1-space"> </span><span class="pas1-symbol">;
+</span><span class="pas1-space">      writeln</span><span class="pas1-symbol">(</span><span class="pas1-string">'Version from path: '</span><span class="pas1-symbol">+</span><span class="pas1-identifier">TPythonEngine</span><span class="pas1-symbol">(</span><span class="pas1-identifier">eng</span><span class="pas1-symbol">).</span><span class="pas1-identifier">RegVersion</span><span class="pas1-symbol">);
+</span><span class="pas1-space">      writeln</span><span class="pas1-symbol">(</span><span class="pas1-string">'DLL from path: '</span><span class="pas1-symbol">+</span><span class="pas1-identifier">TPythonEngine</span><span class="pas1-symbol">(</span><span class="pas1-identifier">eng</span><span class="pas1-symbol">).</span><span class="pas1-identifier">DLLName</span><span class="pas1-symbol">);
+</span><span class="pas1-space">    </span><span class="pas1-reservedword">end</span><span class="pas1-symbol">;
+</span><span class="pas1-space">  </span><span class="pas1-reservedword">except
+</span><span class="pas1-space">    eng</span><span class="pas1-symbol">.</span><span class="pas1-identifier">raiseError</span><span class="pas1-symbol">;
+</span><span class="pas1-space">    writeln</span><span class="pas1-symbol">(</span><span class="pas1-identifier">ExceptionToString</span><span class="pas1-symbol">(</span><span class="pas1-identifier">ExceptionType</span><span class="pas1-symbol">,</span><span class="pas1-space"> ExceptionParam</span><span class="pas1-symbol">));
+</span><span class="pas1-space">  </span><span class="pas1-reservedword">finally
+</span><span class="pas1-space">    eng</span><span class="pas1-symbol">.</span><span class="pas1-identifier">Free</span><span class="pas1-symbol">;
+</span><span class="pas1-space">    aPythonVersion</span><span class="pas1-symbol">.</span><span class="pas1-identifier">Free</span><span class="pas1-symbol">;
+</span><span class="pas1-space">    primelist</span><span class="pas1-symbol">.</span><span class="pas1-identifier">Free</span><span class="pas1-symbol">;
+</span><span class="pas1-space">    mpr</span><span class="pas1-symbol">.</span><span class="pas1-identifier">Free</span><span class="pas1-symbol">;
+</span><span class="pas1-space">    sw</span><span class="pas1-symbol">.</span><span class="pas1-identifier">Free</span><span class="pas1-symbol">;
+</span><span class="pas1-space"> </span><span class="pas1-reservedword">end</span><span class="pas1-symbol">;</span><span class="pas1-space">  
+  
+  </span><span class="pas1-comment">//PYLaz_P4D_Demo2;   EKON25 - explicit better than implicit
+</span><span class="pas1-space">  eng</span><span class="pas1-symbol">:=</span><span class="pas1-space"> TPythonEngine</span><span class="pas1-symbol">.</span><span class="pas1-identifier">Create</span><span class="pas1-symbol">(</span><span class="pas1-reservedword">Nil</span><span class="pas1-symbol">);
+</span><span class="pas1-space">  eng</span><span class="pas1-symbol">.</span><span class="pas1-identifier">pythonhome</span><span class="pas1-symbol">:=</span><span class="pas1-space"> PYHOME</span><span class="pas1-symbol">;
+</span><span class="pas1-space">  eng</span><span class="pas1-symbol">.</span><span class="pas1-identifier">loadDLL</span><span class="pas1-symbol">;
+</span><span class="pas1-space">  println</span><span class="pas1-symbol">(</span><span class="pas1-identifier">GetPythonEngine</span><span class="pas1-symbol">.</span><span class="pas1-identifier">EvalStr</span><span class="pas1-symbol">(</span><span class="pas1-string">'__import__(&quot;decimal&quot;).Decimal(0.1)'</span><span class="pas1-symbol">));</span><span class="pas1-space"> 
+  eng</span><span class="pas1-symbol">.</span><span class="pas1-identifier">Free</span><span class="pas1-symbol">;
+</span><span class="pas1-space">  apd</span><span class="pas1-symbol">.</span><span class="pas1-identifier">position</span><span class="pas1-symbol">:=</span><span class="pas1-space"> </span><span class="pas1-number">100;
+</span><span class="pas1-space">  
+</span><span class="pas1-reservedword">End</span><span class="pas1-symbol">.
+
+</span><span class="pas1-reservedword">Ref</span><span class="pas1-symbol">:</span><span class="pas1-space"> </span><span class="pas1-number">78498</span><span class="pas1-space"> prime numbers</span><span class="pas1-symbol">:
+</span><span class="pas1-space"> mX4 executed</span><span class="pas1-symbol">:</span><span class="pas1-space"> </span><span class="pas1-number">19/10/2021</span><span class="pas1-space"> </span><span class="pas1-number">12:28:54</span><span class="pas1-space">  Runtime</span><span class="pas1-symbol">:</span><span class="pas1-space"> </span><span class="pas1-number">0:0:</span><span class="pas1-float">16.485</span><span class="pas1-space">  Memload</span><span class="pas1-symbol">:</span><span class="pas1-space"> </span><span class="pas1-number">74%</span><span class="pas1-space"> use
+ mX4 executed</span><span class="pas1-symbol">:</span><span class="pas1-space"> </span><span class="pas1-number">19/10/2021</span><span class="pas1-space"> </span><span class="pas1-number">11:59:40</span><span class="pas1-space">  Runtime</span><span class="pas1-symbol">:</span><span class="pas1-space"> </span><span class="pas1-number">0:1:</span><span class="pas1-float">4.390</span><span class="pas1-space">  Memload</span><span class="pas1-symbol">:</span><span class="pas1-space"> </span><span class="pas1-number">72%</span><span class="pas1-space"> use
+
+</span><span class="pas1-reservedword">Doc</span><span class="pas1-symbol">:</span><span class="pas1-space"> One thing </span><span class="pas1-reservedword">to</span><span class="pas1-space"> note </span><span class="pas1-reservedword">is</span><span class="pas1-space"> that the map</span><span class="pas1-symbol">()</span><span class="pas1-space"> </span><span class="pas1-reservedword">function</span><span class="pas1-space"> returns an iterable </span><span class="pas1-reservedword">object</span><span class="pas1-symbol">,</span><span class="pas1-space"> </span><span class="pas1-reservedword">and</span><span class="pas1-space"> thus we can use the list</span><span class="pas1-symbol">()</span><span class="pas1-space"> </span><span class="pas1-reservedword">function</span><span class="pas1-space"> </span><span class="pas1-reservedword">to</span><span class="pas1-space"> generate a list from this iterable</span><span class="pas1-symbol">.
+</span><span class="pas1-identifier">writeln</span><span class="pas1-symbol">(</span><span class="pas1-string">'RegVersion: '</span><span class="pas1-symbol">+</span><span class="pas1-identifier">itoa</span><span class="pas1-symbol">(</span><span class="pas1-identifier">TPythonEngine</span><span class="pas1-symbol">(</span><span class="pas1-identifier">eng</span><span class="pas1-symbol">).</span><span class="pas1-identifier">RegVersion</span><span class="pas1-symbol">));
+</span><span class="pas1-identifier">https</span><span class="pas1-symbol">:</span><span class="pas1-comment">//stackoverflow.com/questions/16779799/py-initialize-and-py-finalize-and-matplotlib
+
+</span><span class="pas1-identifier">import threading 
+  
+</span><span class="pas1-reservedword">def</span><span class="pas1-space"> print_hello_three_times</span><span class="pas1-symbol">():
+</span><span class="pas1-space">  </span><span class="pas1-reservedword">for</span><span class="pas1-space"> i </span><span class="pas1-reservedword">in</span><span class="pas1-space"> range</span><span class="pas1-symbol">(3):
+</span><span class="pas1-space">    print</span><span class="pas1-symbol">(&quot;</span><span class="pas1-identifier">Hello</span><span class="pas1-symbol">&quot;)
+</span><span class="pas1-space">  
+</span><span class="pas1-reservedword">def</span><span class="pas1-space"> print_hi_three_times</span><span class="pas1-symbol">():</span><span class="pas1-space"> 
+    </span><span class="pas1-reservedword">for</span><span class="pas1-space"> i </span><span class="pas1-reservedword">in</span><span class="pas1-space"> range</span><span class="pas1-symbol">(3):</span><span class="pas1-space"> 
+      print</span><span class="pas1-symbol">(&quot;</span><span class="pas1-identifier">Hi</span><span class="pas1-symbol">&quot;)</span><span class="pas1-space"> 
+
+t1 </span><span class="pas1-symbol">=</span><span class="pas1-space"> threading</span><span class="pas1-symbol">.</span><span class="pas1-identifier">Thread</span><span class="pas1-symbol">(</span><span class="pas1-identifier">target</span><span class="pas1-symbol">=</span><span class="pas1-identifier">print_hello_three_times</span><span class="pas1-symbol">)</span><span class="pas1-space">  
+t2 </span><span class="pas1-symbol">=</span><span class="pas1-space"> threading</span><span class="pas1-symbol">.</span><span class="pas1-identifier">Thread</span><span class="pas1-symbol">(</span><span class="pas1-identifier">target</span><span class="pas1-symbol">=</span><span class="pas1-identifier">print_hi_three_times</span><span class="pas1-symbol">)</span><span class="pas1-space">  
+t1</span><span class="pas1-symbol">.</span><span class="pas1-identifier">start</span><span class="pas1-symbol">()
+</span><span class="pas1-identifier">t2</span><span class="pas1-symbol">.</span><span class="pas1-identifier">start</span><span class="pas1-symbol">()
+
+</span><span class="pas1-identifier">This </span><span class="pas1-reservedword">package</span><span class="pas1-space"> implements JSON support </span><span class="pas1-reservedword">for</span><span class="pas1-space"> FPC</span><span class="pas1-symbol">.
+</span><span class="pas1-space">    
+</span></code></pre><!--EndFragment--></body>
+</html>

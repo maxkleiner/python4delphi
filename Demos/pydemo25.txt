@@ -1,0 +1,119 @@
+PROGRAM SEPDemo__PythonTemplate_Puzzle_25;
+//https://medium.com/fintechexplained/top-python-tips-tricks-dd996b807865
+
+Const PYHOME32 = 'C:\Users\max\AppData\Local\Programs\Python\Python36-32\'; 
+      PYDLL32  = 'C:\Users\max\AppData\Local\Programs\Python\Python36-32\python36.dll'; 
+
+      CHEXSTR = '00:c9:73:e2:3b:11:01:2f:2c:62:a4:1a:74:3f:92:';         
+               
+      HEXCONVERT =
+      '""" convert hex string integer to int """ '+LF+
+      'def convert(n: str) -> int:               '+LF+
+      '    # get rid of ":", spaces and newlines '+LF+
+      '    hex = n.replace(":", "").replace("\n","").replace(" ","")'+LF+
+      '    return int(hex,16)';     
+      
+var bufs, tabstr: string;               
+Begin  //@Main
+  maxform1.console1click(self)
+  memo2.height:= 200;
+  memo2.font.name:= 'Courier';
+  with TPythonEngine.Create(Nil) do begin
+    pythonhome:= PYHOME32;
+    try
+     opendll(PYDLL32)
+      Println('Colab Platform: '+ 
+          EvalStr('__import__("platform").platform()')); 
+     Println('DIR Check: '+ 
+     EvalStr('__import__("subprocess").check_output("dir",shell=True).strip().decode()'));
+     //1. Unpacking Array Items
+     ExecString('first_name, last_name = ["Farhad", "Malik"]');
+     Println('Unpacking Array: '+EvalStr('first_name, last_name'));
+     //2. Swapping Variables
+     ExecString('last_name, first_name = first_name, last_name');
+     Println('Swapping Variables: '+EvalStr('first_name, last_name'));
+     //4. Repeat String
+     Println('Repeat String: '+EvalStr('"A"*3'));
+     //5. Slicing
+     ExecString('y = "Abc"');
+     Println('5. Slicing: '+EvalStr('y[:2], y[1:], y[:-2], y[-2:]'));
+     ExecString('x = "abc"');
+     Println('6. Reversing: '+EvalStr('x[::-1]'));
+     Println('6. Reversing: '+EvalStr('"abc"[::-1]'));
+     Println('7. Negative Index: '+EvalStr('"abc"[-1]'));
+     Println('8. Intersect Sets: '+EvalStr('{1,2,3}.intersection({3,4,5})'));
+     Println('9. Difference In Sets: '+EvalStr('{1,2,3}.difference({3,4,5})'));
+     Println('10. Union Of Collections: '+EvalStr('{1,2,3}.union({3,4,5})'));
+     ExecString('def my_new_function(my_value="hello"):'+LF+
+                '  return my_value');
+     Println('11. Optional Arguments: '+EvalStr('my_new_function()'));
+     Println('11. Optional Arguments: '+EvalStr('my_new_function("test")'));
+     
+     ExecString('l=[]'+LF+'def myfunc(*arguments):'+LF+
+                '  for a in arguments:            '+LF+
+                '    l.append(a)                  '+LF+
+                '  return l                       '  );
+     Println('12. Unknown Arguments Using *arguments: '+
+                  EvalStr('myfunc("a","b","c")'));
+                  
+     ExecString('def myfunc2(**arguments):'+LF+
+                '  return arguments["city"]');
+     ExecString('ddata={"school":"DAV","standard":"7","city": "Delphi"}');
+     Println('13. Dictionary As Arguments Using **arguments '+
+                  EvalStr('myfunc2(**ddata)'));  
+                                        
+     Println('20. Joining Collection: '+EvalStr('" ".join(["FinTech", "Explained"])'));  
+     Println('21. Memory Footprint Of An Object: '+
+                  EvalStr('__import__("sys").getsizeof("farhadmalik")'));  
+     Println('22. Print Current Directory: '+
+                  EvalStr('__import__("os").getcwd()'));
+     
+     ExecString('import sys'); 
+     Println('23. Print Imported Modules: '+  
+                  EvalStr('[m.__name__ for m in sys.modules.values() if m]'));
+     Println('24. Get Current Process Id: '+
+                  EvalStr('__import__("os").getpid()')); 
+                  
+     ExecString('data={"Name": "Roger","Pin": 3056,"ActNo":9892345112234565}');
+     Println('25. FrozenSet: '+
+                  EvalStr('frozenset(data)'));   
+     ExecString('with open("pydata.txt","w") as f:'+LF+' f.write("HelloPy2")');
+     openfile(exepath+'pydata.txt'); 
+     ExecString('num_list = [21,13,19,3,11,5,18]'+LF+'num_list.sort()'); 
+     Println('26. Median Skill Test: '+EvalStr('num_list[len(num_list)//2]'));
+     ExecString('import math'); 
+     Println('27. map() function Area Test: '+
+           EvalStr('list(map(lambda x: round(math.pi*(x**2),2), [1,2,3]))'));  
+    except
+      raiseError;
+    finally                         
+      Free;
+    end;
+  end; 
+    Writeln('Demo01	A simple Python evaluator Gauss evaluator '+CRLF+
+   'Demo02	Evaluate expression with ExecSynCheck1 and Strlist '+CRLF+
+   'http://www.softwareschule.ch/examples/pydemo2.txt          '+CRLF+
+   'http://www.softwareschule.ch/examples/pydemo2.htm          '+CRLF+
+   'Demo03	15-powerful-python-one-liners PYLaz_P4D_Demo2      '+CRLF+
+   'Demo04	Eval_IOEvents (advanced case) Demo3 PYLaz_P4D_Demo2'+CRLF+
+   'Demo05	Defining a mX4_Python Template                     '+CRLF+
+   'Demo06	Defining a Python Template_PyCryptoDome_Bitcoin    '+CRLF+
+   'Demo07	Using Translator with Subprocess()                 '+CRLF+
+   'Demo25	this finteche expalained Demo                      ');
+End.
+
+//https://medium.com/pythoneers/10-important-python-questions-you-should-know-ed42b4104185
+//https://github.com/Ebazhanov/linkedin-skill-assessments-quizzes/blob/master/python/python-quiz.md  
+
+        
+       
+
+
+
+
+
+        
+   
+   
+      
+   

@@ -1,0 +1,409 @@
+PROGRAM SEPDemo_App_mX4_Python_Cheat_Sheet5;
+//Python Cheat Sheet: Functions and Tricks
+//http://www.softwareschule.ch/examples/cheatsheetpython.pdf
+//https://realpython.com/python-json/
+//https://wiki.freepascal.org/Developing_Python_Modules_with_Pascal#Minimum_Python_API
+{Purpose: Python Cheat Sheet: Functions and Tricks. }
+
+//<Constant declarations> 
+//Please check providers list below:['mymemory', 'microsoft', 'deepl', 'libre'].
+{TYPE <Type declarations> Pascal-Delphi-Python-Json-OLEAutomation} 
+                                                                          
+Const PYHOME32 = 'C:\Users\max\AppData\Local\Programs\Python\Python36-32\'; 
+      PYDLL32  = 'C:\Users\max\AppData\Local\Programs\Python\Python36-32\python36.dll'; 
+
+Var  //<Variable declarations>
+  i: integer; eg: TPythonEngine;
+
+//<FUNCTION> //<PROCEDURE> 
+//Generate public key and private key
+
+Const PYBC =  'from bitcoin import *'+LF+
+              'my_private_key = random_key()'+LF+
+              'my_public_key = privtopub(my_private_key)'+LF+
+              'my_bitcoin_addr = pubtoaddr(my_public_key)'+LF+
+              'print(my_bitcoin_addr)';
+              
+Const USERAGENT = 'Mozilla/5.0 (X11; Linux i686) AppleWebKit/537.17 '+
+                  '(KHTML, maXbox4) Chrome/24.0.1312.27 Safari/537.17'; 
+
+Const WEBURL= 'https://jsonplaceholder.typicode.com/todos'; 
+
+Const REXDEF= 'def striphtml(data):      '+LF+
+               '  p = re.compile(r"<.*?>")'+LF+
+               '  return p.sub("", data)  ';  
+               
+//https://gist.github.com/lkdocs/6519378               
+Const DEF_RSAKEYS= 'def generate_RSA(bits=2048): '+LF+
+          '  '''''+LF+
+          //'  Generate an RSA keypair with exponent of 65537 in PEM format'+LF+
+          //'  param: bits The key length in bits '+LF+
+          //'  Return private key and public key '+LF+
+          '  '''''+LF+
+          '  from Crypto.PublicKey import RSA '+LF+
+          '  new_key = RSA.generate(bits, e=65537)'+LF+ 
+          '  public_key = new_key.publickey().exportKey("PEM")'+LF+ 
+          '  private_key = new_key.exportKey("PEM")'+LF+ 
+          '  return private_key, public_key';
+               
+procedure GetJSONData;
+var  XMLhttp: OleVariant; // As Object Automation
+     ajt: TJson; JObj: TJsonObject2; JArray: TJsonArray2;
+     response,statuscode: string; cnt: integer;
+begin  
+  XMLhttp:= CreateOleObject('msxml2.xmlhttp')      
+  XMLhttp.Open('GET', WEBURL, False)   //False is async
+  //XMLhttp.setRequestHeader('Content-Type','application/x-www-form-urlencoded');
+  XMLhttp.setRequestHeader('Content-Type', 'application/json; charset=utf-8');
+  XMLhttp.Send();
+  response:= XMLhttp.responseText; //assign the data
+  statuscode:= XMLhttp.status; 
+  //writeln(statuscode +CRLF+ response)
+  ajt:= TJson.create(); 
+  try
+    ajt.parse(response);
+  except
+    writeln( 'Exception: <TJsonClass>"" parse error: {'+
+                  exceptiontostring(exceptiontype, exceptionparam)) 
+  end; 
+  JArray:= ajt.JsonArray;
+  writeln('Get all Titles: '+itoa(jarray.count));     
+  for cnt:= 0 to jarray.count-1 do
+    writeln(itoa(cnt)+' '+Jarray.items[cnt].asObject.values['title'].asString);   
+  ajt.Free;
+end;
+
+var runterrors, sdata: ansistring; atext: string;
+
+Begin  //@Main
+//<Executable statements>
+//https://www.amazon.com/Patterns-konkret-Max-Kleiner/dp/3935042469
+{ ISBN-10 ? : 3935042469  ISBN-13 ? : 978-3935042468} 
+
+  eg:= TPythonEngine.Create(Nil);
+  eg.pythonhome:= PYHOME32;
+  eg.opendll(PYDLL32)
+  //eg.IO:= pyMemo;
+  try
+    eg.ExecStr('import base64'+LF+'import urllib.parse');
+    eg.ExecStr('import urllib.request,re,os,textwrap,json,requests,math,csv');
+    eg.Execstring(REXDEF);
+    
+   { eg.Execstring('import nacl');
+    eg.Execstring('from nacl.encoding import HexEncoder'+CRLF+
+                   'from nacl.exceptions import CryptoError'+CRLF+
+                   'from nacl.encoding import Base64Encoder'+CRLF+
+                   'from pydub import AudioSegment');  }           
+    
+   //eg.Execstring('from Crypto.PublicKey import RSA');                
+    
+   println(eg.evalStr('base64.b64decode("2e8WuEr0+5nc14VBxQrOl4ob6guOTySr")'));
+  //eng.Execstring('priv_key = nacl.public.PrivateKey.generate()');
+  //openWeb('http://www.softwareschule.ch/examples/cheatsheetpython.pdf');
+    
+  //# 1.map(func, iter) Executes the function on all elements of iterable
+   println(eg.evalStr('list(map( lambda x: x[0],["red","green","blue"]))'));
+   
+  //# 2.map(func, i1,...,Executes the function on all k elements of k iterables
+   println(eg.evalStr('list(map(lambda x,y: str(x)+" "+y + "s",[0,2,2],'+
+                                       '[ "apple" , "orange" , "banana" ]))'));
+    
+  //# 3.string.join(iter), Concatenates iterable elements separated by string
+   println(eg.evalStr('" marries " .join(list([ "Alice" , "Bob" ]))'));
+
+  //# 4.filter(func,iterable),Filters out elements in iterable for function returns False (or 0)
+   println(eg.evalStr('list(filter(lambda x: True if x> 17 else False,[1,15,17,18]))'));
+   
+  //# 5.string.strip(), Removes leading and trailing whitespaces of string
+   println(eg.evalStr('( " \n \t 42 \t " .strip())'));
+   
+  //# 6.sorted(iter), Sorts iterable in ascending order
+   println(eg.evalStr('sorted([ 8 , 3 , 2 , 42 , 5 ])'));
+   
+  //# 7.sorted(iter,key=key) , Sorts according to the key function in ascending order 
+   println(eg.evalStr('sorted([ 8,3,2,42,5 ], key=lambda x: 0 if x== 42 else x)'));
+   
+  //# 8.help(func) , Returns documentation of func
+  // println(eg.evalStr('help(''print'')'));
+   saveString(exepath+'pyhelp.py', 'help(''print'')');
+   print(getDosOutput('py '+exepath+'pyhelp.py', exePath));
+   
+  //# 9.zip(i1, i2, ...), Groups the i-th elements of iterators i1,i2,...together
+   println(eg.evalStr('list(zip([''Alice'',''Anna''],[''Bob'',''Jon'',''Frank'']))'));
+   
+  //# 10.Unzip, Equal to: 1) unpack the zipped list, 2) zip the result
+   println(eg.evalStr('list(zip(*[(''Alice'',''Bob''),(''Anna'',''Jon'')]))'));
+  
+  //# 11.enumerate(iter), Assigns a counter value to each element of iterable
+   println(eg.evalStr('list(enumerate(["Alice","Bob","Jon"]))'));
+   
+  //# 12.python -m http.server<P>,Want to share files between PC and phone?
+  //https://docs.python.org/3/library/http.server.html
+   //print(getDosOutput('py -m http.server<8080>', exePath));
+   //ExecuteShell('py', '-m http.server 8080');
+  
+  //# 13.Read comic Open the comic series xkcd in your web browser
+  //eg.Execstring('import antigravity');
+  
+  //# 14.Zen of Python import this
+   eg.execString('from this import *');
+   println('14. import this: '+CRLF+
+        StringReplace(eg.EvalStr('repr("".join([d.get(c,c) for c in s]))'),
+                                                '\n',CR+LF,[rfReplaceAll]));
+  
+  //# 15.Swapping numbers, Swapping vars is a breeze in Python. No offense, Java!
+  eg.execString('a, b = ''Jane'' , ''Alice'''+CRLF+'a, b = b, a');
+  println(eg.evalStr('a, b'));
+  
+  //# 16.Unpacking arguments, Use a sequence as function arguments!
+  eg.execString('def f (x, y, z) : return x + y * z');
+  println(eg.evalStr('f(*[ 1 , 3 , 4 ])'));
+  println(eg.evalStr('f(**{ ''z'': 4 , ''x'': 1 , ''y'': 3 })'));
+  println('30 cos: '+eg.evalStr('math.cos(math.radians(30))'));
+  printF('30 cos in rad: %.18f ',[cos((30.0))]);
+  //Assuming trigonometric arguments in degrees | Use radians instead
+  printF('30 cos in deg: %.18f ',[cos(degtorad(30.0))]);
+  //Assuming trigonometric arguments in radians | Use degrees instead
+  printF('30 cos in deg: %.18f ',[cos(radtodeg(degtorad(30.0)))]);
+  println('pi '+eg.evalStr('math.sin((math.pi))'));
+  maXcalcF('sin(pi)')
+  writeln(floattostr(sin((PI))));
+  println('45 rad: '+eg.evalStr('math.sin(45)'));
+  writeln('45 rad: '+floattostr(sin(45.0)));
+  writeln('45 rad: '+floattostr(maXcalc('sin(45.0)')));
+  printF('45 rad: %.18f ',[maxCalc('sin(45.0)')]);
+  printF('45 rad: %.18f ',[sin(45.0)]);
+  
+  printF('this is %.18f ',[maxCalc('ln(2)^e')]); //this is 0.369248502937272178
+  //println('error: '+eg.evalStr('math.foo()')); 
+  
+  //eg.ExecStr('try:'+CRLF+'  math.foo()'+CRLF+'except ValueError:'+
+    //                            '  print("not an attribute")'); 
+  eg.execString('from faker import Faker');  
+  //eg.execString('import Faker from faker'); 
+  eg.execString('fake = Faker()'); 
+  eg.execString('fake1 = Faker()'); 
+  println('compare faker: '+eg.evalStr('fake == fake1'));  
+  //csv files:
+  eg.execString('f = open(r"C:\maXbox\works2021\maxbox4\Import\maxbox\Examples\EKON\BASTA2020\titanic_train.csv", "r")'); 
+  //eg.execString('csvReader = csv.reader(f)');
+  //# for every row, print the row
+  eg.execStr('csvReader = csv.reader(f)');
+  eg.execStr('titanic=[]');
+  eg.execStr('for row in csvReader:'+CRLF+'  titanic.append(row)');
+  println(eg.evalStr('len(titanic)')); 
+  println(eg.evalStr('titanic[1:10]')); 
+    {for row in csvReader:
+        print(row)  }
+  eg.execString('f.close()');
+  
+   //lambda func
+  eg.execString('f = lambda x , y : x + y')
+  println('lambda back; '+eg.evalStr('f(2,7)'));
+  
+  printF('quora : %.18f ',[sqrt(111.0)]);
+  
+  //map Apply specific function on each list element:
+  eg.execStr('li = [1,4,81,9]');
+  println('lambda list; '+eg.evalStr('list(map(lambda x : x * 2, li))'));
+  //Functions with more than one parameter requires an additional list per parameter:
+  println('lambda list2; '+eg.evalStr('list(map(math.pow, li, [1,2,3,4]))'));
+  
+  println(ReverseStr('SPAM'));
+  println(ReverseString('SPAM'));
+  
+  Writeln('some HEX RegEx___________________________________^');
+  
+  println('RegEx: '+eg.evalStr('re.findall(r"a.c", "abc aac aa abb a c")'));
+  
+  println('RegEx: '+eg.evalStr('re.findall(r"\s\d\s", "1 22 4 22 1 a b c")'));
+  println('RegEx: '+eg.evalStr('re.findall(r"[^aeiou ]","Python Kurs")'));
+  atext:= '"adm06:x:706:1000:St.Graf:/home/adm06:/bin/bash"';
+  println(eg.evalStr('re.match("([a-z0 -9]+):x:[0 -9]+:[0 -9]+:(.+):.+:.+$",'
+                                                                 +atext+')'));
+                                                                 
+ { In Python 3, the purpose of input() in Python 2 is removed and the same result can be achieved by using the eval(input()).}   
+  //println(eg.evalStr('raw_input(prompt)')); 
+  //println(eg.evalStr('input()')); 
+  //Exception: <class 'RuntimeError'>: input(): lost sys.stdin.
+  
+     
+  //if RunByteCode(exepath+'examples\pydemo13tutor.psb', runterrors) then 
+    // writeln('errors '+runterrors);
+  
+  
+ { eg.execString('import psutil, os')
+  eg.execString('adlst = []')
+  eg.execString('p = psutil.Process( os.getpid())');
+  eg.execString('for dll in p.memory_maps():'+CRLF+' print(dll.path)');
+  eg.execString('for dll in p.memory_maps():'+CRLF+' adlst.append(dll.path)');
+  //println(eg.evalStr(' print(dll.path)'));
+  println(eg.evalStr('p'));
+  println(eg.evalStr('adlst'));
+  println('dll list detect: '+
+             StringReplace(eg.EvalStr('adlst'),',',CR+LF,[rfReplaceAll]));   }
+    
+  // eg.Execstring('AudioSegment.from_wav(r"C:\maXbox\soundnvision\01_magix.wav").export(r"C:\maXbox\mX47464\maxbox4\web\G9\G9_magix.mp3", format="mp3")');           
+
+    { eng.Execstring(DEF_RSAKEYS);
+      eng.Execstring('d=generate_RSA(bits=2048)')
+      println('RSA Publickey '+eng.evalStr('d[1]'));  }
+ 
+   //# Get the maximum number of complete TODOs.
+   //println('user_max_complete = '+eng.evalStr('top_users[0][1]')); 
+                    
+  except
+    eg.raiseError;
+  finally
+    eg.Free;
+    //aPythonVersion.Free;
+  end;  
+  
+  //if RunByteCode(exepath+'examples\pydemo13tutor.psb', runterrors) then 
+    //writeln('errors '+runterrors);
+    
+ //writeln(botostr(RunCompiledScript2(exepath+'examples\pydemo13tutor.psb', runterrors)));
+   //sdata:= loadfile(exepath+
+      //  'examples\058_pas_filefinder32test.psb');
+   { writeln('starts byte code__________________________________^');  
+    sdata:= loadfile(exepath+
+        'examples\pydemo13tutor.psb');    
+    writeln(botostr(RunBytecode(sdata, runterrors)));
+    println('hasta la vista dont come back');   }
+    
+   // Code Example Binary file:
+  { sr:= loadFile(Exepath+'maXbox4.exe')
+   writeln(SHA256ToStr(CalcSHA256(sr)))
+   stringtofile(Exepath+'maXbox42.exe',sr,false); //append = false
+   writeln(SHA256ToStr(CalcSHA256(loadFile(Exepath+'maXbox42.exe'))));   }
+     
+  
+  //GetJSONData;  
+  //maXcalcF('2^64 /(60*60*24*365)')  
+//<Definitions>  
+End. 
+
+Ref:  https://www.sonarqube.org/features/multi-languages/python/
+ mX4 executed: 20/09/2021 19:20:40  Runtime: 0:0:2.782  Memload: 69% use
+ 
+ The sine of 30 =  -0.9880316240928618
+
+    The sine of 45 =  0.8509035245341184
+
+    The sine of 60 =  -0.3048106211022167
+
+C:\maXbox\mX39998\maxbox3>pip3 install -t C:\Users\max\AppData\Local\Programs\Py
+thon\Python36-32\Lib pydub
+Collecting pydub
+  Downloading pydub-0.25.1-py2.py3-none-any.whl (32 kB)
+Installing collected packages: pydub
+Successfully installed pydub-0.25.1
+
+C:\maXbox\mX39998\maxbox3>pip3 install -U -t C:\Users\max\AppData\Local\Programs
+\Python\Python36-32\Lib https://files.pythonhosted.org/packages/19/29/f7a38ee300
+83f2caa14cc77a6d34c4d5cfd1a69641e87bf1b3d6ba90d0ba/psutil-5.8.0-cp36-cp36m-win32
+.whl
+Collecting psutil==5.8.0
+  Using cached psutil-5.8.0-cp36-cp36m-win32.whl (240 kB)
+ERROR: distributed 2.22.0 has requirement cloudpickle>=1.5.0, but you'll have cl
+oudpickle 0.5.3 which is incompatible.
+Installing collected packages: psutil
+Successfully installed psutil-5.8.0
+
+C:\maXbox\mX39998\maxbox3>py
+Python 3.6.3 (v3.6.3:2c5fed8, Oct  3 2017, 18:11:49) [MSC v.1900 64 bit (AMD64
+ on win32
+Type "help", "copyright", "credits" or "license" for more information.
+>>> import psutil, os
+>>> p = psutil.Process( os.getpid())
+>>> for dll in p.memory_maps():
+...   print(dll.path)
+...
+C:\Users\max\AppData\Local\Programs\Python\Python36\python.exe
+C:\Users\max\AppData\Local\Programs\Python\Python36\DLLs\_bz2.pyd
+C:\Users\max\AppData\Local\Programs\Python\Python36\DLLs\_ctypes.pyd
+C:\Users\max\AppData\Local\Programs\Python\Python36\DLLs\select.pyd
+C:\Users\max\AppData\Local\Programs\Python\Python36\DLLs\_socket.pyd
+C:\Users\max\AppData\Local\Programs\Python\Python36\python36.dll
+C:\Windows\System32\locale.nls
+C:\Windows\Globalization\Sorting\SortDefault.nls
+C:\Windows\System32\en-US\KernelBase.dll.mui
+C:\Windows\SysWOW64\en-US\kernel32.dll.mui
+C:\Windows\System32\ucrtbase.dll
+C:\Users\max\AppData\Local\Programs\Python\Python36\DLLs\_lzma.pyd
+C:\Users\max\AppData\Local\Programs\Python\Python36\Lib\site-packages\psutil\_
+util_windows.cp36-win_amd64.pyd
+C:\Users\max\AppData\Local\Programs\Python\Python36\python3.dll
+C:\Windows\System32\api-ms-win-crt-filesystem-l1-1-0.dll
+C:\Windows\System32\api-ms-win-crt-conio-l1-1-0.dll
+C:\Windows\System32\api-ms-win-crt-process-l1-1-0.dll
+C:\Windows\System32\api-ms-win-crt-environment-l1-1-0.dll
+C:\Windows\System32\api-ms-win-crt-time-l1-1-0.dll
+C:\Windows\System32\api-ms-win-crt-convert-l1-1-0.dll
+C:\Windows\System32\api-ms-win-crt-string-l1-1-0.dll
+C:\Users\max\AppData\Local\Programs\Python\Python36\vcruntime140.dll
+C:\Windows\System32\api-ms-win-crt-heap-l1-1-0.dll
+C:\Windows\System32\pdh.dll
+C:\Windows\System32\api-ms-win-crt-locale-l1-1-0.dll
+C:\Windows\System32\version.dll
+C:\Windows\System32\winnsi.dll
+C:\Windows\System32\IPHLPAPI.DLL
+C:\Windows\System32\wtsapi32.dll
+C:\Windows\System32\api-ms-win-crt-stdio-l1-1-0.dll
+C:\Windows\System32\api-ms-win-crt-math-l1-1-0.dll
+C:\Windows\System32\api-ms-win-crt-runtime-l1-1-0.dll
+C:\Windows\System32\rsaenh.dll
+C:\Windows\System32\cryptsp.dll
+C:\Windows\System32\bcrypt.dll
+C:\Windows\System32\bcryptprimitives.dll
+C:\Windows\System32\cryptbase.dll
+C:\Windows\System32\powrprof.dll
+C:\Windows\System32\KernelBase.dll
+C:\Windows\System32\sspicli.dll
+C:\Windows\System32\ole32.dll
+C:\Windows\System32\oleaut32.dll
+C:\Windows\System32\rpcrt4.dll
+C:\Windows\System32\msvcrt.dll
+C:\Windows\System32\ws2_32.dll
+C:\Windows\System32\user32.dll
+C:\Windows\System32\msctf.dll
+C:\Windows\System32\shlwapi.dll
+C:\Windows\System32\imm32.dll
+C:\Windows\System32\advapi32.dll
+C:\Windows\System32\shell32.dll
+C:\Windows\System32\kernel32.dll
+C:\Windows\System32\combase.dll
+C:\Windows\System32\gdi32.dll
+C:\Windows\System32\sechost.dll
+C:\Windows\System32\psapi.dll
+C:\Windows\System32\nsi.dll
+C:\Windows\System32\ntdll.dll
+>>>
+
+
+Then to convert any file from wav to mp3 just use pydub as
+import pydub
+sound = pydub.AudioSegment.from_wav("D:/example/apple.wav")
+sound.export("D:/example/apple.mp3", format="mp3")
+
+Exception: <class 'OSError'>: Cannot load native module 'Crypto.Hash._MD5': Trying '_MD5.cp36-win32.pyd': [WinError 126] The specified module could not be found, Trying '_MD5.pyd'
+
+Patterns konkret.
+ISBN-13: 9783935042468  ISBN-10: 3935042469
+Author: Kleiner, Max
+Binding: Paperback
+Publisher: Software + Support
+Published: September 2003
+
+https://mymemory.translated.net/doc/spec.php
+Hello PyWorld_, This data will be written on the file.
+Hola PyWorld_,&#10; Estos datos se escribirán en el archivo.
+
+Install a 32-bit package with a 64 pip installer -t (Target)
+C:\Users\max\AppData\Local\Programs\Python\Python36-32>pip3 install -t C:\Users\
+max\AppData\Local\Programs\Python\Python36-32\Lib bitcoin
+----File newtemplate.txt not exists - now saved!----
+
+       
+   
+   

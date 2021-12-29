@@ -1,0 +1,81 @@
+Version:0.9
+StartHTML:0000000105
+EndHTML:0000011321
+StartFragment:0000001053
+EndFragment:0000011305
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>mXScriptasHTML</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta name="generator" content="SynEdit HTML exporter" />
+<style type="text/css">
+<!--
+body { color: #000000; background-color: #FFFFFF; }
+.pas1-assembler { }
+.pas1-character { color: #0066CC; text-decoration: underline; }
+.pas1-comment { color: #000080; font-style: italic; }
+.pas1-float { color: #00FF00; }
+.pas1-hexadecimal { color: #FF00FF; }
+.pas1-identifier { }
+.pas1-number { color: #FF0000; }
+.pas1-preprocessor { font-style: italic; }
+.pas1-reservedword { color: #000080; font-weight: bold; }
+.pas1-space { }
+.pas1-string { color: #008080; }
+.pas1-symbol { color: #FF0000; }
+-->
+</style>
+</head>
+<body>
+<!--StartFragment--><pre><code><span class="pas1-reservedword">PROGRAM</span><span class="pas1-space"> SEPDemo__PythonTemplate_ImportModuleDataHistogramShell</span><span class="pas1-symbol">;
+</span><span class="pas1-comment">{Purpose: shows running dlls from process!}
+
+</span><span class="pas1-reservedword">Const</span><span class="pas1-space"> PYHOME32 </span><span class="pas1-symbol">=</span><span class="pas1-space"> </span><span class="pas1-string">'C:\Users\max\AppData\Local\Programs\Python\Python36-32\'</span><span class="pas1-symbol">;</span><span class="pas1-space"> 
+      PYDLL32  </span><span class="pas1-symbol">=</span><span class="pas1-space"> </span><span class="pas1-string">'C:\Users\max\AppData\Local\Programs\Python\Python36-32\python36.dll'</span><span class="pas1-symbol">;</span><span class="pas1-space"> 
+      PYMODULE </span><span class="pas1-symbol">=</span><span class="pas1-space"> </span><span class="pas1-string">'C:\maXbox\mX47464\maxbox4\examples\histogram15.py'</span><span class="pas1-symbol">;
+
+</span><span class="pas1-space">      REXDEF</span><span class="pas1-symbol">=</span><span class="pas1-space"> </span><span class="pas1-string">'def striphtml(data):       '</span><span class="pas1-symbol">+</span><span class="pas1-identifier">LF</span><span class="pas1-symbol">+
+</span><span class="pas1-space">               </span><span class="pas1-string">'  p = re.compile(r&quot;&lt;.*?&gt;&quot;)'</span><span class="pas1-symbol">+</span><span class="pas1-identifier">LF</span><span class="pas1-symbol">+
+</span><span class="pas1-space">               </span><span class="pas1-string">'  return p.sub(&quot;&quot;, data)  '</span><span class="pas1-symbol">;</span><span class="pas1-space">  
+               
+</span><span class="pas1-reservedword">Begin</span><span class="pas1-space">  </span><span class="pas1-comment">//@Main
+</span><span class="pas1-space">  </span><span class="pas1-reservedword">with</span><span class="pas1-space"> TPythonEngine</span><span class="pas1-symbol">.</span><span class="pas1-identifier">Create</span><span class="pas1-symbol">(</span><span class="pas1-reservedword">Nil</span><span class="pas1-symbol">)</span><span class="pas1-space"> </span><span class="pas1-reservedword">do</span><span class="pas1-space"> </span><span class="pas1-reservedword">begin
+</span><span class="pas1-space">    pythonhome</span><span class="pas1-symbol">:=</span><span class="pas1-space"> PYHOME32</span><span class="pas1-symbol">;
+</span><span class="pas1-space">    opendll</span><span class="pas1-symbol">(</span><span class="pas1-identifier">PYDLL32</span><span class="pas1-symbol">)
+</span><span class="pas1-space">    </span><span class="pas1-reservedword">try
+</span><span class="pas1-space">      execString</span><span class="pas1-symbol">(</span><span class="pas1-string">'import psutil, os'</span><span class="pas1-symbol">)
+</span><span class="pas1-space">      execString</span><span class="pas1-symbol">(</span><span class="pas1-string">'dlst = []'</span><span class="pas1-symbol">+</span><span class="pas1-identifier">CRLF</span><span class="pas1-symbol">+</span><span class="pas1-string">'p = psutil.Process(os.getpid())'</span><span class="pas1-symbol">);
+</span><span class="pas1-space">      execString</span><span class="pas1-symbol">(</span><span class="pas1-string">'for dll in p.memory_maps():'</span><span class="pas1-symbol">+</span><span class="pas1-identifier">CRLF</span><span class="pas1-symbol">+</span><span class="pas1-string">' print(dll.path)'</span><span class="pas1-symbol">);
+</span><span class="pas1-space">      execString</span><span class="pas1-symbol">(</span><span class="pas1-string">'for dll in p.memory_maps():'</span><span class="pas1-symbol">+</span><span class="pas1-identifier">CRLF</span><span class="pas1-symbol">+</span><span class="pas1-string">' dlst.append(dll.path)'</span><span class="pas1-symbol">);
+</span><span class="pas1-space">      </span><span class="pas1-comment">//println(eg.evalStr(' print(dll.path)'));
+</span><span class="pas1-space">      println</span><span class="pas1-symbol">(</span><span class="pas1-identifier">evalStr</span><span class="pas1-symbol">(</span><span class="pas1-string">'dlst'</span><span class="pas1-symbol">));
+</span><span class="pas1-space">      println</span><span class="pas1-symbol">(</span><span class="pas1-string">'dll list detect: '</span><span class="pas1-symbol">+
+</span><span class="pas1-space">                StringReplace</span><span class="pas1-symbol">(</span><span class="pas1-identifier">EvalStr</span><span class="pas1-symbol">(</span><span class="pas1-string">'dlst'</span><span class="pas1-symbol">),</span><span class="pas1-string">','</span><span class="pas1-symbol">,</span><span class="pas1-identifier">CR</span><span class="pas1-symbol">+</span><span class="pas1-identifier">LF</span><span class="pas1-symbol">,[</span><span class="pas1-identifier">rfReplaceAll</span><span class="pas1-symbol">]));</span><span class="pas1-space">   </span><span class="pas1-comment">//}
+</span><span class="pas1-space">      println</span><span class="pas1-symbol">(</span><span class="pas1-identifier">evalStr</span><span class="pas1-symbol">(</span><span class="pas1-string">'p'</span><span class="pas1-symbol">));</span><span class="pas1-space">          
+    </span><span class="pas1-reservedword">except
+</span><span class="pas1-space">      raiseError</span><span class="pas1-symbol">;
+</span><span class="pas1-space">    </span><span class="pas1-reservedword">finally</span><span class="pas1-space">                         
+      Free</span><span class="pas1-symbol">;
+</span><span class="pas1-space">    </span><span class="pas1-reservedword">end</span><span class="pas1-symbol">;
+</span><span class="pas1-space">  </span><span class="pas1-reservedword">end</span><span class="pas1-symbol">;</span><span class="pas1-space">  
+</span><span class="pas1-comment">//&lt;Definitions&gt;  
+</span><span class="pas1-reservedword">End</span><span class="pas1-symbol">.</span><span class="pas1-space"> 
+
+</span><span class="pas1-reservedword">Ref</span><span class="pas1-symbol">:</span><span class="pas1-space">  https</span><span class="pas1-symbol">:</span><span class="pas1-comment">//www.sonarqube.org/features/multi-languages/python/
+</span><span class="pas1-identifier">C</span><span class="pas1-symbol">:\</span><span class="pas1-reservedword">maXbox</span><span class="pas1-symbol">\</span><span class="pas1-identifier">mX39998</span><span class="pas1-symbol">\</span><span class="pas1-identifier">maxbox3</span><span class="pas1-symbol">&gt;</span><span class="pas1-identifier">pip3 install </span><span class="pas1-symbol">-</span><span class="pas1-identifier">U </span><span class="pas1-symbol">-</span><span class="pas1-identifier">t C</span><span class="pas1-symbol">:\</span><span class="pas1-identifier">Users</span><span class="pas1-symbol">\</span><span class="pas1-identifier">max</span><span class="pas1-symbol">\</span><span class="pas1-identifier">AppData</span><span class="pas1-symbol">\</span><span class="pas1-identifier">Local</span><span class="pas1-symbol">\</span><span class="pas1-identifier">Programs
+</span><span class="pas1-symbol">\</span><span class="pas1-identifier">Python</span><span class="pas1-symbol">\</span><span class="pas1-identifier">Python36</span><span class="pas1-symbol">-32\</span><span class="pas1-identifier">Lib https</span><span class="pas1-symbol">:</span><span class="pas1-comment">//files.pythonhosted.org/packages/19/29/f7a38ee300
+</span><span class="pas1-number">83</span><span class="pas1-identifier">f2caa14cc77a6d34c4d5cfd1a69641e87bf1b3d6ba90d0ba</span><span class="pas1-symbol">/</span><span class="pas1-identifier">psutil</span><span class="pas1-symbol">-</span><span class="pas1-float">5.8.0</span><span class="pas1-symbol">-</span><span class="pas1-identifier">cp36</span><span class="pas1-symbol">-</span><span class="pas1-identifier">cp36m</span><span class="pas1-symbol">-</span><span class="pas1-identifier">win32</span><span class="pas1-symbol">.</span><span class="pas1-identifier">whl
+Collecting psutil</span><span class="pas1-symbol">==</span><span class="pas1-float">5.8.0
+</span><span class="pas1-space">  </span><span class="pas1-reservedword">Using</span><span class="pas1-space"> cached psutil</span><span class="pas1-symbol">-</span><span class="pas1-float">5.8.0</span><span class="pas1-symbol">-</span><span class="pas1-identifier">cp36</span><span class="pas1-symbol">-</span><span class="pas1-identifier">cp36m</span><span class="pas1-symbol">-</span><span class="pas1-identifier">win32</span><span class="pas1-symbol">.</span><span class="pas1-identifier">whl </span><span class="pas1-symbol">(240</span><span class="pas1-space"> kB</span><span class="pas1-symbol">)
+</span><span class="pas1-identifier">ERROR</span><span class="pas1-symbol">:</span><span class="pas1-space"> distributed </span><span class="pas1-float">2.22.0</span><span class="pas1-space"> has requirement cloudpickle</span><span class="pas1-symbol">&gt;=</span><span class="pas1-float">1.5.0</span><span class="pas1-symbol">,</span><span class="pas1-space"> but you</span><span class="pas1-string">'ll have cl
+</span><span class="pas1-identifier">oudpickle </span><span class="pas1-float">0.5.3</span><span class="pas1-space"> which </span><span class="pas1-reservedword">is</span><span class="pas1-space"> incompatible</span><span class="pas1-symbol">.
+</span><span class="pas1-identifier">Installing collected packages</span><span class="pas1-symbol">:</span><span class="pas1-space"> psutil
+Successfully installed psutil</span><span class="pas1-symbol">-</span><span class="pas1-float">5.8.0
+</span><span class="pas1-symbol">----</span><span class="pas1-reservedword">File</span><span class="pas1-space"> newtemplate</span><span class="pas1-symbol">.</span><span class="pas1-identifier">txt </span><span class="pas1-reservedword">not</span><span class="pas1-space"> exists </span><span class="pas1-symbol">-</span><span class="pas1-space"> now saved</span><span class="pas1-symbol">!----
+</span><span class="pas1-space">        
+   
+   
+</span></code></pre><!--EndFragment--></body>
+</html>

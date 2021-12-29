@@ -1,0 +1,70 @@
+PROGRAM SEPDemo__PythonTemplate_ImportModuleData_Export;
+{Purpose: import a module with execstring(). and shows ddata -get PyModule first!}
+//Please check providers list below:['mymemory', 'microsoft', 'deepl', 'libre'].
+{TYPE <Type declarations> Pascal-Delphi-Python-Json-JScript} 
+
+Const PYHOME32 = 'C:\Users\max\AppData\Local\Programs\Python\Python36-32\'; 
+      PYDLL32  = 'C:\Users\max\AppData\Local\Programs\Python\Python36-32\python36.dll'; 
+      PYMODULE = 'C:\maXbox\mX47464\maxbox4\examples\histogram15.py';
+      PYMODULEPATH = 'C:\maXbox\mX47464\maxbox4\examples';
+
+      PYBC =  'from bitcoin import *'+LF+
+              'my_private_key = random_key()'+LF+
+              'my_public_key = privtopub(my_private_key)'+LF+
+              'my_bitcoin_addr = pubtoaddr(my_public_key)'+LF+
+              'print(my_bitcoin_addr)';
+              
+      REXDEF= 'def striphtml(data):      '+LF+
+               '  p = re.compile(r"<.*?>")'+LF+
+               '  return p.sub("", data)  ';  
+               
+var pystr: string; pyole: Olevariant;  pystrlist: TStrings;
+               
+Begin  //@Main
+  with TPythonEngine.Create(Nil) do begin
+    pythonhome:= PYHOME32;
+    opendll(PYDLL32)
+    try
+      Execstring('import base64'+LF+'import urllib.parse, re, sys');
+      Execstring(REXDEF);
+      if fileExists(PYMODULE) then begin
+        println(UTF8toAnsi(pymodule)+CRLF)
+        {Execstring('sys.path.append(r'+'"'+PYMODULEPATH+'")');
+         Execstring('from histogram import *'); }
+        Execstring(LoadStringJ(PYMODULE));
+        //Exception: Exception: RaiseError: couldn't fetch last exception..
+        println('get module data: '+evalStr('pyplot.hist(x)'));
+        
+        pystr:= evalStr('pyplot.hist(x)');
+        pyole:= StringToVarArray(pystr);
+        //writeln(vartostr(pyole));
+        //Proc StrToStrings(S,Sep: Ansistr; const List:TStrings;const AllowEmptyString :Bool)
+        pystrlist:= TStringlist.create;
+          StrToStrings(pystr,',', pystrlist, false)
+            writeln(pystrlist.text);
+            writeln('how many items: '+itoa(pystrlist.count))
+          for it:= 0 to pystrlist.count-1 do 
+            write(pystrlist[it]+' - ');  
+         pystrlist.Free;   
+      end;
+      println(evalStr('striphtml(str(base64.b64decode("2e8WuEr0+5nc14VBxQrOl4ob6guOTySr")))'));
+    except
+      raiseError;
+    finally                         
+      Free;
+    end;
+  end;  
+//<Definitions>  
+End. 
+
+Ref:  https://www.sonarqube.org/features/multi-languages/python/
+
+Install a 32-bit package with a 64 pip installer -t (Target)
+C:\Users\max\AppData\Local\Programs\Python\Python36-32>pip3 install -t C:\Users\
+max\AppData\Local\Programs\Python\Python36-32\Lib bitcoin
+----File newtemplate.txt not exists - now saved!----
+
+
+       
+   
+   

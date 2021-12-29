@@ -1,0 +1,135 @@
+Program Python_ThreadsDemo26;
+
+//https://www.programiz.com/python-programming/time/sleep
+//Note: modify PYHOME and PYDLL :
+
+const //PYHOME = 'C:\Users\breitsch\AppData\Local\Programs\Python\Python37-32\';
+    PYHOME = 'C:\Users\max\AppData\Local\Programs\Python\Python36-32\';
+    PYDLL  = 'C:\Users\max\AppData\Local\Programs\Python\Python36-32\python36.dll'; 
+    PYSCRIPT = 'C:\maXbox\maxbox3\maxbox3\maXbox3\examples\module1maxbox1.py';
+    LB= CR+LF;
+       
+const TH1 = 'def print_hello_three_times(): '+LB+
+            '  for i in range(3):           '+LB+
+            '    winsound.Beep(540, 500)    '+LB+
+            '    #time.sleep(1.4)           '+LB+
+            '  return "Hello"';
+  
+const TH2 = 'def print_hi_three_times():    '+LB+ 
+            '  for i in range(3):           '+LB+
+            '    print("\a")                '+LB+
+            '    winsound.Beep(440, 500)    '+LB+
+            '  return "Hi"'; 
+            
+const ATIME='while True: '+LB+ 
+            '  localtime = time.localtime()'+LB+ 
+            '  result = time.strftime("%I:%M:%S %p", localtime)'+LB+ 
+            '  print(result, end="", flush=True)'+LB+ 
+            '  print("\r", end="", flush=True)'+LB+ 
+            '  time.sleep(1)';                        
+              
+var  PyForm: TForm; pyMemo: TMemo;
+     pyval: variant;
+     
+
+var eng: TPythonEngine; aPythonVersion: TPythonVersion;
+         PythonVersions: TPythonVersions; AllUserInstall: Boolean;
+         apd: TApdMeter;
+
+begin  //@main
+  //PythonEngine1.Free;
+  //myloadscript2:= filetostring(PYSCRIPT2);
+  
+  PyForm:= loadForm2(200,300, clgreen,'PyFrm4D_VersionThread_Tester_EKON25');
+  pyMemo:= TMemo.create(PyForm);
+  apd:= TApdMeter.create(pyform);
+  //apd.color:= clyellow;
+  apd.parent:= pyform;
+  apd.barcolor:= clred;
+  apd.position:= 30;
+  apd.SetBounds(10,100, 150, 150);
+  apd.visible:= true;
+  pyMemo.parent:= PyForm
+  PyForm.show;
+  aPythonVersion:= TPythonVersion.create;
+  
+ //3. replace maps demo
+   eng:= TPythonEngine.Create(Nil);
+   eng.pythonhome:= PYHOME;
+   eng.opendll(PYDLL)
+   //eng.IO:= pyMemo;
+   try
+     eng.Execstring('pets= ("bird","snake","dog","turtle","cat","hamster")');
+     // eng.Execstring('val.sort(key=lambda x: x[2],reverse=False)');
+     eng.Execstring('uppercased_pets = list(map(str.upper, pets))');
+     println('Tip replace maps: '+eng.EvalStr('uppercased_pets'));
+     pyMemo.lines.add(eng.EvalStr('list(map(str.upper, pets))'));
+     
+     //# syntax for set comprehension {expression for item in iterable}
+     eng.Execstring('numbers = (1, 34, 5, 8, 10, 12, 3, 90, 70, 70, 90)');
+     println('Set comprehension: '+
+             eng.EvalStr('{number for number in numbers if number%2 == 0}')); 
+     eng.Execstr('import threading, winsound, time');
+     eng.Execstr(TH1+CRLF+TH2);
+    
+     eng.Execstring('t1 = threading.Thread(target=print_hello_three_times)');
+     eng.Execstring('t2 = threading.Thread(target=print_hi_three_times)');
+     eng.EvalStr('t1.start()'); 
+     eng.EvalStr('t2.start()'); 
+     println('thread target1: '+eng.EvalStr('t1'));
+     println('thread target2: '+eng.EvalStr('t2')); 
+     //println('def call: '+eng.EvalStr('print_hello_three_times()')); 
+     
+     //eng.Execstring(ATIME);
+     if PythonVersionFromPath(PYHOME, aPythonVersion, false) then begin
+       aPythonVersion.AssignTo(eng) ;
+       writeln('Version from path: '+TPythonEngine(eng).RegVersion);
+       writeln('DLL from path: '+TPythonEngine(eng).DLLName);
+     end;
+     for it:= 10 to 50 do begin
+       sleep(100) 
+       apd.position:= it;
+     end;
+   except
+     //eng.raiseError;
+     writeln(ExceptionToString(ExceptionType, ExceptionParam));
+   finally
+     eng.Free;
+     aPythonVersion.Free;
+  end;    
+  
+  //PYLaz_P4D_Demo2; 
+End.
+
+Doc: One thing to note is that the map() function returns an iterable object, and thus we can use the list() function to generate a list from this iterable.
+writeln('RegVersion: '+itoa(TPythonEngine(eng).RegVersion));
+https://stackoverflow.com/questions/16779799/py-initialize-and-py-finalize-and-matplotlib
+
+Doc: Destroying it calls Py_Finalize, which frees all memory allocated by the Python DLL.
+Example 3: Python multithreading
+All programs are single-threaded programs. Here's an example of a multithreaded Python program.
+
+import threading 
+  
+def print_hello_three_times():
+  for i in range(3):
+    print("Hello")
+  
+def print_hi_three_times(): 
+    for i in range(3): 
+      print("Hi") 
+
+t1 = threading.Thread(target=print_hello_three_times)  
+t2 = threading.Thread(target=print_hi_three_times)  
+t1.start()
+t2.start()
+
+This package implements JSON support for FPC.
+You might want to have a look at the lazarus jsonviewer tool, written using
+fpJSON (see lazarus/tools/jsonviewer). It visualizes the fpJSON data and
+shows how to program using fpjson.
+
+
+
+
+    

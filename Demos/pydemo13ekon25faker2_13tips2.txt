@@ -1,0 +1,273 @@
+PROGRAM SEPDemo_App_mX4_Python_Cheat_Sheet5;
+//Python Cheat Sheet: Functions and Tricks
+//http://www.softwareschule.ch/examples/cheatsheetpython.pdf           
+//https://realpython.com/python-json/
+//https://wiki.freepascal.org/Developing_Python_Modules_with_Pascal#Minimum_Python_API
+{Purpose: Python Cheat Sheet: Functions and Tricks. }
+
+//<Constant declarations> 
+//Please check providers list below:['mymemory', 'microsoft', 'deepl', 'libre'].
+{TYPE <Type declarations> Pascal-Delphi-Python-Json-OLEAutomation}        
+
+Const PYHOME32 = 'C:\Users\max\AppData\Local\Programs\Python\Python36-32\'; 
+      PYDLL32  = 'C:\Users\max\AppData\Local\Programs\Python\Python36-32\python36.dll'; 
+
+Var  //<Variable declarations>
+  i: integer; eg: TPythonEngine;
+
+//<FUNCTION> //<PROCEDURE> 
+//Generate public key and private key
+
+Const PYBC =  'from bitcoin import *'+LF+
+              'my_private_key = random_key()'+LF+
+              'my_public_key = privtopub(my_private_key)'+LF+
+              'my_bitcoin_addr = pubtoaddr(my_public_key)'+LF+
+              'print(my_bitcoin_addr)';
+              
+Const USERAGENT = 'Mozilla/5.0 (X11; Linux i686) AppleWebKit/537.17 '+
+                  '(KHTML, maXbox4) Chrome/24.0.1312.27 Safari/537.17'; 
+
+Const WEBURL= 'https://jsonplaceholder.typicode.com/todos'; 
+
+Const REXDEF= 'def striphtml(data):      '+LF+
+               '  p = re.compile(r"<.*?>")'+LF+
+               '  return p.sub("", data)  ';  
+               
+//https://gist.github.com/lkdocs/6519378               
+Const DEF_RSAKEYS= 'def generate_RSA(bits=2048): '+LF+
+          '  '''''+LF+
+          //'  Generate an RSA keypair with exponent of 65537 in PEM format'+LF+
+          //'  param: bits The key length in bits '+LF+
+          //'  Return private key and public key '+LF+
+          '  '''''+LF+
+          '  from Crypto.PublicKey import RSA '+LF+
+          '  new_key = RSA.generate(bits, e=65537)'+LF+ 
+          '  public_key = new_key.publickey().exportKey("PEM")'+LF+ 
+          '  private_key = new_key.exportKey("PEM")'+LF+ 
+          '  return private_key, public_key';
+               
+procedure GetJSONData;
+var  XMLhttp: OleVariant; // As Object Automation
+     ajt: TJson; JObj: TJsonObject2; JArray: TJsonArray2;
+     response,statuscode: string; cnt: integer;
+begin  
+  XMLhttp:= CreateOleObject('msxml2.xmlhttp')      
+  XMLhttp.Open('GET', WEBURL, False)   //False is async
+  //XMLhttp.setRequestHeader('Content-Type','application/x-www-form-urlencoded');
+  XMLhttp.setRequestHeader('Content-Type', 'application/json; charset=utf-8');
+  XMLhttp.Send();
+  response:= XMLhttp.responseText; //assign the data
+  statuscode:= XMLhttp.status; 
+  //writeln(statuscode +CRLF+ response)
+  ajt:= TJson.create(); 
+  try
+    ajt.parse(response);
+  except
+    writeln( 'Exception: <TJsonClass>"" parse error: {'+
+                  exceptiontostring(exceptiontype, exceptionparam)) 
+  end; 
+  JArray:= ajt.JsonArray;
+  writeln('Get all Titles: '+itoa(jarray.count));     
+  for cnt:= 0 to jarray.count-1 do
+    writeln(itoa(cnt)+' '+Jarray.items[cnt].asObject.values['title'].asString);   
+  ajt.Free;
+end;
+
+const filename='maXbox4.exe';
+
+Begin  //@Main
+//<Executable statements>
+//https://www.amazon.com/Patterns-konkret-Max-Kleiner/dp/3935042469
+{ ISBN-10 ? : 3935042469  ISBN-13 ? : 978-3935042468} 
+
+  eg:= TPythonEngine.Create(Nil);
+  eg.pythonhome:= PYHOME32;
+  eg.opendll(PYDLL32)
+  //eng.IO:= pyMemo;
+  try
+    eg.Execstring('import base64'+LF+'import urllib.parse');
+    eg.Execstring('import urllib.request, os, textwrap, json, requests');
+    eg.Execstring(REXDEF);
+    
+   { eg.Execstring('import nacl');
+    eg.Execstring('from nacl.encoding import HexEncoder'+CRLF+
+                   'from nacl.exceptions import CryptoError'+CRLF+
+                   'from nacl.encoding import Base64Encoder'+CRLF+
+                   'from pydub import AudioSegment');  }           
+    
+   //eg.Execstring('from Crypto.PublicKey import RSA');                
+    
+   println(eg.evalStr('base64.b64decode("2e8WuEr0+5nc14VBxQrOl4ob6guOTySr")'));
+  //eng.Execstring('priv_key = nacl.public.PrivateKey.generate()');
+  //openWeb('http://www.softwareschule.ch/examples/cheatsheetpython.pdf');
+    
+  //# 1.map(func, iter) Executes the function on all elements of iterable
+   println(eg.evalStr('list(map( lambda x: x[0],["red","green","blue"]))'));
+   
+  //# 2.map(func, i1,...,Executes the function on all k elements of k iterables
+   println(eg.evalStr('list(map(lambda x,y: str(x)+" "+y + "s",[0,2,2],'+
+                                       '[ "apple" , "orange" , "banana" ]))'));
+    
+  //# 3.string.join(iter), Concatenates iterable elements separated by string
+   println(eg.evalStr('" marries " .join(list([ "Alice" , "Bob" ]))'));
+
+  //# 4.filter(func,iterable),Filters out elements in iterable for function returns False (or 0)
+   println(eg.evalStr('list(filter(lambda x: True if x> 17 else False,[1,15,17,18]))'));
+   
+  //# 5.string.strip(), Removes leading and trailing whitespaces of string
+   println(eg.evalStr('( " \n \t 42 \t " .strip())'));
+   
+  //# 6.sorted(iter), Sorts iterable in ascending order
+   println(eg.evalStr('sorted([ 8 , 3 , 2 , 42 , 5 ])'));
+   
+  //# 7.sorted(iter,key=key) , Sorts according to the key function in ascending order 
+   println(eg.evalStr('sorted([ 8,3,2,42,5 ], key=lambda x: 0 if x== 42 else x)'));
+   
+  //# 8.help(func) , Returns documentation of func
+  // println(eg.evalStr('help(''print'')'));
+   saveString(exepath+'pyhelp.py', 'help(''print'')');
+   print(getDosOutput('py '+exepath+'pyhelp.py', exePath));
+   
+  //# 9.zip(i1, i2, ...), Groups the i-th elements of iterators i1,i2,...together
+   println(eg.evalStr('list(zip([''Alice'',''Anna''],[''Bob'',''Jon'',''Frank'']))'));
+   
+  //# 10.Unzip, Equal to: 1) unpack the zipped list, 2) zip the result
+   println(eg.evalStr('list(zip(*[(''Alice'',''Bob''),(''Anna'',''Jon'')]))'));
+  
+  //# 11.enumerate(iter), Assigns a counter value to each element of iterable
+   println(eg.evalStr('list(enumerate(["Alice","Bob","Jon"]))'));
+   
+  //# 12.python -m http.server<P>,Want to share files between PC and phone?
+  //https://docs.python.org/3/library/http.server.html
+   //print(getDosOutput('py -m http.server<8080>', exePath));
+   //ExecuteShell('py', '-m http.server 8080');
+  
+  //# 13.Read comic Open the comic series xkcd in your web browser
+  //eg.Execstring('import antigravity');
+  
+  //# 14.Zen of Python import this
+   eg.execString('from this import *');
+   println('14. import this: '+CRLF+
+        StringReplace(eg.EvalStr('repr("".join([d.get(c,c) for c in s]))'),
+                                                '\n',CR+LF,[rfReplaceAll]));
+  
+  //# 15.Swapping numbers, Swapping vars is a breeze in Python. No offense, Java!
+  eg.execString('a, b = ''Jane'' , ''Alice'''+CRLF+'a, b = b, a');
+  println(eg.evalStr('a, b'));
+  
+  //# 16.Unpacking arguments, Use a sequence as function arguments!
+  eg.execString('def f (x, y, z) : return x + y * z');
+  println(eg.evalStr('f(*[ 1 , 3 , 4 ])'));
+  println(eg.evalStr('f(**{ ''z'': 4 , ''x'': 1 , ''y'': 3 })'));
+    
+  // eg.Execstring('AudioSegment.from_wav(r"C:\maXbox\soundnvision\01_magix.wav").export(r"C:\maXbox\mX47464\maxbox4\web\G9\G9_magix.mp3", format="mp3")');           
+
+    { eng.Execstring(DEF_RSAKEYS);
+      eng.Execstring('d=generate_RSA(bits=2048)')
+      println('RSA Publickey '+eng.evalStr('d[1]'));  }
+ 
+   //# Get the maximum number of complete TODOs.
+   //println('user_max_complete = '+eng.evalStr('top_users[0][1]')); 
+   //https://medium.com/@swathiarun63/10-fantastic-python-packages-af2a16a1183a
+   eg.execString('from faker import Faker');
+   eg.execString('fake = Faker()');
+   println(eg.evalStr('fake.profile()'));
+   println(eg.evalStr('fake.credit_card_number()'));
+   print(' fake ip: '+eg.evalStr('fake.ipv4_private()'));
+   print(' fake adr: '+eg.evalStr('fake.address()'));
+   
+   //fake.address()
+   
+   //https://medium.com/@codedev101/13-advanced-snippets-to-automate-the-cool-stuff-with-python-5d8ea3d389e9
+   
+   //# 17.Get Google Search Result
+   //https://github.com/MarioVilas/googlesearch/issues/39
+   
+   eg.execString('from googlesearch import search');
+   eg.execString('query = "maXbox4"');
+   
+   eg.execString('lst=[]'+CRLF+'for i in search(query):'+crLF+
+                      '  lst.append(i)');
+   println(eg.evalStr('str(lst)'));
+   
+   //# 18. Convert Pdf to Image
+  // eg.execString('import fitz');
+   //Exception: <class 'ModuleNotFoundError'>: No module named 'frontend'.
+   //ERROR: Could not find a version that satisfies the requirement frontend (from versions: none)
+   
+    //const filename='maXbox4.exe';
+   
+   //# 19.# Get File Size
+    println('file size '+eg.evalStr('os.stat("maXbox4.exe").st_size'));
+    println('file size '+eg.evalStr('os.stat("'+filename+'").st_size'));
+    
+   //20_ 9. Get IP Address
+   eg.execString('import socket');
+   eg.execString('s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)');
+   println('ip adr '+eg.evalStr('s.connect(("8.8.8.8", 80))'));
+   println('ip adr '+eg.evalStr('s.getsockname()[0]'));
+   eg.evalStr('s.close()');
+   
+  except
+    eg.raiseError;
+  finally
+    eg.Free;
+    //aPythonVersion.Free;
+  end;  
+  
+  //GetJSONData;  
+  //maXcalcF('2^64 /(60*60*24*365)')  
+//<Definitions>  
+End. 
+
+Ref:  https://www.sonarqube.org/features/multi-languages/python/
+ mX4 executed: 20/09/2021 19:20:40  Runtime: 0:0:2.782  Memload: 69% use
+
+C:\maXbox\mX39998\maxbox3>pip3 install -t C:\Users\max\AppData\Local\Programs\Py
+thon\Python36-32\Lib pydub
+Collecting pydub
+  Downloading pydub-0.25.1-py2.py3-none-any.whl (32 kB)
+Installing collected packages: pydub
+Successfully installed pydub-0.25.1
+
+
+C:\Users\Max\AppData\Local\Programs\Python\Python36-32>python -m pip install goo
+gle
+Collecting google
+  Using cached https://files.pythonhosted.org/packages/ac/35/17c9141c4ae21e9a29a
+43acdfd848e3e468a810517f862cad07977bf8fe9/google-3.0.0-py2.py3-none-any.whl
+Requirement already satisfied: beautifulsoup4 in c:\users\max\appdata\local\prog
+rams\python\python36-32\lib\site-packages (from google)
+Requirement already satisfied: soupsieve>1.2 in c:\users\max\appdata\local\progr
+ams\python\python36-32\lib\site-packages (from beautifulsoup4->google)
+Installing collected packages: google
+Successfully installed google-3.0.0
+
+Then to convert any file from wav to mp3 just use pydub as
+import pydub
+sound = pydub.AudioSegment.from_wav("D:/example/apple.wav")
+sound.export("D:/example/apple.mp3", format="mp3")
+
+Exception: <class 'OSError'>: Cannot load native module 'Crypto.Hash._MD5': Trying '_MD5.cp36-win32.pyd': [WinError 126] The specified module could not be found, Trying '_MD5.pyd'
+
+Patterns konkret.
+ISBN-13: 9783935042468  ISBN-10: 3935042469
+Author: Kleiner, Max
+Binding: Paperback
+Publisher: Software + Support
+Published: September 2003
+
+https://mymemory.translated.net/doc/spec.php
+Hello PyWorld_, This data will be written on the file.
+Hola PyWorld_,&#10; Estos datos se escribirán en el archivo.
+
+Install a 32-bit package with a 64 pip installer -t (Target)
+C:\Users\max\AppData\Local\Programs\Python\Python36-32>pip3 install -t C:\Users\
+max\AppData\Local\Programs\Python\Python36-32\Lib bitcoin
+----File newtemplate.txt not exists - now saved!----
+
+       
+       
+       
+   
+   

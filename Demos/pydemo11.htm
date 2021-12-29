@@ -1,0 +1,267 @@
+Version:0.9
+StartHTML:0000000105
+EndHTML:0000049215
+StartFragment:0000001053
+EndFragment:0000049199
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>mXScriptasHTML</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta name="generator" content="SynEdit HTML exporter" />
+<style type="text/css">
+<!--
+body { color: #000000; background-color: #FFFFFF; }
+.pas1-assembler { }
+.pas1-character { color: #0066CC; text-decoration: underline; }
+.pas1-comment { color: #000080; font-style: italic; }
+.pas1-float { color: #00FF00; }
+.pas1-hexadecimal { color: #FF00FF; }
+.pas1-identifier { }
+.pas1-number { color: #FF0000; }
+.pas1-preprocessor { font-style: italic; }
+.pas1-reservedword { color: #000080; font-weight: bold; }
+.pas1-space { }
+.pas1-string { color: #008080; }
+.pas1-symbol { color: #FF0000; }
+-->
+</style>
+</head>
+<body>
+<!--StartFragment--><pre><code><span class="pas1-reservedword">PROGRAM</span><span class="pas1-space"> SEPDemo_App_mX4_PythonTemplate_URLLib_JSON_PyPas</span><span class="pas1-symbol">;
+</span><span class="pas1-comment">//https://pythonprogramming.net/urllib-tutorial-python-3/
+//https://realpython.com/python-json/
+{Purpose: Go ahead and make a request to the JSONPlaceholder API for the /todos endpoint. }
+
+//&lt;Constant declarations&gt; 
+//Please check providers list below:['mymemory', 'microsoft', 'deepl', 'libre'].
+{TYPE &lt;Type declarations&gt; Pascal-Delphi-Python-Json-OLEAutomation}</span><span class="pas1-space"> 
+
+</span><span class="pas1-reservedword">Const</span><span class="pas1-space"> PYHOME32 </span><span class="pas1-symbol">=</span><span class="pas1-space"> </span><span class="pas1-string">'C:\Users\max\AppData\Local\Programs\Python\Python36-32\'</span><span class="pas1-symbol">;</span><span class="pas1-space"> 
+      PYDLL32  </span><span class="pas1-symbol">=</span><span class="pas1-space"> </span><span class="pas1-string">'C:\Users\max\AppData\Local\Programs\Python\Python36-32\python36.dll'</span><span class="pas1-symbol">;</span><span class="pas1-space"> 
+      PYHOME64 </span><span class="pas1-symbol">=</span><span class="pas1-space"> </span><span class="pas1-string">'C:\Users\max\AppData\Local\Programs\Python\Python36\'</span><span class="pas1-symbol">;</span><span class="pas1-space"> 
+      PYDLL64  </span><span class="pas1-symbol">=</span><span class="pas1-space"> </span><span class="pas1-string">'C:\Users\max\AppData\Local\Programs\Python\Python36\python36.dll'</span><span class="pas1-symbol">;</span><span class="pas1-space"> 
+
+</span><span class="pas1-reservedword">Var</span><span class="pas1-space"> 
+</span><span class="pas1-comment">//&lt;Variable declarations&gt;
+</span><span class="pas1-space">  i</span><span class="pas1-symbol">:</span><span class="pas1-space"> integer</span><span class="pas1-symbol">;</span><span class="pas1-space"> eng</span><span class="pas1-symbol">:</span><span class="pas1-space"> TPythonEngine</span><span class="pas1-symbol">;
+
+</span><span class="pas1-comment">//&lt;FUNCTION&gt;
+//&lt;PROCEDURE&gt; 
+//Generate public key and private key
+
+</span><span class="pas1-reservedword">Const</span><span class="pas1-space"> PYBC </span><span class="pas1-symbol">=</span><span class="pas1-space">  </span><span class="pas1-string">'from bitcoin import *'</span><span class="pas1-symbol">+</span><span class="pas1-identifier">LF</span><span class="pas1-symbol">+
+</span><span class="pas1-space">              </span><span class="pas1-string">'my_private_key = random_key()'</span><span class="pas1-symbol">+</span><span class="pas1-identifier">LF</span><span class="pas1-symbol">+
+</span><span class="pas1-space">              </span><span class="pas1-string">'my_public_key = privtopub(my_private_key)'</span><span class="pas1-symbol">+</span><span class="pas1-identifier">LF</span><span class="pas1-symbol">+
+</span><span class="pas1-space">              </span><span class="pas1-string">'my_bitcoin_addr = pubtoaddr(my_public_key)'</span><span class="pas1-symbol">+</span><span class="pas1-identifier">LF</span><span class="pas1-symbol">+
+</span><span class="pas1-space">              </span><span class="pas1-string">'print(my_bitcoin_addr)'</span><span class="pas1-symbol">;
+</span><span class="pas1-space">              
+</span><span class="pas1-reservedword">Const</span><span class="pas1-space"> JSONLIST </span><span class="pas1-symbol">=
+</span><span class="pas1-comment">//# Increment complete TODOs count for each user.
+</span><span class="pas1-space">  </span><span class="pas1-string">'for todo in todos:                                 '</span><span class="pas1-symbol">+</span><span class="pas1-identifier">LF</span><span class="pas1-symbol">+
+</span><span class="pas1-space">  </span><span class="pas1-string">'  if todo[&quot;completed&quot;]:                            '</span><span class="pas1-symbol">+</span><span class="pas1-identifier">LF</span><span class="pas1-symbol">+
+</span><span class="pas1-space">  </span><span class="pas1-string">'     try:                                          '</span><span class="pas1-symbol">+</span><span class="pas1-identifier">LF</span><span class="pas1-symbol">+
+</span><span class="pas1-space">  </span><span class="pas1-string">'     # Increment the existing user''s count.       '</span><span class="pas1-symbol">+</span><span class="pas1-identifier">LF</span><span class="pas1-symbol">+
+</span><span class="pas1-space">  </span><span class="pas1-string">'        todos_by_user[todo[&quot;userId&quot;]] += 1         '</span><span class="pas1-symbol">+</span><span class="pas1-identifier">LF</span><span class="pas1-symbol">+
+</span><span class="pas1-space">  </span><span class="pas1-string">'     except KeyError:                              '</span><span class="pas1-symbol">+</span><span class="pas1-identifier">LF</span><span class="pas1-symbol">+
+</span><span class="pas1-space">  </span><span class="pas1-string">'     # user has not been seen. Set count to 1.     '</span><span class="pas1-symbol">+</span><span class="pas1-identifier">LF</span><span class="pas1-symbol">+
+</span><span class="pas1-space">  </span><span class="pas1-string">'        todos_by_user[todo[&quot;userId&quot;]] = 1          '</span><span class="pas1-symbol">;</span><span class="pas1-space">     
+     
+</span><span class="pas1-reservedword">Const</span><span class="pas1-space"> JSONLISTDEFAULT </span><span class="pas1-symbol">=
+</span><span class="pas1-space">  </span><span class="pas1-string">'from collections import defaultdict                '</span><span class="pas1-symbol">+</span><span class="pas1-identifier">LF</span><span class="pas1-symbol">+
+</span><span class="pas1-space">  </span><span class="pas1-string">'todos_by_user = defaultdict(int)                   '</span><span class="pas1-symbol">+</span><span class="pas1-identifier">LF</span><span class="pas1-symbol">+
+</span><span class="pas1-space">  </span><span class="pas1-string">'for todo in todos:                                 '</span><span class="pas1-symbol">+</span><span class="pas1-identifier">LF</span><span class="pas1-symbol">+
+</span><span class="pas1-space">  </span><span class="pas1-string">'  if todo[&quot;completed&quot;]:                            '</span><span class="pas1-symbol">+</span><span class="pas1-identifier">LF</span><span class="pas1-symbol">+
+</span><span class="pas1-space">  </span><span class="pas1-string">'     todos_by_user[todo[&quot;userId&quot;]]+= 1             '</span><span class="pas1-symbol">;
+</span><span class="pas1-space">                   
+
+</span><span class="pas1-reservedword">Const</span><span class="pas1-space"> USERAGENT </span><span class="pas1-symbol">=</span><span class="pas1-space"> </span><span class="pas1-string">'Mozilla/5.0 (X11; Linux i686) AppleWebKit/537.17 '</span><span class="pas1-symbol">+
+</span><span class="pas1-space">                  </span><span class="pas1-string">'(KHTML, maXbox4) Chrome/24.0.1312.27 Safari/537.17'</span><span class="pas1-symbol">;</span><span class="pas1-space"> 
+
+</span><span class="pas1-reservedword">Const</span><span class="pas1-space"> WEBURL</span><span class="pas1-symbol">=</span><span class="pas1-space"> </span><span class="pas1-string">'https://jsonplaceholder.typicode.com/todos'</span><span class="pas1-symbol">;</span><span class="pas1-space"> 
+
+</span><span class="pas1-reservedword">Const</span><span class="pas1-space"> REXDEF</span><span class="pas1-symbol">=</span><span class="pas1-space"> </span><span class="pas1-string">'def striphtml(data):      '</span><span class="pas1-symbol">+</span><span class="pas1-identifier">LF</span><span class="pas1-symbol">+
+</span><span class="pas1-space">               </span><span class="pas1-string">'  p = re.compile(r&quot;&lt;.*?&gt;&quot;)'</span><span class="pas1-symbol">+</span><span class="pas1-identifier">LF</span><span class="pas1-symbol">+
+</span><span class="pas1-space">               </span><span class="pas1-string">'  return p.sub(&quot;&quot;, data)  '</span><span class="pas1-symbol">;</span><span class="pas1-space">  
+               
+
+</span><span class="pas1-comment">{Funktion validiert ISBN-13 Valid from 1.1.2007
+Wenn streng = True, wird die Voranstellung von 'ISBN ' und die korrekte
+Verwendung der Bindestriche verlangt}
+</span><span class="pas1-reservedword">function</span><span class="pas1-space"> ValidISBN_13</span><span class="pas1-symbol">(</span><span class="pas1-reservedword">const</span><span class="pas1-space"> s</span><span class="pas1-symbol">:</span><span class="pas1-space"> </span><span class="pas1-reservedword">string</span><span class="pas1-symbol">;</span><span class="pas1-space"> streng</span><span class="pas1-symbol">:</span><span class="pas1-space"> Boolean</span><span class="pas1-symbol">):</span><span class="pas1-space"> Boolean</span><span class="pas1-symbol">;
+</span><span class="pas1-reservedword">var
+</span><span class="pas1-space">  i</span><span class="pas1-symbol">,</span><span class="pas1-space"> x</span><span class="pas1-symbol">,</span><span class="pas1-space"> n</span><span class="pas1-symbol">:</span><span class="pas1-space"> Integer</span><span class="pas1-symbol">;
+</span><span class="pas1-space">  tmp</span><span class="pas1-symbol">:</span><span class="pas1-space"> </span><span class="pas1-reservedword">string</span><span class="pas1-symbol">;
+</span><span class="pas1-reservedword">begin
+</span><span class="pas1-space">  Result</span><span class="pas1-symbol">:=</span><span class="pas1-space"> True</span><span class="pas1-symbol">;
+</span><span class="pas1-space">  writeln</span><span class="pas1-symbol">(</span><span class="pas1-identifier">s</span><span class="pas1-symbol">[9])
+</span><span class="pas1-space">  </span><span class="pas1-reservedword">if</span><span class="pas1-space"> </span><span class="pas1-symbol">(</span><span class="pas1-reservedword">not</span><span class="pas1-space"> streng</span><span class="pas1-symbol">)</span><span class="pas1-space"> </span><span class="pas1-reservedword">or</span><span class="pas1-space"> </span><span class="pas1-symbol">((</span><span class="pas1-identifier">Copy</span><span class="pas1-symbol">(</span><span class="pas1-identifier">s</span><span class="pas1-symbol">,</span><span class="pas1-space"> </span><span class="pas1-number">1,</span><span class="pas1-space"> </span><span class="pas1-number">5)</span><span class="pas1-space"> </span><span class="pas1-symbol">=</span><span class="pas1-space"> </span><span class="pas1-string">'ISBN '</span><span class="pas1-symbol">)</span><span class="pas1-space"> </span><span class="pas1-reservedword">and</span><span class="pas1-space"> </span><span class="pas1-symbol">(</span><span class="pas1-identifier">Length</span><span class="pas1-symbol">(</span><span class="pas1-identifier">s</span><span class="pas1-symbol">)</span><span class="pas1-space"> </span><span class="pas1-symbol">=</span><span class="pas1-space"> </span><span class="pas1-number">22)
+</span><span class="pas1-space">    </span><span class="pas1-reservedword">and</span><span class="pas1-space"> </span><span class="pas1-symbol">(</span><span class="pas1-identifier">s</span><span class="pas1-symbol">[9]</span><span class="pas1-space"> </span><span class="pas1-symbol">=</span><span class="pas1-space"> </span><span class="pas1-string">'-'</span><span class="pas1-symbol">)</span><span class="pas1-space"> </span><span class="pas1-reservedword">and</span><span class="pas1-space"> </span><span class="pas1-symbol">(</span><span class="pas1-identifier">s</span><span class="pas1-symbol">[21]</span><span class="pas1-space"> </span><span class="pas1-symbol">=</span><span class="pas1-space"> </span><span class="pas1-string">'-'</span><span class="pas1-symbol">))</span><span class="pas1-space"> </span><span class="pas1-reservedword">then</span><span class="pas1-space"> </span><span class="pas1-reservedword">begin
+</span><span class="pas1-space">    </span><span class="pas1-reservedword">for</span><span class="pas1-space"> i</span><span class="pas1-symbol">:=</span><span class="pas1-space"> </span><span class="pas1-number">1</span><span class="pas1-space"> </span><span class="pas1-reservedword">to</span><span class="pas1-space"> Length</span><span class="pas1-symbol">(</span><span class="pas1-identifier">s</span><span class="pas1-symbol">)</span><span class="pas1-space"> </span><span class="pas1-reservedword">do
+</span><span class="pas1-space">      </span><span class="pas1-reservedword">if</span><span class="pas1-space"> s</span><span class="pas1-symbol">[</span><span class="pas1-identifier">i</span><span class="pas1-symbol">]</span><span class="pas1-space"> </span><span class="pas1-reservedword">in</span><span class="pas1-space"> StrToCharSet</span><span class="pas1-symbol">(</span><span class="pas1-identifier">DIGISET</span><span class="pas1-symbol">)</span><span class="pas1-space"> </span><span class="pas1-reservedword">then</span><span class="pas1-space"> </span><span class="pas1-comment">//['0'..'9'] then
+</span><span class="pas1-space">        tmp</span><span class="pas1-symbol">:=</span><span class="pas1-space"> tmp </span><span class="pas1-symbol">+</span><span class="pas1-space"> s</span><span class="pas1-symbol">[</span><span class="pas1-identifier">i</span><span class="pas1-symbol">]
+</span><span class="pas1-space">      </span><span class="pas1-reservedword">else
+</span><span class="pas1-space">        </span><span class="pas1-reservedword">if</span><span class="pas1-space"> streng </span><span class="pas1-reservedword">then
+</span><span class="pas1-space">          </span><span class="pas1-reservedword">if</span><span class="pas1-space"> </span><span class="pas1-symbol">(</span><span class="pas1-identifier">s</span><span class="pas1-symbol">[</span><span class="pas1-identifier">i</span><span class="pas1-symbol">]</span><span class="pas1-space"> </span><span class="pas1-symbol">=</span><span class="pas1-space"> </span><span class="pas1-string">'-'</span><span class="pas1-symbol">)</span><span class="pas1-space"> </span><span class="pas1-reservedword">then
+</span><span class="pas1-space">            Inc</span><span class="pas1-symbol">(</span><span class="pas1-identifier">n</span><span class="pas1-symbol">)
+</span><span class="pas1-space">          </span><span class="pas1-reservedword">else</span><span class="pas1-space"> </span><span class="pas1-reservedword">if</span><span class="pas1-space"> </span><span class="pas1-symbol">(</span><span class="pas1-identifier">i </span><span class="pas1-symbol">&gt;</span><span class="pas1-space"> </span><span class="pas1-number">5)</span><span class="pas1-space"> </span><span class="pas1-reservedword">then
+</span><span class="pas1-space">            Result</span><span class="pas1-symbol">:=</span><span class="pas1-space"> False</span><span class="pas1-symbol">;
+</span><span class="pas1-space">    </span><span class="pas1-reservedword">if</span><span class="pas1-space"> </span><span class="pas1-symbol">(</span><span class="pas1-identifier">Result</span><span class="pas1-symbol">)</span><span class="pas1-space"> </span><span class="pas1-reservedword">and</span><span class="pas1-space"> </span><span class="pas1-symbol">((</span><span class="pas1-reservedword">not</span><span class="pas1-space"> streng</span><span class="pas1-symbol">)</span><span class="pas1-space"> </span><span class="pas1-reservedword">or</span><span class="pas1-space"> </span><span class="pas1-symbol">(</span><span class="pas1-identifier">n </span><span class="pas1-symbol">=</span><span class="pas1-space"> </span><span class="pas1-number">4))</span><span class="pas1-space"> </span><span class="pas1-reservedword">then</span><span class="pas1-space"> </span><span class="pas1-reservedword">begin
+</span><span class="pas1-space">      </span><span class="pas1-reservedword">if</span><span class="pas1-space"> Length</span><span class="pas1-symbol">(</span><span class="pas1-identifier">tmp</span><span class="pas1-symbol">)</span><span class="pas1-space"> </span><span class="pas1-symbol">=</span><span class="pas1-space"> </span><span class="pas1-number">13</span><span class="pas1-space"> </span><span class="pas1-reservedword">then</span><span class="pas1-space"> </span><span class="pas1-reservedword">begin
+</span><span class="pas1-space">        </span><span class="pas1-reservedword">for</span><span class="pas1-space"> i</span><span class="pas1-symbol">:=</span><span class="pas1-space"> </span><span class="pas1-number">1</span><span class="pas1-space"> </span><span class="pas1-reservedword">to</span><span class="pas1-space"> </span><span class="pas1-number">12</span><span class="pas1-space"> </span><span class="pas1-reservedword">do
+</span><span class="pas1-space">          </span><span class="pas1-reservedword">if</span><span class="pas1-space"> i </span><span class="pas1-reservedword">div</span><span class="pas1-space"> </span><span class="pas1-number">2</span><span class="pas1-space"> </span><span class="pas1-symbol">=</span><span class="pas1-space"> i</span><span class="pas1-symbol">/2</span><span class="pas1-space"> </span><span class="pas1-reservedword">then
+</span><span class="pas1-space">            x</span><span class="pas1-symbol">:=</span><span class="pas1-space"> x </span><span class="pas1-symbol">+</span><span class="pas1-space"> StrToInt</span><span class="pas1-symbol">(</span><span class="pas1-identifier">tmp</span><span class="pas1-symbol">[</span><span class="pas1-identifier">i</span><span class="pas1-symbol">])</span><span class="pas1-space"> </span><span class="pas1-symbol">*</span><span class="pas1-space"> </span><span class="pas1-number">3
+</span><span class="pas1-space">          </span><span class="pas1-reservedword">else
+</span><span class="pas1-space">            x</span><span class="pas1-symbol">:=</span><span class="pas1-space"> x </span><span class="pas1-symbol">+</span><span class="pas1-space"> StrToInt</span><span class="pas1-symbol">(</span><span class="pas1-identifier">tmp</span><span class="pas1-symbol">[</span><span class="pas1-identifier">i</span><span class="pas1-symbol">]);
+</span><span class="pas1-space">        </span><span class="pas1-reservedword">if</span><span class="pas1-space"> StrToInt</span><span class="pas1-symbol">(</span><span class="pas1-identifier">tmp</span><span class="pas1-symbol">[13])</span><span class="pas1-space"> </span><span class="pas1-symbol">&gt;</span><span class="pas1-space"> </span><span class="pas1-symbol">((10</span><span class="pas1-space"> </span><span class="pas1-symbol">-</span><span class="pas1-space"> </span><span class="pas1-symbol">(</span><span class="pas1-identifier">x </span><span class="pas1-reservedword">mod</span><span class="pas1-space"> </span><span class="pas1-number">10))</span><span class="pas1-space"> </span><span class="pas1-reservedword">mod</span><span class="pas1-space"> </span><span class="pas1-number">10)</span><span class="pas1-space"> </span><span class="pas1-reservedword">then</span><span class="pas1-space">  </span><span class="pas1-comment">//&gt; &lt;
+</span><span class="pas1-space">          Result </span><span class="pas1-symbol">:=</span><span class="pas1-space"> False</span><span class="pas1-symbol">;
+</span><span class="pas1-space">      </span><span class="pas1-reservedword">end</span><span class="pas1-space"> </span><span class="pas1-reservedword">else
+</span><span class="pas1-space">        Result</span><span class="pas1-symbol">:=</span><span class="pas1-space"> False</span><span class="pas1-symbol">;
+</span><span class="pas1-space">    </span><span class="pas1-reservedword">end</span><span class="pas1-space"> </span><span class="pas1-reservedword">else
+</span><span class="pas1-space">      Result</span><span class="pas1-symbol">:=</span><span class="pas1-space"> False</span><span class="pas1-symbol">;
+</span><span class="pas1-space">  </span><span class="pas1-reservedword">end</span><span class="pas1-space"> </span><span class="pas1-reservedword">else
+</span><span class="pas1-space">    Result</span><span class="pas1-symbol">:=</span><span class="pas1-space"> False</span><span class="pas1-symbol">;
+</span><span class="pas1-reservedword">end</span><span class="pas1-symbol">;</span><span class="pas1-space"> 
+
+</span><span class="pas1-reservedword">procedure</span><span class="pas1-space"> GetJSONData</span><span class="pas1-symbol">;
+</span><span class="pas1-reservedword">var</span><span class="pas1-space">  XMLhttp</span><span class="pas1-symbol">:</span><span class="pas1-space"> OleVariant</span><span class="pas1-symbol">;</span><span class="pas1-space"> </span><span class="pas1-comment">// As Object Automation
+</span><span class="pas1-space">     ajt</span><span class="pas1-symbol">:</span><span class="pas1-space"> TJson</span><span class="pas1-symbol">;</span><span class="pas1-space"> JObj</span><span class="pas1-symbol">:</span><span class="pas1-space"> TJsonObject2</span><span class="pas1-symbol">;</span><span class="pas1-space"> JArray</span><span class="pas1-symbol">:</span><span class="pas1-space"> TJsonArray2</span><span class="pas1-symbol">;
+</span><span class="pas1-space">     response</span><span class="pas1-symbol">,</span><span class="pas1-identifier">statuscode</span><span class="pas1-symbol">:</span><span class="pas1-space"> </span><span class="pas1-reservedword">string</span><span class="pas1-symbol">;</span><span class="pas1-space"> cnt</span><span class="pas1-symbol">:</span><span class="pas1-space"> integer</span><span class="pas1-symbol">;
+</span><span class="pas1-reservedword">begin</span><span class="pas1-space">  
+  XMLhttp</span><span class="pas1-symbol">:=</span><span class="pas1-space"> CreateOleObject</span><span class="pas1-symbol">(</span><span class="pas1-string">'msxml2.xmlhttp'</span><span class="pas1-symbol">)</span><span class="pas1-space">      
+  XMLhttp</span><span class="pas1-symbol">.</span><span class="pas1-identifier">Open</span><span class="pas1-symbol">(</span><span class="pas1-string">'GET'</span><span class="pas1-symbol">,</span><span class="pas1-space"> WEBURL</span><span class="pas1-symbol">,</span><span class="pas1-space"> False</span><span class="pas1-symbol">)</span><span class="pas1-space">   </span><span class="pas1-comment">//False is async
+</span><span class="pas1-space">  </span><span class="pas1-comment">//XMLhttp.setRequestHeader('Content-Type','application/x-www-form-urlencoded');
+</span><span class="pas1-space">  XMLhttp</span><span class="pas1-symbol">.</span><span class="pas1-identifier">setRequestHeader</span><span class="pas1-symbol">(</span><span class="pas1-string">'Content-Type'</span><span class="pas1-symbol">,</span><span class="pas1-space"> </span><span class="pas1-string">'application/json; charset=utf-8'</span><span class="pas1-symbol">);
+</span><span class="pas1-space">  XMLhttp</span><span class="pas1-symbol">.</span><span class="pas1-identifier">Send</span><span class="pas1-symbol">();
+</span><span class="pas1-space">   
+  response</span><span class="pas1-symbol">:=</span><span class="pas1-space"> XMLhttp</span><span class="pas1-symbol">.</span><span class="pas1-identifier">responseText</span><span class="pas1-symbol">;</span><span class="pas1-space"> </span><span class="pas1-comment">//assign the data
+</span><span class="pas1-space">  statuscode</span><span class="pas1-symbol">:=</span><span class="pas1-space"> XMLhttp</span><span class="pas1-symbol">.</span><span class="pas1-identifier">status</span><span class="pas1-symbol">;</span><span class="pas1-space"> 
+  </span><span class="pas1-comment">//writeln(statuscode +CRLF+ response)
+</span><span class="pas1-space">  ajt</span><span class="pas1-symbol">:=</span><span class="pas1-space"> TJson</span><span class="pas1-symbol">.</span><span class="pas1-identifier">create</span><span class="pas1-symbol">();</span><span class="pas1-space"> 
+  </span><span class="pas1-reservedword">try
+</span><span class="pas1-space">    ajt</span><span class="pas1-symbol">.</span><span class="pas1-identifier">parse</span><span class="pas1-symbol">(</span><span class="pas1-identifier">response</span><span class="pas1-symbol">);
+</span><span class="pas1-space">  </span><span class="pas1-reservedword">except
+</span><span class="pas1-space">    writeln</span><span class="pas1-symbol">(</span><span class="pas1-space"> </span><span class="pas1-string">'Exception: &lt;TJsonClass&gt;&quot;&quot; parse error: {'</span><span class="pas1-symbol">+
+</span><span class="pas1-space">                  exceptiontostring</span><span class="pas1-symbol">(</span><span class="pas1-identifier">exceptiontype</span><span class="pas1-symbol">,</span><span class="pas1-space"> exceptionparam</span><span class="pas1-symbol">))</span><span class="pas1-space"> 
+  </span><span class="pas1-reservedword">end</span><span class="pas1-symbol">;</span><span class="pas1-space"> 
+  JArray</span><span class="pas1-symbol">:=</span><span class="pas1-space"> ajt</span><span class="pas1-symbol">.</span><span class="pas1-identifier">JsonArray</span><span class="pas1-symbol">;
+</span><span class="pas1-space">  writeln</span><span class="pas1-symbol">(</span><span class="pas1-string">'Get all Titles: '</span><span class="pas1-symbol">+</span><span class="pas1-identifier">itoa</span><span class="pas1-symbol">(</span><span class="pas1-identifier">jarray</span><span class="pas1-symbol">.</span><span class="pas1-identifier">count</span><span class="pas1-symbol">));</span><span class="pas1-space">     
+  </span><span class="pas1-reservedword">for</span><span class="pas1-space"> cnt</span><span class="pas1-symbol">:=</span><span class="pas1-space"> </span><span class="pas1-number">0</span><span class="pas1-space"> </span><span class="pas1-reservedword">to</span><span class="pas1-space"> jarray</span><span class="pas1-symbol">.</span><span class="pas1-identifier">count</span><span class="pas1-symbol">-1</span><span class="pas1-space"> </span><span class="pas1-reservedword">do
+</span><span class="pas1-space">    writeln</span><span class="pas1-symbol">(</span><span class="pas1-identifier">itoa</span><span class="pas1-symbol">(</span><span class="pas1-identifier">cnt</span><span class="pas1-symbol">)+</span><span class="pas1-string">' '</span><span class="pas1-symbol">+</span><span class="pas1-identifier">Jarray</span><span class="pas1-symbol">.</span><span class="pas1-identifier">items</span><span class="pas1-symbol">[</span><span class="pas1-identifier">cnt</span><span class="pas1-symbol">].</span><span class="pas1-identifier">asObject</span><span class="pas1-symbol">.</span><span class="pas1-identifier">values</span><span class="pas1-symbol">[</span><span class="pas1-string">'title'</span><span class="pas1-symbol">].</span><span class="pas1-identifier">asString</span><span class="pas1-symbol">);</span><span class="pas1-space">   
+  ajt</span><span class="pas1-symbol">.</span><span class="pas1-identifier">Free</span><span class="pas1-symbol">;
+</span><span class="pas1-reservedword">end</span><span class="pas1-symbol">;
+
+</span><span class="pas1-comment">{procedure InitSockets;
+var Data: WSAData;
+begin
+  WSAStartup( MakeWord(1,1), Data);  //Das w&auml;re dann Version 1.1
+end;}</span><span class="pas1-space">               
+                         
+</span><span class="pas1-reservedword">Begin</span><span class="pas1-space">  </span><span class="pas1-comment">//@Main
+//&lt;Executable statements&gt;
+//https://www.amazon.com/Patterns-konkret-Max-Kleiner/dp/3935042469
+{ ISBN-10 ? : 3935042469
+  ISBN-13 ? : 978-3935042468}</span><span class="pas1-space"> 
+
+  writeln</span><span class="pas1-symbol">(</span><span class="pas1-identifier">botostr</span><span class="pas1-symbol">(</span><span class="pas1-identifier">ValidISBN_13</span><span class="pas1-symbol">(</span><span class="pas1-string">'ISBN 978-3-7657-2780-1'</span><span class="pas1-symbol">,</span><span class="pas1-space"> True</span><span class="pas1-symbol">)));</span><span class="pas1-space"> </span><span class="pas1-comment">//True back
+</span><span class="pas1-space">  writeln</span><span class="pas1-symbol">(</span><span class="pas1-identifier">botostr</span><span class="pas1-symbol">(</span><span class="pas1-identifier">ValidISBN_13</span><span class="pas1-symbol">(</span><span class="pas1-string">'ISBN 978-3-7657-2780-1'</span><span class="pas1-symbol">,</span><span class="pas1-space"> False</span><span class="pas1-symbol">)));</span><span class="pas1-space"> </span><span class="pas1-comment">//True back  
+</span><span class="pas1-space">  writeln</span><span class="pas1-symbol">(</span><span class="pas1-identifier">botostr</span><span class="pas1-symbol">(</span><span class="pas1-identifier">IsValidISBN</span><span class="pas1-symbol">(</span><span class="pas1-string">'9783765727801'</span><span class="pas1-symbol">)));
+</span><span class="pas1-space">  writeln</span><span class="pas1-symbol">(</span><span class="pas1-identifier">botostr</span><span class="pas1-symbol">(</span><span class="pas1-identifier">IsValidISBN2</span><span class="pas1-symbol">(</span><span class="pas1-string">'3765727806'</span><span class="pas1-symbol">)));</span><span class="pas1-space"> </span><span class="pas1-comment">////ISBN 13&lt;--&gt;10 converters
+
+</span><span class="pas1-space">  eng</span><span class="pas1-symbol">:=</span><span class="pas1-space"> TPythonEngine</span><span class="pas1-symbol">.</span><span class="pas1-identifier">Create</span><span class="pas1-symbol">(</span><span class="pas1-reservedword">Nil</span><span class="pas1-symbol">);
+</span><span class="pas1-space">  eng</span><span class="pas1-symbol">.</span><span class="pas1-identifier">pythonhome</span><span class="pas1-symbol">:=</span><span class="pas1-space"> PYHOME32</span><span class="pas1-symbol">;
+</span><span class="pas1-space">  eng</span><span class="pas1-symbol">.</span><span class="pas1-identifier">opendll</span><span class="pas1-symbol">(</span><span class="pas1-identifier">PYDLL32</span><span class="pas1-symbol">)
+</span><span class="pas1-space">  </span><span class="pas1-comment">//eng.IO:= pyMemo;
+</span><span class="pas1-space">  </span><span class="pas1-reservedword">try
+</span><span class="pas1-space">    eng</span><span class="pas1-symbol">.</span><span class="pas1-identifier">Execstring</span><span class="pas1-symbol">(</span><span class="pas1-string">'import base64'</span><span class="pas1-symbol">+</span><span class="pas1-identifier">LF</span><span class="pas1-symbol">+</span><span class="pas1-string">'import urllib.parse'</span><span class="pas1-symbol">);
+</span><span class="pas1-space">    eng</span><span class="pas1-symbol">.</span><span class="pas1-identifier">Execstring</span><span class="pas1-symbol">(</span><span class="pas1-string">'import urllib.request, os, re, textwrap, json, requests'</span><span class="pas1-symbol">);
+</span><span class="pas1-space">    eng</span><span class="pas1-symbol">.</span><span class="pas1-identifier">Execstring</span><span class="pas1-symbol">(</span><span class="pas1-identifier">REXDEF</span><span class="pas1-symbol">);
+</span><span class="pas1-space"> 
+    eng</span><span class="pas1-symbol">.</span><span class="pas1-identifier">Execstring</span><span class="pas1-symbol">(</span><span class="pas1-string">'url3= &quot;'</span><span class="pas1-symbol">+</span><span class="pas1-identifier">WEBURL</span><span class="pas1-symbol">+</span><span class="pas1-string">'&quot;'</span><span class="pas1-symbol">+</span><span class="pas1-identifier">LF</span><span class="pas1-symbol">+
+</span><span class="pas1-space">                   </span><span class="pas1-string">'values = {&quot;q&quot; : &quot;python programming tutorials&quot;}'</span><span class="pas1-symbol">+</span><span class="pas1-identifier">LF</span><span class="pas1-symbol">+
+</span><span class="pas1-space">                   </span><span class="pas1-string">'uheaders = {}'</span><span class="pas1-symbol">);
+</span><span class="pas1-space">                              
+    eng</span><span class="pas1-symbol">.</span><span class="pas1-identifier">Execstring</span><span class="pas1-symbol">(</span><span class="pas1-string">'data = urllib.parse.urlencode(values)'</span><span class="pas1-symbol">+</span><span class="pas1-identifier">LF</span><span class="pas1-symbol">+
+</span><span class="pas1-space">                   </span><span class="pas1-string">'data = data.encode(&quot;utf-8&quot;) # data should be bytes'</span><span class="pas1-symbol">+</span><span class="pas1-identifier">LF</span><span class="pas1-symbol">+
+</span><span class="pas1-space">                   </span><span class="pas1-string">'uheaders[&quot;User-Agent&quot;] = &quot;'</span><span class="pas1-symbol">+</span><span class="pas1-identifier">USERAGENT</span><span class="pas1-symbol">+</span><span class="pas1-string">'&quot;'</span><span class="pas1-symbol">+</span><span class="pas1-identifier">LF</span><span class="pas1-symbol">+
+</span><span class="pas1-space">                </span><span class="pas1-comment">// 'req= urllib.request.Request(url,data,headers=uheaders)'+LF+
+</span><span class="pas1-space">                   </span><span class="pas1-string">'req = urllib.request.Request(url3, headers= uheaders)'</span><span class="pas1-symbol">+</span><span class="pas1-identifier">LF</span><span class="pas1-symbol">+
+</span><span class="pas1-space">                   </span><span class="pas1-string">'resp = urllib.request.urlopen(req)'</span><span class="pas1-symbol">);</span><span class="pas1-space"> 
+   
+   eng</span><span class="pas1-symbol">.</span><span class="pas1-identifier">Execstring</span><span class="pas1-symbol">(</span><span class="pas1-string">'response = requests.get(&quot;'</span><span class="pas1-symbol">+</span><span class="pas1-identifier">WEBURL</span><span class="pas1-symbol">+</span><span class="pas1-string">'&quot;)'</span><span class="pas1-symbol">);
+</span><span class="pas1-space">   eng</span><span class="pas1-symbol">.</span><span class="pas1-identifier">Execstring</span><span class="pas1-symbol">(</span><span class="pas1-string">'todos = json.loads(response.text)'</span><span class="pas1-symbol">);
+</span><span class="pas1-space">   </span><span class="pas1-comment">//println(eng.evalStr('response.json()'));  
+</span><span class="pas1-space">   println</span><span class="pas1-symbol">(</span><span class="pas1-string">'rettype is: '</span><span class="pas1-symbol">+</span><span class="pas1-identifier">eng</span><span class="pas1-symbol">.</span><span class="pas1-identifier">evalStr</span><span class="pas1-symbol">(</span><span class="pas1-string">'type(todos)'</span><span class="pas1-symbol">));</span><span class="pas1-space"> 
+    
+   </span><span class="pas1-comment">//check of completed todos
+</span><span class="pas1-space">   Println</span><span class="pas1-symbol">(</span><span class="pas1-string">'list len: '</span><span class="pas1-symbol">+</span><span class="pas1-space"> eng</span><span class="pas1-symbol">.</span><span class="pas1-identifier">EvalStr</span><span class="pas1-symbol">(</span><span class="pas1-string">'len(todos)'</span><span class="pas1-symbol">));
+</span><span class="pas1-space">    
+   Println</span><span class="pas1-symbol">(</span><span class="pas1-string">'completed: '</span><span class="pas1-symbol">+</span><span class="pas1-space"> eng</span><span class="pas1-symbol">.</span><span class="pas1-identifier">EvalStr</span><span class="pas1-symbol">(</span><span class="pas1-string">'sum([x[&quot;completed&quot;] for x in todos])'</span><span class="pas1-symbol">));
+</span><span class="pas1-space">   Println</span><span class="pas1-symbol">(</span><span class="pas1-string">'notcompleted:'</span><span class="pas1-symbol">+</span><span class="pas1-identifier">eng</span><span class="pas1-symbol">.</span><span class="pas1-identifier">EvalStr</span><span class="pas1-symbol">(</span><span class="pas1-string">'sum([x[&quot;completed&quot;] for x in todos '</span><span class="pas1-symbol">+
+</span><span class="pas1-space">                                                           </span><span class="pas1-string">'if x == False])'</span><span class="pas1-symbol">));
+</span><span class="pas1-space">   Println</span><span class="pas1-symbol">(</span><span class="pas1-string">'notcompleted:'</span><span class="pas1-symbol">+</span><span class="pas1-identifier">eng</span><span class="pas1-symbol">.</span><span class="pas1-identifier">EvalStr</span><span class="pas1-symbol">(</span><span class="pas1-string">'len(todos)-sum([x[&quot;completed&quot;]for x in todos])'</span><span class="pas1-symbol">));</span><span class="pas1-space">                                       
+   </span><span class="pas1-comment">//# Map of userId to number of complete TODOs for that user     
+</span><span class="pas1-space">   eng</span><span class="pas1-symbol">.</span><span class="pas1-identifier">Execstring</span><span class="pas1-symbol">(</span><span class="pas1-identifier">JSONLISTDEFAULT</span><span class="pas1-symbol">);
+</span><span class="pas1-space">   println</span><span class="pas1-symbol">(</span><span class="pas1-string">'rettype is: '</span><span class="pas1-symbol">+</span><span class="pas1-identifier">eng</span><span class="pas1-symbol">.</span><span class="pas1-identifier">evalStr</span><span class="pas1-symbol">(</span><span class="pas1-string">'type(todos_by_user)'</span><span class="pas1-symbol">));
+</span><span class="pas1-space">   
+   </span><span class="pas1-comment">//# Create a sorted list of (userId, num_complete) pairs.
+</span><span class="pas1-space">   eng</span><span class="pas1-symbol">.</span><span class="pas1-identifier">Execstring</span><span class="pas1-symbol">(</span><span class="pas1-string">'top_users = sorted(todos_by_user.items(),'</span><span class="pas1-symbol">+</span><span class="pas1-identifier">LF</span><span class="pas1-symbol">+
+</span><span class="pas1-space">                  </span><span class="pas1-string">'key=lambda x: x[1], reverse=True)'</span><span class="pas1-symbol">);</span><span class="pas1-space">           
+   println</span><span class="pas1-symbol">(</span><span class="pas1-identifier">eng</span><span class="pas1-symbol">.</span><span class="pas1-identifier">evalStr</span><span class="pas1-symbol">(</span><span class="pas1-string">'top_users'</span><span class="pas1-symbol">));</span><span class="pas1-space"> 
+    
+   </span><span class="pas1-comment">//# Get the maximum number of complete TODOs.
+</span><span class="pas1-space">   println</span><span class="pas1-symbol">(</span><span class="pas1-string">'user_max_complete = '</span><span class="pas1-symbol">+</span><span class="pas1-identifier">eng</span><span class="pas1-symbol">.</span><span class="pas1-identifier">evalStr</span><span class="pas1-symbol">(</span><span class="pas1-string">'top_users[0][1]'</span><span class="pas1-symbol">));</span><span class="pas1-space"> 
+                      
+ </span><span class="pas1-comment">{Yeah, your implementation is better, you can now manipulate JSON data as a normal Python object! }
+</span><span class="pas1-space">                     
+    </span><span class="pas1-comment">//println(eng.evalStr('striphtml(str(resp.read()))'));  
+</span><span class="pas1-space">    </span><span class="pas1-comment">{first integration with internal script/invoke}
+</span><span class="pas1-space">    </span><span class="pas1-comment">//println(StringReplace(eng.evalStr('pls'),'\n',#13#10,[rfReplaceAll]));
+</span><span class="pas1-space">    </span><span class="pas1-comment">{second integration with external script/shell}
+</span><span class="pas1-space">    </span><span class="pas1-comment">//saveString(exepath+'py_isbnagent.py', ISBNAGENT);
+</span><span class="pas1-space">    </span><span class="pas1-comment">//writeln(getDosOutput('py '+exepath+'py_isbnagent.py', exePath));          
+
+</span><span class="pas1-space"> </span><span class="pas1-comment">//Exception: &lt;class 'urllib.error.HTTPError'&gt;: HTTP Error 429: Too Many Requests.
+</span><span class="pas1-space">  </span><span class="pas1-reservedword">except
+</span><span class="pas1-space">    eng</span><span class="pas1-symbol">.</span><span class="pas1-identifier">raiseError</span><span class="pas1-symbol">;
+</span><span class="pas1-space">  </span><span class="pas1-reservedword">finally
+</span><span class="pas1-space">    eng</span><span class="pas1-symbol">.</span><span class="pas1-identifier">Free</span><span class="pas1-symbol">;
+</span><span class="pas1-space">    </span><span class="pas1-comment">//aPythonVersion.Free;
+</span><span class="pas1-space">  </span><span class="pas1-reservedword">end</span><span class="pas1-symbol">;</span><span class="pas1-space">  
+  
+  GetJSONData</span><span class="pas1-symbol">;</span><span class="pas1-space">  
+  </span><span class="pas1-comment">//maXcalcF('2^64 /(60*60*24*365)')  
+//&lt;Definitions&gt;  
+</span><span class="pas1-reservedword">End</span><span class="pas1-symbol">.</span><span class="pas1-space"> 
+
+</span><span class="pas1-reservedword">Ref</span><span class="pas1-symbol">:</span><span class="pas1-space">  https</span><span class="pas1-symbol">:</span><span class="pas1-comment">//www.sonarqube.org/features/multi-languages/python/
+
+</span><span class="pas1-reservedword">Ref</span><span class="pas1-space"> code</span><span class="pas1-symbol">:</span><span class="pas1-space">  mX4 byte code executed</span><span class="pas1-symbol">:</span><span class="pas1-space"> </span><span class="pas1-number">16/09/2021</span><span class="pas1-space"> </span><span class="pas1-number">15:06:24</span><span class="pas1-space">  Runtime</span><span class="pas1-symbol">:</span><span class="pas1-space"> </span><span class="pas1-number">0:0:</span><span class="pas1-float">1.484</span><span class="pas1-space">  Memload</span><span class="pas1-symbol">:</span><span class="pas1-space"> </span><span class="pas1-number">62%</span><span class="pas1-space"> use
+ByteCode Success </span><span class="pas1-reservedword">Message</span><span class="pas1-space"> </span><span class="pas1-reservedword">of</span><span class="pas1-symbol">:</span><span class="pas1-space"> C</span><span class="pas1-symbol">:\</span><span class="pas1-reservedword">maXbox</span><span class="pas1-symbol">\</span><span class="pas1-identifier">mX47464</span><span class="pas1-symbol">\</span><span class="pas1-identifier">maxbox4</span><span class="pas1-symbol">\</span><span class="pas1-identifier">examples</span><span class="pas1-symbol">\1059</span><span class="pas1-identifier">_pypas_demo11</span><span class="pas1-symbol">.</span><span class="pas1-identifier">psb 
+Patterns konkret</span><span class="pas1-symbol">.
+</span><span class="pas1-identifier">ISBN</span><span class="pas1-symbol">-13:</span><span class="pas1-space"> </span><span class="pas1-number">9783935042468
+</span><span class="pas1-identifier">ISBN</span><span class="pas1-symbol">-10:</span><span class="pas1-space"> </span><span class="pas1-number">3935042469
+</span><span class="pas1-identifier">Author</span><span class="pas1-symbol">:</span><span class="pas1-space"> Kleiner</span><span class="pas1-symbol">,</span><span class="pas1-space"> Max
+Binding</span><span class="pas1-symbol">:</span><span class="pas1-space"> Paperback
+Publisher</span><span class="pas1-symbol">:</span><span class="pas1-space"> Software </span><span class="pas1-symbol">+</span><span class="pas1-space"> Support
+</span><span class="pas1-reservedword">Published</span><span class="pas1-symbol">:</span><span class="pas1-space"> September </span><span class="pas1-number">2003
+
+</span><span class="pas1-identifier">https</span><span class="pas1-symbol">:</span><span class="pas1-comment">//mymemory.translated.net/doc/spec.php
+</span><span class="pas1-identifier">Hello PyWorld_</span><span class="pas1-symbol">,</span><span class="pas1-space"> 
+This data will be written </span><span class="pas1-reservedword">on</span><span class="pas1-space"> the </span><span class="pas1-reservedword">file</span><span class="pas1-symbol">.
+</span><span class="pas1-identifier">Hola PyWorld_</span><span class="pas1-symbol">,&amp;</span><span class="pas1-character">#10</span><span class="pas1-symbol">;</span><span class="pas1-space"> Estos datos se escribir</span><span class="pas1-symbol">&aacute;</span><span class="pas1-identifier">n en el archivo</span><span class="pas1-symbol">.
+
+</span><span class="pas1-identifier">MYMEMORY WARNING</span><span class="pas1-symbol">:</span><span class="pas1-space"> YOU USED ALL AVAILABLE FREE TRANSLATIONS </span><span class="pas1-reservedword">FOR</span><span class="pas1-space"> TODAY</span><span class="pas1-symbol">.</span><span class="pas1-space"> NEXT AVAILABLE </span><span class="pas1-reservedword">IN</span><span class="pas1-space">  </span><span class="pas1-number">02
+</span><span class="pas1-space"> HOURS </span><span class="pas1-number">49</span><span class="pas1-space"> MINUTES </span><span class="pas1-number">44</span><span class="pas1-space"> SECONDSVISIT HTTPS</span><span class="pas1-symbol">:</span><span class="pas1-comment">//MYMEMORY.TRANSLATED.NET/DOC/USAGELIMITS.PHP TO TRANSLATE MORE
+
+</span><span class="pas1-identifier">Install a </span><span class="pas1-number">32-</span><span class="pas1-identifier">bit </span><span class="pas1-reservedword">package</span><span class="pas1-space"> </span><span class="pas1-reservedword">with</span><span class="pas1-space"> a </span><span class="pas1-number">64</span><span class="pas1-space"> pip installer </span><span class="pas1-symbol">-</span><span class="pas1-identifier">t </span><span class="pas1-symbol">(</span><span class="pas1-identifier">Target</span><span class="pas1-symbol">)
+</span><span class="pas1-identifier">C</span><span class="pas1-symbol">:\</span><span class="pas1-identifier">Users</span><span class="pas1-symbol">\</span><span class="pas1-identifier">max</span><span class="pas1-symbol">\</span><span class="pas1-identifier">AppData</span><span class="pas1-symbol">\</span><span class="pas1-identifier">Local</span><span class="pas1-symbol">\</span><span class="pas1-identifier">Programs</span><span class="pas1-symbol">\</span><span class="pas1-identifier">Python</span><span class="pas1-symbol">\</span><span class="pas1-identifier">Python36</span><span class="pas1-symbol">-32&gt;</span><span class="pas1-identifier">pip3 install </span><span class="pas1-symbol">-</span><span class="pas1-identifier">t C</span><span class="pas1-symbol">:\</span><span class="pas1-identifier">Users</span><span class="pas1-symbol">\
+</span><span class="pas1-identifier">max</span><span class="pas1-symbol">\</span><span class="pas1-identifier">AppData</span><span class="pas1-symbol">\</span><span class="pas1-identifier">Local</span><span class="pas1-symbol">\</span><span class="pas1-identifier">Programs</span><span class="pas1-symbol">\</span><span class="pas1-identifier">Python</span><span class="pas1-symbol">\</span><span class="pas1-identifier">Python36</span><span class="pas1-symbol">-32\</span><span class="pas1-identifier">Lib bitcoin
+ 
+</span><span class="pas1-symbol">----</span><span class="pas1-identifier">app_template_loaded_code</span><span class="pas1-symbol">----
+----</span><span class="pas1-reservedword">File</span><span class="pas1-space"> newtemplate</span><span class="pas1-symbol">.</span><span class="pas1-identifier">txt </span><span class="pas1-reservedword">not</span><span class="pas1-space"> exists </span><span class="pas1-symbol">-</span><span class="pas1-space"> now saved</span><span class="pas1-symbol">!----
+
+</span><span class="pas1-space">   
+</span></code></pre><!--EndFragment--></body>
+</html>

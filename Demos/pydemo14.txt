@@ -1,0 +1,90 @@
+PROGRAM SEPDemo_App_mX4_PythonTemplate_ImportModule;
+//https://realpython.com/python-json/
+{Purpose: import a module with execstring(). get PyModule first!}
+
+//<Constant declarations> 
+//Please check providers list below:['mymemory', 'microsoft', 'deepl', 'libre'].
+{TYPE <Type declarations> Pascal-Delphi-Python-Json-OLEAutomation} 
+
+Const PYHOME32 = 'C:\Users\max\AppData\Local\Programs\Python\Python36-32\'; 
+      PYDLL32  = 'C:\Users\max\AppData\Local\Programs\Python\Python36-32\python36.dll'; 
+
+Var 
+//<Variable declarations>
+  eg: TPythonEngine;
+  pyModule: string;
+
+Const PYMODFILE = 'C:\maXbox\mX47464\maxbox4\examples\1062_utils.py';
+
+Const PYBC =  'from bitcoin import *'+LF+
+              'my_private_key = random_key()'+LF+
+              'my_public_key = privtopub(my_private_key)'+LF+
+              'my_bitcoin_addr = pubtoaddr(my_public_key)'+LF+
+              'print(my_bitcoin_addr)';
+              
+Const USERAGENT = 'Mozilla/5.0 (X11; Linux i686) AppleWebKit/537.17 '+
+                  '(KHTML, maXbox4) Chrome/24.0.1312.27 Safari/537.17'; 
+
+Const REXDEF= 'def striphtml(data):      '+LF+
+               '  p = re.compile(r"<.*?>")'+LF+
+               '  return p.sub("", data)  ';  
+               
+//https://gist.github.com/lkdocs/6519378               
+Const DEF_RSAKEYS= 'def generate_RSA(bits=2048): '+LF+
+          '  '''''+LF+
+          //'  Generates RSA keypair with exponent of 65537 in PEM format'+LF+
+          //'  param: bits The key length in bits '+LF+
+          //'  return: private key and public key '+LF+
+          '  '''''+LF+
+          '  from Crypto.PublicKey import RSA '+LF+
+          '  new_key = RSA.generate(bits, e=65537)'+LF+ 
+          '  public_key = new_key.publickey().exportKey("PEM")'+LF+ 
+          '  private_key = new_key.exportKey("PEM")'+LF+ 
+          '  return private_key, public_key';
+               
+Begin  //@Main
+//<Executable statements>
+//https://www.amazon.com/Patterns-konkret-Max-Kleiner/dp/3935042469
+{ ISBN-10 ? : 3935042469  ISBN-13 ? : 978-3935042468} 
+
+  eg:= TPythonEngine.Create(Nil);
+  eg.pythonhome:= PYHOME32;
+  eg.opendll(PYDLL32)
+  try
+    eg.Execstring('import base64'+LF+'import urllib.parse, re');
+    eg.Execstring(REXDEF);
+    
+    if fileExists(PYMODFILE) then begin
+      pymodule:= LoadStringJ(PYMODFILE);
+      println(UTF8toAnsi(pymodule)+CRLF)
+      eg.Execstring(pymodule);
+      //Exception: <class 'ValueError'>: invalid literal for int() with base 10: '2021-04'.
+      println('get module func: '+eg.evalStr('quarterlyDateParser("2021-Q4")'));
+      println('get module func: '+eg.evalStr('monthlyDateParser("2021-09")'));
+    end;
+   
+    println(eg.evalStr('striphtml(str(base64.b64decode("2e8WuEr0+5nc14VBxQrOl4ob6guOTySr")))'));
+    
+    //# Get maximum number of complete TODOs.
+    //println('user_max_complete = '+eng.evalStr('top_users[0][1]')); 
+  except
+    eg.raiseError;
+  finally
+    eg.Free;
+  end;  
+//<Definitions>  
+End. 
+
+Ref:  https://www.sonarqube.org/features/multi-languages/python/
+
+Install a 32-bit package with a 64 pip installer -t (Target)
+C:\Users\max\AppData\Local\Programs\Python\Python36-32>pip3 install -t C:\Users\
+max\AppData\Local\Programs\Python\Python36-32\Lib bitcoin
+ 
+----app_template_loaded_code----
+----File newtemplate.txt not exists - now saved!----
+
+
+       
+   
+   

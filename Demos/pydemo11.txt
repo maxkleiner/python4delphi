@@ -1,0 +1,234 @@
+PROGRAM SEPDemo_App_mX4_PythonTemplate_URLLib_JSON_PyPas;
+//https://pythonprogramming.net/urllib-tutorial-python-3/
+//https://realpython.com/python-json/
+{Purpose: Go ahead and make a request to the JSONPlaceholder API for the /todos endpoint. }
+
+//<Constant declarations> 
+//Please check providers list below:['mymemory', 'microsoft', 'deepl', 'libre'].
+{TYPE <Type declarations> Pascal-Delphi-Python-Json-OLEAutomation} 
+
+Const PYHOME32 = 'C:\Users\max\AppData\Local\Programs\Python\Python36-32\'; 
+      PYDLL32  = 'C:\Users\max\AppData\Local\Programs\Python\Python36-32\python36.dll'; 
+      PYHOME64 = 'C:\Users\max\AppData\Local\Programs\Python\Python36\'; 
+      PYDLL64  = 'C:\Users\max\AppData\Local\Programs\Python\Python36\python36.dll'; 
+
+Var 
+//<Variable declarations>
+  i: integer; eng: TPythonEngine;
+
+//<FUNCTION>
+//<PROCEDURE> 
+//Generate public key and private key
+
+Const PYBC =  'from bitcoin import *'+LF+
+              'my_private_key = random_key()'+LF+
+              'my_public_key = privtopub(my_private_key)'+LF+
+              'my_bitcoin_addr = pubtoaddr(my_public_key)'+LF+
+              'print(my_bitcoin_addr)';
+              
+Const JSONLIST =
+//# Increment complete TODOs count for each user.
+  'for todo in todos:                                 '+LF+
+  '  if todo["completed"]:                            '+LF+
+  '     try:                                          '+LF+
+  '     # Increment the existing user''s count.       '+LF+
+  '        todos_by_user[todo["userId"]] += 1         '+LF+
+  '     except KeyError:                              '+LF+
+  '     # user has not been seen. Set count to 1.     '+LF+
+  '        todos_by_user[todo["userId"]] = 1          ';     
+     
+Const JSONLISTDEFAULT =
+  'from collections import defaultdict                '+LF+
+  'todos_by_user = defaultdict(int)                   '+LF+
+  'for todo in todos:                                 '+LF+
+  '  if todo["completed"]:                            '+LF+
+  '     todos_by_user[todo["userId"]]+= 1             ';
+                   
+
+Const USERAGENT = 'Mozilla/5.0 (X11; Linux i686) AppleWebKit/537.17 '+
+                  '(KHTML, maXbox4) Chrome/24.0.1312.27 Safari/537.17'; 
+
+Const WEBURL= 'https://jsonplaceholder.typicode.com/todos'; 
+
+Const REXDEF= 'def striphtml(data):      '+LF+
+               '  p = re.compile(r"<.*?>")'+LF+
+               '  return p.sub("", data)  ';  
+               
+
+{Funktion validiert ISBN-13 Valid from 1.1.2007
+Wenn streng = True, wird die Voranstellung von 'ISBN ' und die korrekte
+Verwendung der Bindestriche verlangt}
+function ValidISBN_13(const s: string; streng: Boolean): Boolean;
+var
+  i, x, n: Integer;
+  tmp: string;
+begin
+  Result:= True;
+  writeln(s[9])
+  if (not streng) or ((Copy(s, 1, 5) = 'ISBN ') and (Length(s) = 22)
+    and (s[9] = '-') and (s[21] = '-')) then begin
+    for i:= 1 to Length(s) do
+      if s[i] in StrToCharSet(DIGISET) then //['0'..'9'] then
+        tmp:= tmp + s[i]
+      else
+        if streng then
+          if (s[i] = '-') then
+            Inc(n)
+          else if (i > 5) then
+            Result:= False;
+    if (Result) and ((not streng) or (n = 4)) then begin
+      if Length(tmp) = 13 then begin
+        for i:= 1 to 12 do
+          if i div 2 = i/2 then
+            x:= x + StrToInt(tmp[i]) * 3
+          else
+            x:= x + StrToInt(tmp[i]);
+        if StrToInt(tmp[13]) > ((10 - (x mod 10)) mod 10) then  //> <
+          Result := False;
+      end else
+        Result:= False;
+    end else
+      Result:= False;
+  end else
+    Result:= False;
+end; 
+
+procedure GetJSONData;
+var  XMLhttp: OleVariant; // As Object Automation
+     ajt: TJson; JObj: TJsonObject2; JArray: TJsonArray2;
+     response,statuscode: string; cnt: integer;
+begin  
+  XMLhttp:= CreateOleObject('msxml2.xmlhttp')      
+  XMLhttp.Open('GET', WEBURL, False)   //False is async
+  //XMLhttp.setRequestHeader('Content-Type','application/x-www-form-urlencoded');
+  XMLhttp.setRequestHeader('Content-Type', 'application/json; charset=utf-8');
+  XMLhttp.Send();
+   
+  response:= XMLhttp.responseText; //assign the data
+  statuscode:= XMLhttp.status; 
+  //writeln(statuscode +CRLF+ response)
+  ajt:= TJson.create(); 
+  try
+    ajt.parse(response);
+  except
+    writeln( 'Exception: <TJsonClass>"" parse error: {'+
+                  exceptiontostring(exceptiontype, exceptionparam)) 
+  end; 
+  JArray:= ajt.JsonArray;
+  writeln('Get all Titles: '+itoa(jarray.count));     
+  for cnt:= 0 to jarray.count-1 do
+    writeln(itoa(cnt)+' '+Jarray.items[cnt].asObject.values['title'].asString);   
+  ajt.Free;
+end;
+
+{procedure InitSockets;
+var Data: WSAData;
+begin
+  WSAStartup( MakeWord(1,1), Data);  //Das wäre dann Version 1.1
+end;}               
+                         
+Begin  //@Main
+//<Executable statements>
+//https://www.amazon.com/Patterns-konkret-Max-Kleiner/dp/3935042469
+{ ISBN-10 ? : 3935042469
+  ISBN-13 ? : 978-3935042468} 
+
+  writeln(botostr(ValidISBN_13('ISBN 978-3-7657-2780-1', True))); //True back
+  writeln(botostr(ValidISBN_13('ISBN 978-3-7657-2780-1', False))); //True back  
+  writeln(botostr(IsValidISBN('9783765727801')));
+  writeln(botostr(IsValidISBN2('3765727806'))); ////ISBN 13<-->10 converters
+
+  eng:= TPythonEngine.Create(Nil);
+  eng.pythonhome:= PYHOME32;
+  eng.opendll(PYDLL32)
+  //eng.IO:= pyMemo;
+  try
+    eng.Execstring('import base64'+LF+'import urllib.parse');
+    eng.Execstring('import urllib.request, os, re, textwrap, json, requests');
+    eng.Execstring(REXDEF);
+ 
+    eng.Execstring('url3= "'+WEBURL+'"'+LF+
+                   'values = {"q" : "python programming tutorials"}'+LF+
+                   'uheaders = {}');
+                              
+    eng.Execstring('data = urllib.parse.urlencode(values)'+LF+
+                   'data = data.encode("utf-8") # data should be bytes'+LF+
+                   'uheaders["User-Agent"] = "'+USERAGENT+'"'+LF+
+                // 'req= urllib.request.Request(url,data,headers=uheaders)'+LF+
+                   'req = urllib.request.Request(url3, headers= uheaders)'+LF+
+                   'resp = urllib.request.urlopen(req)'); 
+   
+   eng.Execstring('response = requests.get("'+WEBURL+'")');
+   eng.Execstring('todos = json.loads(response.text)');
+   //println(eng.evalStr('response.json()'));  
+   println('rettype is: '+eng.evalStr('type(todos)')); 
+    
+   //check of completed todos
+   Println('list len: '+ eng.EvalStr('len(todos)'));
+    
+   Println('completed: '+ eng.EvalStr('sum([x["completed"] for x in todos])'));
+   Println('notcompleted:'+eng.EvalStr('sum([x["completed"] for x in todos '+
+                                                           'if x == False])'));
+   Println('notcompleted:'+eng.EvalStr('len(todos)-sum([x["completed"]for x in todos])'));                                       
+   //# Map of userId to number of complete TODOs for that user     
+   eng.Execstring(JSONLISTDEFAULT);
+   println('rettype is: '+eng.evalStr('type(todos_by_user)'));
+   
+   //# Create a sorted list of (userId, num_complete) pairs.
+   eng.Execstring('top_users = sorted(todos_by_user.items(),'+LF+
+                  'key=lambda x: x[1], reverse=True)');           
+   println(eng.evalStr('top_users')); 
+    
+   //# Get the maximum number of complete TODOs.
+   println('user_max_complete = '+eng.evalStr('top_users[0][1]')); 
+                      
+ {Yeah, your implementation is better, you can now manipulate JSON data as a normal Python object! }
+                     
+    //println(eng.evalStr('striphtml(str(resp.read()))'));  
+    {first integration with internal script/invoke}
+    //println(StringReplace(eng.evalStr('pls'),'\n',#13#10,[rfReplaceAll]));
+    {second integration with external script/shell}
+    //saveString(exepath+'py_isbnagent.py', ISBNAGENT);
+    //writeln(getDosOutput('py '+exepath+'py_isbnagent.py', exePath));          
+
+ //Exception: <class 'urllib.error.HTTPError'>: HTTP Error 429: Too Many Requests.
+  except
+    eng.raiseError;
+  finally
+    eng.Free;
+    //aPythonVersion.Free;
+  end;  
+  
+  GetJSONData;  
+  //maXcalcF('2^64 /(60*60*24*365)')  
+//<Definitions>  
+End. 
+
+Ref:  https://www.sonarqube.org/features/multi-languages/python/
+
+Ref code:  mX4 byte code executed: 16/09/2021 15:06:24  Runtime: 0:0:1.484  Memload: 62% use
+ByteCode Success Message of: C:\maXbox\mX47464\maxbox4\examples\1059_pypas_demo11.psb 
+Patterns konkret.
+ISBN-13: 9783935042468
+ISBN-10: 3935042469
+Author: Kleiner, Max
+Binding: Paperback
+Publisher: Software + Support
+Published: September 2003
+
+https://mymemory.translated.net/doc/spec.php
+Hello PyWorld_, 
+This data will be written on the file.
+Hola PyWorld_,&#10; Estos datos se escribirán en el archivo.
+
+MYMEMORY WARNING: YOU USED ALL AVAILABLE FREE TRANSLATIONS FOR TODAY. NEXT AVAILABLE IN  02
+ HOURS 49 MINUTES 44 SECONDSVISIT HTTPS://MYMEMORY.TRANSLATED.NET/DOC/USAGELIMITS.PHP TO TRANSLATE MORE
+
+Install a 32-bit package with a 64 pip installer -t (Target)
+C:\Users\max\AppData\Local\Programs\Python\Python36-32>pip3 install -t C:\Users\
+max\AppData\Local\Programs\Python\Python36-32\Lib bitcoin
+ 
+----app_template_loaded_code----
+----File newtemplate.txt not exists - now saved!----
+
+   

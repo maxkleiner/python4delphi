@@ -1,0 +1,223 @@
+program PyDemo21_Eval_Exec4;
+
+//https://github.com/maxkleiner/python4delphi/blob/master/Demos/Demo02/Unit1.pas
+//https://stackoverflow.com/questions/21464102/reset-python4delphi-engine
+//https://thepythonguru.com/python-builtin-functions/eval/
+//https://maxbox4.wordpress.com/2021/07/28/python4maxbox-code/
+
+//interface   - customize your PY environment first
+{uses
+  Classes, SysUtils,
+  Windows, Messages, Graphics, Controls, Forms, Dialogs,
+  StdCtrls, ComCtrls, ExtCtrls,
+  PythonEngine, Vcl.PythonGUIInputOutput, PythonVersions.pas ;   }        
+
+const PYDLLNAME = 'python36.dll';
+      PSCRIPTNAME = 'initpy.py';
+      PYHOME = 'C:\Users\max\AppData\Local\Programs\Python\Python36-32\';  
+      PYSCRIPT = 'C:\maXbox\maxbox3\maxbox3\maXbox3\examples\module1maxbox1.py';
+      PYSCRIPT2= 'C:\maXbox\maxbox3\maXbox4\examples\896_textclassification.py';
+      LB = CR+LF;
+       
+const PyModule =
+              'def printData(data): '+#13#10+
+              '  return data+data+"/n"';       
+         
+const PYCMD = 'print("this is box")'+LB+ 
+              'import sys'+LB+ 
+              'f=open(r"1050pytest21.txt","w")'+LB+
+              'f.write("Hello PyWorld_mX4, \n")'+LB+
+              'f.write("This data will be written on the file.")'+LB+ 
+              'f.close()';
+              
+              
+const PYWEATHER= 'import json'+LB+
+                 'import urllib.request'+LB+
+    'urlData = "http://api.openweathermap.org/data/2.5/weather?q=Boras,SE"'+LB+
+    'webURL = urllib.request.urlopen(urlData)'+LB+
+    'data = webURL.read()'+LB+
+    'JSON_object = json.loads(data.decode("utf-8"))'+LB+
+    'print(JSON_object)';       
+              
+const urlData= 'http://api.openweathermap.org/data/2.5/weather?q=Kiruna,SE'+
+                                   '&units=metric'+
+                                   '&APPID=55013bf3d09cfb0619989a00ed5bed09'; 
+//Please set your own API Key! APPID-------------------------------------------                                    
+//const urlData = 'http://api.openweathermap.org/';
+//const urldata = 'https://openweathermap.org/api';              
+              
+// pydllpath= 'C:\Users\breitsch\AppData\Local\Programs\Python\Python37-32\python37.dll';
+ //pyhome:= 'C:\Users\breitsch\AppData\Local\Programs\Python\Python37-32\';
+ pydllpath2='C:\Users\max\AppData\Local\Programs\Python\Python36-32\python36.dll';
+             //C:\Users\max\AppData\Local\Programs\Python\Python36-32              
+           
+
+var myloadscript: string;
+     PyForm: TForm; pyMemo: TMemo;
+
+Procedure PYLaz_P4D_Demo2;
+//https://wiki.freepascal.org/Python4Delphi 
+var eng : TPythonEngine;
+    Out1: TPythonGUIInputOutput;
+begin
+  eng:= TPythonEngine.Create(Nil);
+  Out1:= TPythonGUIInputOutput.create(nil)
+  Out1.output:= pyMemo; //debugout.output; or memo2;
+  Out1.RawOutput:= False;
+  Out1.UnicodeIO:= False;
+  Out1.maxlines:= 20;
+  out1.displaystring('this string thing')
+  
+  //"C:\Users\breitsch\AppData\Local\Programs\Python\Python38\python38.dll"
+  //eng.IO:= Out1;
+  {eng.dllpath:= 'C:\maXbox\EKON24'
+  eng.dllname:= 'python37.dll';//}
+  //eng.dllname:='C:\Users\breitsch\AppData\Local\Programs\Python\Python38\python38.dll';  writeln(botostr(Isx64('C:\Users\breitsch\AppData\Local\Programs\Python\Python38\python38.dll')));
+  //writeln(botostr(Isx64(exepath+'examples\python37.dll')));
+  //writeln(botostr(Isx64(pydllpath2)));
+  eng.pythonhome:=  PYHOME;
+  //eng.dllpath:= exepath;
+  //eng.dllname:='python379.dll';
+  Out1.writeline('draw the line');
+  try
+    //eng.unloaddll;
+    //eng.LoadDll;
+   // eng.opendll(exepath+'examples\python37.dll')
+    eng.opendll(pydllpath2)
+    eng.IO:= Out1;
+    writeln(eng.dllname);
+    if eng.IsHandleValid then begin
+      writeln('DLLhandle: '+botostr(eng.IsHandleValid))
+      WriteLn('evens: '+ eng.EvalStringAsStr('[x**2 for x in range(15)]'));
+      WriteLn('gauss: '+ eng.EvalStringAsStr('sum([x for x in range(101)])'));
+      WriteLn('gauss2: '+ eng.EvalStr('sum([x % 2 for x in range(10100)])'));
+      WriteLn('mathstr: '+ eng.EvalStr('"py " * 7'));
+      WriteLn('builtins: '+ eng.EvalStr('dir(__builtins__)'));
+      WriteLn('upperstr: '+ eng.EvalStr('"hello again".upper()'));
+      pymemo.lines.add('workdir: '+ eng.EvalStr('__import__("os").getcwd()'));
+      //pymemo.lines.add('workdir: '+ eng.EvalStr('__import__("time").sleep(5)'));
+      writeln('syncheck '+
+       botostr(eng.CheckEvalSyntax('print("powers:",[x**2 for x in range(10)])')));
+              
+      eng.ExecString('print("powers:",[x**2 for x in range(10)])');
+      writeln('ExecSynCheck1 '+botostr(eng.CheckExecSyntax(PYCMD)));
+      eng.ExecString(PYCMD);
+      {writeln('ExecSynCheck2 '+
+            botostr(eng.CheckExecSyntax(filetostring(PYSCRIPT))));
+      eng.ExecString(filetostring(PYSCRIPT)); }
+      writeln(eng.Run_CommandAsString('print("powers:",[x**2 for x in range(10)])',eval_input));
+      writeln(eng.Run_CommandAsString('sum([x for x in range(201)])',eval_input));
+      eng.ExecString('import math');
+      printLn('evalexec: '+eng.EvalStr('dir(math)'));  
+      //writeln('wget: '+ eng.EvalStr('__import__("urllib")'));  
+      writeln('wget_like: '+ eng.EvalStr('__import__("urllib.request").request.urlretrieve("http://google.com/index.html", filename="indexg.html")'));
+      //writeln('pandas: '+ eng.EvalStr('__import__("scipy")'));
+      //openfile(exepath+ 'indexg.html')
+      //openweb(exepath+ 'indexg.html')
+     // WriteLn('numpy eval: '+
+       //     eng.EvalStr('__import__("numpy").array((1,2,3,4,5))')); 
+       
+     //writeln('wget: '+ eng.EvalStr('__import__("matplotlib")')) 
+      writeln('urll: '); eng.ExecString('import urllib.request'); 
+      writeln('json: '); eng.Execstring('import json');
+      //writeln('open: '+ 
+        //  eng.EvalStr('(urllib.request.urlopen("'+urlData+'").read())'))
+      //writeln('open: '+ eng.EvalStr('(urllib.request.urlopen())'))
+     writeln('open: '+ 
+     eng.EvalStr('json.loads(urllib.request.urlopen("'+
+                               urlData+'").read().decode("utf-8"))'));
+      //json.loads(data.decode('utf-8'))                   
+      pymemo.update;
+    end
+      else writeln('invalid library handle! '+Getlasterrortext);
+    println('PythonOK: '+botostr(PythonOK));  
+  except
+     // Exception: <class 'urllib.error.HTTPError'>: HTTP Error 401: Unauthorized.
+     // Please set your own API Key
+     eng.raiseError;
+     writeln('PyErr '+ExceptionToString(ExceptionType, ExceptionParam));
+  finally   
+     eng.free;
+  end;     
+  out1.free;
+  //pyImport(PyModule);
+end;
+
+begin  //@main
+  //PythonEngine1.Free;
+  //myloadscript2:= filetostring(PYSCRIPT2);
+  
+  PyForm:= loadForm2(300,200, clgreen,'PyFrm4D');
+  pyMemo:= TMemo.create(PyForm);
+  pyMemo.parent:= PyForm
+  PyForm.show;
+  
+  PYLaz_P4D_Demo2; 
+  
+  //register_PYthonGUI;
+End.
+----app_template_loaded_code----
+----File newtemplate.txt not exists - now saved!----
+
+Doc: Destroying it calls Py_Finalize, which frees all memory allocated by the Python DLL.
+Or, if you're just using the Python API without the VCL wrappers, you can probably just call Py_NewInterpreter on your TPythonInterface object to get a fresh execution environment without necessarily discarding everything done before.
+
+Apart from forgetting to decode, you can only read the response once. Having called .read() already, the second call returns an empty string.
+Call .read() just once, and decode the data to a string:
+
+Evil eval()
+
+You should never pass untrusted source to the eval() directly. As it is quite easy for the malicious user to wreak havoc on your system. For example, the following code can be used to delete all the files from the system.
+
+1 >>>
+2 eval('os.system("RM -RF /")') # command is deliberately capitalized
+3 >>>
+
+wants to load a 64bit in a 32bit env:
+wget: <module 'urllib' from 'C:\\Users\\max\\AppData\\Local\\Programs\\Python\\Python36\\lib\\urllib\\__init__.py'>
+Exception: <class 'ImportError'>: DLL load failed: %1 is not a valid Win32 application.
+
+wget: <module 'urllib' from 'C:\\Users\\max\\AppData\\Local\\Programs\\Python\\Python36-32\\lib\\urllib\\__init__.py'>
+wget_like: ('indexg.html', <http.client.HTTPMessage object at 0x0B2C0690>)
+
+
+Ref: https://sourceforge.net/projects/maxbox/files/Examples/EKON/P4D/python37.dll/download
+--------------------------------------------------------
+dll EXCEPT Exception: There is already one instance of TPythonEngine running.
+TRUE
+Exception: Python is not properly initialized.
+PascalScript maXbox4 - RemObjects & SynEdit
+
+dll EXCEPT Exception: There is already one instance of TPythonEngine running.
+TRUE
+Exception: Python is not properly initialized.
+
+dll EXCEPT Exception: Access violation at address 00345A76 in module 'maXbox4.exe'. Read of address 4365636E.
+TRUE
+Exception: Access violation at address 6BA3BA66 in module 'python36.dll'. Read of address 000000AD.
+
+mapdll EXCEPT Exception: There is already one instance of TPythonEngine running.
+PythonOK TRUE
+ImportEXCEPT Exception: Access violation at address 6BA3BA66 in module 'python36.dll'. Read of address 000000AC.
+ mX4 executed: 26/07/2021 13:30:51  Runtime: 0:0:2.48  Memload: 71% use
+ 
+Example 3: Python multithreading
+
+All the programs above in this article are single-threaded programs. Here's an example of a multithreaded Python program.
+
+
+import threading 
+  
+def print_hello_three_times():
+  for i in range(3):
+    print("Hello")
+  
+def print_hi_three_times(): 
+    for i in range(3): 
+      print("Hi") 
+
+t1 = threading.Thread(target=print_hello_three_times)  
+t2 = threading.Thread(target=print_hi_three_times)  
+
+t1.start()
+t2.start()

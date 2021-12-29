@@ -1,0 +1,466 @@
+Program PyDemo27_CodeSnippets;
+
+//22 Python Code Snippets for Everyday Problems
+//https://medium.com/@codedev101/22-python-code-snippets-for-everyday-problems-2f6e5025cd70
+
+//Note: modify PYHOME and PYDLL :
+
+Const //PYHOME = 'C:\Users\breitsch\AppData\Local\Programs\Python\Python37-32\';
+  PYHOME = 'C:\Users\breitsch\AppData\Local\Programs\Python\Python37-32\'; 
+  PYDLL  = 'C:\Users\breitsch\AppData\Local\Programs\Python\Python37-32\python37.dll';
+  PYSCRIPT2= 'C:\maXbox\maxbox3\maXbox4\examples\896_textclassification.py';
+  LB = CR+LF;
+       
+const PyModule =
+              'def printData(data): '+#13#10+
+              '  return data+data+"/n"';       
+         
+const PYCMD = 'print("this is box")'+LB+ 
+              'import sys'+LB+ 
+              'f=open(r"1050pytest21_5powers.txt","w")'+LB+
+              'f.write("Hello PyWorld_mX47580, \n")'+LB+
+              'f.write("This data will be written on the file.")'+LB+ 
+              'f.close()';
+
+              
+var  PyForm: TForm; pyMemo: TMemo;
+     avar: string; pyval: variant;
+     
+Procedure PYLaz_P4D_Demo27;
+//https://wiki.freepascal.org/Python4Delphi 
+var eng : TPythonEngine;
+    Out1: TPythonGUIInputOutput;
+    pystrings: TStrings;
+begin
+
+// FIOPythonModule := TPythonModule.Create( Self );
+    //with  TPythonModule.Create( Self ) do
+      //AddMethod(
+      
+  eng:= TPythonEngine.Create(Nil);
+  Out1:= TPythonGUIInputOutput.create(eng)
+  pystrings:= TStringlist.create;
+  Out1.output:= pyMemo; //debugout.output; or memo2;
+  //eng.IO:= Out1;
+  Out1.RawOutput:= True;
+  Out1.UnicodeIO:= False;
+  Out1.maxlines:= 40;
+  out1.DelayWrites:= False;
+  out1.displaystring('this string thing draw the line')
+  out1.write('YXthis write string thing draw the line');
+  writeln(botostr(Isx64(PYDLL)));
+  //writeln(botostr(Isx64(pydllpath2)));
+  //eng.dllpath:= exepath;
+  //eng.dllname:='python37.dll';
+  eng.pythonhome:= PYHOME;
+  eng.InitScript:= pystrings;
+  try
+   //pymod.InitializeForNewInterpreter; //}
+    eng.RedirectIO:= true;
+    eng.opendll(PYDLL)
+    eng.RedirectIO:= true;
+    eng.IO:= Out1;
+    Out1.output:= pyMemo; 
+    //eng.traceback
+    eng.AutoFinalize:= True; 
+    //eng.RedirectIO:= true;
+    //eng.AutoUnload:= false; 
+    writeln(eng.dllname);
+    //pymod.engine:= eng;
+    if eng.IsHandleValid then begin
+      writeln('DLLhandle: '+botostr(eng.IsHandleValid))
+      WriteLn('evens: '+ eng.EvalStringAsStr('[x**2 for x in range(15)]'));
+      WriteLn('gauss: '+ eng.EvalStringAsStr('sum([x for x in range(101)])'));
+      WriteLn('gauss2: '+ eng.EvalStr('sum([x % 2 for x in range(10100)])'));
+      WriteLn('mathstr: '+ eng.EvalStr('"py " * 7'));
+      WriteLn('builtins: '+ eng.EvalStr('dir(__builtins__)'));
+      WriteLn('upperstr: '+ eng.EvalStr('"hello again".upper()'));
+      pymemo.lines.add('workdir: '+ eng.EvalStr('__import__("os").getcwd()'));
+      writeln('syncheck '+
+      botostr(eng.CheckEvalSyntax('print("powers:",[x**2 for x in range(10)])')));
+      
+      WriteLn('powerline1: '+ eng.EvalStr('list(map(int, ["1", "2", "3"]))'));
+      WriteLn('powerline2: '+ 
+               eng.EvalStr('list(map(float,["1",2,"3.0",4.0,"5",6]))'));
+               eng.Execstring('sum_of_digits=lambda x: sum(map(int, str(x)))');
+      WriteLn('powerline3: '+ eng.EvalStr('sum_of_digits(1789)'));
+      
+               eng.Execstring('A = [[1, 2, 3], [4, 5, 6], [7, 8, 9]]');
+               eng.Execstring('transpose_A = [list(i) for i in zip(*A)]');
+      WriteLn('powerline4: '+ eng.EvalStr('transpose_A')+CRLF);  
+      
+      //1 — Invert Dictionary
+      eng.Execstr('mydict = {1: "Py", 2: "Js", 3: "C++", 4: "Dart"}');
+      PrintLn('powerl1: '+ eng.EvalStr('{v: k for k, v in mydict.items()}')); 
+      
+      //3 — Cloning/Duplicate list    
+      eng.ExecStr('import copy')                                              
+      eng.ExecString('mylst1 = [100, 200, 300]');
+      eng.ExecString('mylst2 = copy.deepcopy(mylst1)');
+      PrintLn('powerl3: '+ eng.EvalStr('mylst2')); 
+      
+      //4 — Merge two Dictionaries with **
+      eng.ExecStr('dict1 = {1: "PY", 2: "JS"}');
+      eng.ExecStr('dict2 = {3: "CPP", 4: "C#"}');
+      PrintLn('powerl4 dict3: '+ eng.EvalStr('{**dict1, **dict2}'));
+      
+      //5— Quick variable Exchanging
+      eng.ExecStr('value1 = 125');
+      eng.ExecStr('value2 = 625');
+      eng.ExecStr('(value2, value1) = (value1, value2)');
+      PrintLn('powerl5: '+eng.EvalStr('value1, value2'));
+     
+      //6— Quick Reversing a List
+      eng.ExecStr('lst = [125, 625, 123, 435]');
+      PrintLn('powerl6 Reverse: '+eng.EvalStr('lst[::-1]'));
+     
+      //7— Format() method
+      eng.Execstr('name = "Haider Imtiaz"');
+      eng.Execstr('profession = "Programmer"');
+      PrintLn('powerl7 Format: '
+            +eng.Evalstr('"Hi My Name is {} and {}".format(name, profession)'));
+     
+      //8 — Extract Vowels from String
+      eng.Execstr('def Extract_Vowels(data):'+CRLF+
+                  ' return [each for each in data if each in "aeiou"]');
+      PrintLn('powerl8 Callfunc: '+
+                 eng.Evalstr('Extract_Vowels("language")'));
+               
+      //9— Convert Irregular List to Single List
+      eng.ExecStr('import itertools') 
+      eng.Execstr('mylist = [[10, 20], [30, 40], [50, 60, 70]]');
+      PrintLn('powerl9 Flatten: '+
+                 eng.EvalStr('list(itertools.chain.from_iterable(mylist))'));
+               
+      //10 — Printing Multiples of String
+      PrintLn('powerl10 multi: '+eng.EvalStr('"Py"*3, "JS"*3'));
+      PrintLn('powerl10 multi: '+eng.EvalStr('"Code"* 5'));             
+    
+      //11 — Transpose A Matrix
+      eng.ExecStr('lst = [[10, 20, 30], [40, 50, 60]]') 
+      eng.Execstr('transpose = list(zip(*lst))');
+      PrintLn('powerl11 Matrix: '+eng.EvalStr('transpose'));
+    
+      //12 — Short If-Else
+      PrintLn('powerl12 Short: '+
+                 eng.EvalStr('("Yes") if 100 > 50 else ("No")'));
+                 
+      //13 — Reversed Iteration 
+      eng.ExecStr('mylist = [100, 200, 300, 400, 500]')
+      eng.ExecStr('for x in reversed(mylist): '+CRLF+
+                  '  lst.append(x)'); 
+      println('powerl13 Short: '+eng.evalstr('lst'));  
+      
+      //14— Taking Multiple Integer Input
+      //eng.ExecStr('take_input = list(map(lambda x:int(x) ,input().split()))')
+      eng.ExecStr('take_input=list(map(lambda x:int(x),"10 20 30 40".split()))')
+      PrintLn('powerl14 Matrix: '+eng.EvalStr('take_input')); 
+      
+      //15 — Joining String                                            
+      eng.ExecStr('mylist = ["Hi", "Programmer", "How''s", "Going"]')
+      PrintLn('powerl15 Matrix: '+eng.EvalStr('" ".join(mylist)')); 
+      
+      //16 — Reset the Recursion Limit
+      eng.ExecStr('import sys') 
+      PrintLn('powerl16 Limit: '+eng.EvalStr('(sys.setrecursionlimit(2000))')); 
+      
+      //17— Filter any list
+      eng.ExecStr('mylst = [11, 12, 13, 14, 15, 16]') 
+      PrintLn('powerl17 Limit: '+eng.EvalStr('[i for i in mylst if i%2 == 0]'));
+      
+      //18— Generate Random Number
+      Println('Rand Gen:'+eng.EvalStr('__import__("random").randrange(45,1066)')); 
+      
+      //20—Get Rid of Duplicates
+      eng.ExecStr('mylst = ["a", "b", "b", "c", "c", "a", "d", "d"]') 
+      Println('powerl20:  '+eng.EvalStr('list(dict.fromkeys(mylst))')); 
+      
+      //21— Unpack a Tuple
+      eng.ExecStr('tuples = (100, 200, 300, 400)'+CRLF+'a, b, c, d = tuples') 
+      Println('powerl21 tuple: '+eng.EvalStr('a, b, c, d'));
+      
+      //22— Empty containers of Data
+      eng.ExecStr('a = list()'+CRLF+'b = tuple()'+CRLF+
+                  'c = set()'+CRLF+'d = dict()');
+      Println('powerl22 cont: '+eng.EvalStr('a, b, c, d'));
+    
+      eng.CheckError(true);
+     { pystrings:= TStringlist.create;
+      pystrings.add('import matplotlib.pyplot as plt')
+      pystrings.add('import numpy as np')
+      pystrings.add('np.arange(5, 24, 3)')
+      pystrings.add('fig, ax = plt.subplots(dpi=153)')
+      pystrings.add('plt.plot([1,2,3,4,5,6], [1,2,3,4,9,5], "go")')
+      pystrings.add('plt.show()')
+      eng.ExecStrings4(pystrings);
+      pystrings.free; }
+      
+     (* eng.ExecString('import subprocess');  
+      eng.ExecString('subprocess.call(["pip", "install", "sympy"])')
+      eng.ExecString('from sympy import *');
+      eng.ExecString('from sympy.plotting import plot'); 
+      writeln(eng.EvalStr('list(primerange(7, 150))'));
+      writeln(eng.EvalStr('sum(list(primerange(0, 100)))'));
+      writeln(eng.EvalStr('(list(primerange(0, 101)))'));
+      writeln(eng.EvalStr('len(list(primerange(0, 101)))'));
+      //https://www.tutorialspoint.com/sympy/sympy_solvers.htm
+      avar:= '-2';
+      eng.ExecString('x=Symbol("x")');
+      eng.ExecString('x,y=symbols("x y")');
+      writeln(eng.EvalStr('solveset(Eq(x**2-9,0), x)'));
+      writeln(eng.EvalStr('solveset(Eq(x**2-3*x,'+avar+'),x)'));
+      writeln(eng.EvalStr('solveset(exp(x),x)'));
+      println(eng.EvalStr('linsolve([Eq(x-y,4),Eq( x + y ,1) ], (x, y))'));
+       *)
+      //eng.ExecString('plot(x**'+avar+', line_color="red")');
+      //eng.ExecString('plot((sin(x),(x, -2*pi, 2*pi)),(cos(x), (x, -pi, pi)))');
+      {
+      eng.ExecString('from sympy.plotting import plot3d'); 
+      eng.ExecString('x,y=symbols("x y") '); 
+      eng.ExecString('plot3d(x*y, (x, -10,10), (y, -10,10))'); }
+      
+      WriteLn('powerline6last: '+ eng.EvalStr('len(str(2**4096))'));
+      pymemo.lines.add('Decimal: '+ 
+              eng.EvalStr('__import__("decimal").Decimal((0,(3,1,4),-2))'));
+      pymemo.lines.add('Decimal: '+ 
+              eng.EvalStr('__import__("decimal").Decimal(0.1)')); 
+      eng.ExecString('import decimal')  
+      //https://www.w3schools.com/python/python_ref_functions.asp      
+      writeln('is instance: '+eng.EvalStr('isinstance(decimal.Decimal,'+
+                    '(float, int, str, list, dict, tuple, type))')); 
+      {writeln('is type: '+eng.EvalStr('type(str(decimal.Decimal(0.1)))'));
+      writeln('is type: '+eng.EvalStr('type(float(decimal.Decimal(0.1)))'));
+      writeln('is type: '+eng.EvalStr('type(decimal.Decimal)')); 
+      writeln('is type: '+eng.EvalStr('type(decimal)')); }                   
+      //eng.ExecString('from spacy import *');
+      //eng.ExecString('from nltk.classify import MaxentClassifier')          
+      //eng.ExecString('import tensorflow')  
+      
+      pyval:= VarPythonEval('sum([x for x in range(201)])');
+      //writeln('evalvar '+botostr(VarIsPythonList(pyval)));
+      writeln('evalvar '+botostr(VarIsnumeric(pyval)));
+      pyval:= NewPythonDict;
+      writeln(botostr(VarIsPython( pyval)));
+      pyval := (VarPythonEval('2 ** 3'));         
+     { eng.ExecString('import subprocess');  
+      eng.ExecString('subprocess.call(["pip", "install", "langdetect"])')
+      eng.ExecString('from langdetect import detect'); 
+      println('lang detect: '+eng.EvalStr('detect("bonjour mes ordinateurs")'));
+      }
+      Out1.output:= pyMemo; 
+      pymemo.update;
+    end
+      else writeln('invalid library handle! '+Getlasterrortext);
+    println('PythonOK: '+botostr(PythonOK));  
+  except
+     eng.raiseError;
+     writeln('PyErr '+ExceptionToString(ExceptionType, ExceptionParam));
+  finally
+     //eng.close 
+     eng.unloaddll; 
+     out1.free;
+     eng.free;
+     //PyFinalize();
+     pystrings.Free;
+  end;     
+  //out1.free;
+  //pyImport(PyModule);
+end;
+
+
+function SysVersionFromDLLName2(const DLLFileName : string): string;
+var Minor, Major: integer;
+begin
+  PythonVersionFromDLLName(DLLFileName, Major, Minor);
+  Result := Format('%d.%d', [Major, Minor]);
+end;
+
+//https://stackoverflow.com/questions/64324481/delphi-4-python/69123825#69123825
+procedure callDynPy;
+var
+  PyEngine_netA: TPythonEngine;
+  PyInpOut_netA: TPythonInputOutput;
+  FIOPythonModule : TPythonModule;
+  pystrings: TStrings;
+begin
+  PyEngine_netA:= TPythonEngine.Create(Self);
+  PyInpOut_netA:= TPythonInputOutput.Create(Self);
+  FIOPythonModule:= TPythonModule.Create( Self );
+  pystrings:= TStringlist.create;
+  
+  pystrings.text:=
+   'import sys'+LF+
+   'import os'+LF+
+   'pylist = []'+LF+
+   'print("Python path =", sys.path)         '+LF+
+   'print()                                  '+LF+
+   'print("Python modules already imported:")'+LF+
+   'for m in sys.modules.values():           '+LF+
+   '    if m:                                '+LF+
+   '        print(" ", m,"\n")               '+LF+
+   '        pylist.append(m)                 '+LF+
+   '        pylist.append("\n")              '+LF+
+   'print()                                  '+LF+
+   '#pylist = "\n".join(pylist)              '+LF+ 
+   '#PYTHONHOME=os.getenv(r"'+PYHOME+'\"))   '+LF+
+   'pylist.append(os.getenv("PYTHONHOME"))   '+LF+
+   '#print("PYTHONPATH =", os.getenv("PYTHONPATH"))';
+   
+  try
+    // configure components
+    //saveString(exepath+'pystrings.py', pystrings.text);
+    //writeln(getDosOutput('py '+exepath+'pystrings.py', exePath));
+    PyEngine_netA.DllName:= PYDLL;
+    PyEngine_netA.pythonhome:= PYHOME;
+    writeln(FIOPythonModule.modulename);
+    writeln(objtostr(PyEngine_netA.IOPythonModule)); 
+    //PyEngine_netA.modulename 
+   
+    //PyEngine_netA.IO := PyInpOut_netA;
+    PyEngine_netA.UseLastKnownVersion := True;
+    writeln('SysVersionFromDLLName2: '+SysVersionFromDLLName2(PYDLL));
+    //PyEngine_netA.opendll(PYDLL)
+    PyEngine_netA.LoadDll;
+    //PyEngine_netA.CheckPython;
+    PyEngine_netA.IO := PyInpOut_netA;
+    PyEngine_netA.redirectio := true;
+    PyInpOut_netA.Writeline('print(49+78+23,"\n")');
+    
+    {with PyEngine_netA do begin
+      ExecString('import subprocess');  
+      ExecString('subprocess.call(["pip", "install", "pyio"])')
+    end; } 
+          
+    println('CheckExecSyntax:'+botostr(PyEngine_netA.CheckExecSyntax(pystrings.text)));
+    PyEngine_netA.ExecStrings4(pystrings);
+    //synStringReplace(const S, OldPattern,NewPattern:str;Flags:TReplaceFlags):str
+    println('module list detect: '+
+           StringReplace(PyEngine_netA.EvalStr('pylist'),'\n',CR+LF,[rfReplaceAll]));
+    //PyInpOut_netA.Read('print(49+78,"\n")');
+    //PyInpOut_netA.output:= pyMemo;     
+    //PyEngine_netA.IO:= PyInpOut_netA;
+
+    //PyEngine_netA.ExecString(UTF8Encode(mmo_pythoncode.text));
+//https://stackoverflow.com/questions/49599004/how-to-convert-a-python-datetime-to-a-delphi-tdatetime#49599145
+    PyEngine_netA.ExecString(UTF8Encode('print(49+78),"\n"'));
+    PyEngine_netA.ExecString(('from datetime import datetime, timedelta'));
+    PyEngine_netA.ExecString(UTF8Encode('DELPHI_EPOCH=datetime(1899,12,30)'));
+    PyEngine_netA.ExecString('def datetime_fromdelphi(dvalue):'+LF+
+                             '  return DELPHI_EPOCH + timedelta(days=dvalue)');
+    println(PyEngine_netA.EvalStr(('datetime_fromdelphi(43191.68205925926)')));
+                                 
+    //PyEngine_netA.ExecString(('49+78'));
+    println(PyEngine_netA.EvalStr(('(49+78+2**5),"\n"'+LF)));
+    println(PyEngine_netA.EvalStr(('__import__("sys").version')));
+  except
+    PyEngine_netA.raiseError;  
+  finally
+    PyEngine_netA.free;
+    PyInpOut_netA.free;
+    FIOPythonModule.Free;
+    pystrings.Free;
+  end;
+end;  
+
+begin  //@main
+  //myloadscript2:= filetostring(PYSCRIPT2);
+  //Memo1.beginUpdate;
+  PyForm:= loadForm2(300,200, clgreen,'PyFrm4D_27');
+  pyMemo:= TMemo.create(PyForm);
+  pyMemo.parent:= PyForm
+  pymemo.align:= albottom;
+  PyForm.show;
+  
+  PYLaz_P4D_Demo27; 
+  //Memo1.EndUpdate;
+  
+  //callDynPy;
+  
+  //---register_PYthonGUI;---
+End.
+----app_template_loaded_code----
+----File newtemplate.txt not exists - now saved!----
+
+doc: https://stackoverflow.com/questions/23134820/unhandled-exception-at-multiarray-pyd-the-2nd-time-the-program-runs#23173191
+
+https://stackoverflow.com/questions/16779799/py-initialize-and-py-finalize-and-matplotlib
+
+maXbox_Starter86_3_Python4maXbox
+
+Doc: Destroying it calls Py_Finalize, which frees all memory allocated by the Python DLL.
+Or, if you're just using the Python API without the VCL wrappers, TPythonInterface 
+
+Evil eval()
+
+You should never pass untrusted source to the eval() directly. 
+ For example, the following code can be used to delete all the files from the system.
+1 >>>
+2 eval('os.system("RM -RF /")') # command is deliberately capitalized
+3 >>>
+
+#  demo script
+import matplotlib.pyplot as plt
+import numpy as np
+x = np.arange(0,8*np.pi,0.1)   # start,stop,step
+y = np.cos(x) *1/(1+x)
+plt.plot(x,y)
+plt.show()
+
+
+Ref: https://sourceforge.net/projects/maxbox/files/Examples/EKON/P4D/python37.dll/download
+--------------------------------------------------------
+dll EXCEPT Exception: There is already one instance of TPythonEngine running.
+TRUE
+Exception: Python is not properly initialized.
+PascalScript maXbox4 - RemObjects & SynEdit
+
+
+procedure TPythonEngine.DoRedirectIO;
+const
+  code = 'import sys'+LF+
+         'class DebugOutput:'+LF+
+         '  pyio = __import__("pyio")'+LF+
+         '  softspace=0'+LF+
+         '  encoding=None'+LF+
+         '  def write(self,message):'+LF+
+         '     self.pyio.write(message)'+LF+
+         '  def readline(self, size=None):'+LF+
+         '     return self.pyio.read(size)'+LF+
+         '  def flush(self):' + LF +
+         '     pass' + LF +
+         '  def isatty(self):' + LF +
+         '     return True' + LF +
+         'sys.old_stdin=sys.stdin'+LF+
+         'sys.old_stdout=sys.stdout'+LF+
+         'sys.old_stderr=sys.stderr'+LF+
+         'sys.stdin=sys.stderr=sys.stdout=DebugOutput()'+LF+#0;
+begin
+  if csDesigning in ComponentState then
+    Exit;
+  CheckPython;
+  if not Assigned(FIOPythonModule) then
+  begin
+    // create a new module called pyio
+    FIOPythonModule := TPythonModule.Create( Self );
+    with FIOPythonModule as TPythonModule do begin
+      Engine := Self;
+      ModuleName := 'pyio';
+      AddMethod('write', pyio_write, 'write(String) -> None' );
+      AddMethod('read',  pyio_read,  'read() -> String' );
+      AddMethod('SetDelayWrites',pyio_SetDelayWrites,'SetDelayWrites(Boolean)->None');
+      AddMethod( 'SetMaxLines',  pyio_SetMaxLines,  'SetMaxLines(Integer) -> None' );
+      AddMethod( 'GetTypesStats',pyio_GetTypesStats,'GetTypesStats([type name])-> a list of tuple (TypeName, InstanceCount, CreateHits, DeleteHits)' );
+      end;
+  end;
+  with FIOPythonModule as TPythonModule do
+    if not Initialized then
+      Initialize;
+  // execute the code
+  ExecString(code);
+  FIORedirected := True;
+end;
+
+
+
+                
+

@@ -1,0 +1,107 @@
+PROGRAM SEPDemo_App_mX4_PythonTemplate_Turtle;
+//https://docs.python.org/3/library/turtle.html
+
+//https://techvidvan.com/tutorials/python-language-translator/
+//https://www.tutorialspoint.com/python_text_processing/python_text_translation.htm
+//https://translate-python.readthedocs.io/en/latest/providers.html
+
+//<Constant declarations> 
+//Please check providers list below: ['mymemory', 'microsoft', 'deepl', 'libre'].
+{TYPE 
+<Type declarations>} 
+
+Const PYHOME32 = 'C:\Users\max\AppData\Local\Programs\Python\Python36-32\'; 
+      PYDLL32  = 'C:\Users\max\AppData\Local\Programs\Python\Python36-32\python36.dll'; 
+      PYHOME64 = 'C:\Users\max\AppData\Local\Programs\Python\Python36\'; 
+      PYDLL64  = 'C:\Users\max\AppData\Local\Programs\Python\Python36\python36.dll'; 
+
+Var 
+//<Variable declarations>
+  i: integer; eng: TPythonEngine;
+
+//<FUNCTION>
+//<PROCEDURE> 
+
+//Generate public key and private key
+
+Const PYBC =  'from bitcoin import *'+LF+
+              'my_private_key = random_key()'+LF+
+              'my_public_key = privtopub(my_private_key)'+LF+
+              'my_bitcoin_addr = pubtoaddr(my_public_key)'+LF+
+              'print(my_bitcoin_addr)';
+              
+Const PYTURTLE = 'from turtle import *      '+LF+
+                 'color("red", "yellow")    '+LF+
+                 's = Screen()              '+LF+
+                 's.setup(700,500)          '+LF+
+                 's.bgcolor("black")        '+LF+
+                 '#speed(5)                  '+LF+
+                 'begin_fill()              '+LF+
+                 'while True:               '+LF+
+                 '    forward(250)          '+LF+
+                 '    left(170)             '+LF+
+                 '    if abs(pos()) < 1:    '+LF+
+                 '         break            '+LF+
+                 'end_fill()                '+LF+
+                 'done()                    ';  
+                 
+Const REFTXT = 'Hola PyWorld_,&#10; Estos datos se escribirán en el archivo.';                             
+Begin  //@Main
+//<Executable statements>
+  eng:= TPythonEngine.Create(Nil);
+  eng.pythonhome:= PYHOME32;
+  eng.opendll(PYDLL32)
+  //eng.IO:= pyMemo;
+    try
+      eng.Execstring('import base64');
+      //eng.Execstring('import Crypto');
+      //eng.ExecString('import subprocess');  
+      //eng.ExecString('subprocess.call(["pip3","install -t '+PYHOME32+'Lib", "translate"])')
+      //eng.ExecString('subprocess.call(["pip3","install", "translate"])')
+      
+     (* eng.Execstring('from translate import Translator');
+      eng.Execstring('translator= Translator(provider="mymemory",'+
+                                             'from_lang="german",to_lang="spanish")');
+      println(UTF8Decode(eng.EvalStr('translator.translate("Guten Morgen Programmierer")')));
+      
+      //eng.Execstring('with open(r"'+exepath+'999_lesmiserable_135-0.txt","rb") as afile:'+
+      //MAX ALLOWED QUERY : 500 CHARS QUERY LENGTH LIMIT EXCEDEED. 
+      eng.Execstring('with open(r"'+exepath+'test.txt","rb") as afile:'+
+                                            ' ftrans = afile.read().decode("utf-8")');
+      println(UTF8Decode(eng.EvalStr('translator.translate(ftrans)')));
+      //StringReplace(StringReplace(Trim(address),#13,' ',[rfReplaceAll]),#10,' ',[rfReplaceAll]);
+      *)
+      //println(((REFTXT)));
+      eng.Execstring(PYTURTLE);
+      println(StringReplace((REFTXT),'#10',#13#10,[rfReplaceAll]));
+        
+      eng.Execstring('with open(r"'+exepath+'maXbox4.exe","rb") as afile:'+
+                              ' fbuf = afile.read()');
+      println(eng.evalstr('__import__("hashlib").sha512('+
+                                    'fbuf).hexdigest().upper()')); 
+    except
+      eng.raiseError;
+    finally
+      eng.Free;
+      //aPythonVersion.Free;
+    end;    
+  //maXcalcF('2^64 /(60*60*24*365)')  
+//<Definitions>  
+End. 
+
+Ref:  https://www.sonarqube.org/features/multi-languages/python/
+
+Ref code:  https://mymemory.translated.net/doc/spec.php
+Hello PyWorld_, 
+This data will be written on the file.
+Hola PyWorld_,&#10; Estos datos se escribirán en el archivo.
+
+MYMEMORY WARNING: YOU USED ALL AVAILABLE FREE TRANSLATIONS FOR TODAY. NEXT AVAILABLE IN  02
+ HOURS 49 MINUTES 44 SECONDSVISIT HTTPS://MYMEMORY.TRANSLATED.NET/DOC/USAGELIMITS.PHP TO TRANSLATE MORE
+
+Install a 32-bit package with a 64 pip installer -t (Target)
+C:\Users\max\AppData\Local\Programs\Python\Python36-32>pip3 install -t C:\Users\
+max\AppData\Local\Programs\Python\Python36-32\Lib bitcoin
+ 
+----app_template_loaded_code----
+----File newtemplate.txt not exists - now saved!----

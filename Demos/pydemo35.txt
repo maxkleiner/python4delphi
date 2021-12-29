@@ -1,0 +1,396 @@
+Program PyDemo5_Eval_Exec5_Powerliners_2;
+
+//https://github.com/maxkleiner/python4delphi/blob/master/Demos/Demo02/Unit1.pas
+//https://stackoverflow.com/questions/21464102/reset-python4delphi-engine
+//https://thepythonguru.com/python-builtin-functions/eval/
+//https://maxbox4.wordpress.com/2021/07/28/python4maxbox-code/
+//https://stackoverflow.com/questions/359498/how-can-i-unload-a-dll-using-ctypes-in-python
+//https://levelup.gitconnected.com/5-powerful-python-one-liners-you-should-know-469b9c4737c7
+
+//interface   - customize your PY environment first
+{uses
+  Classes, SysUtils,
+  Windows, Messages, Graphics, Controls, Forms, Dialogs,
+  StdCtrls, ComCtrls, ExtCtrls,
+  PythonEngine, Vcl.PythonGUIInputOutput, PythonVersions.pas ;   }  
+  
+procedure PyFinalize();
+      external 
+  //'Py_Finalize@C:\Users\breitsch\AppData\Local\Programs\Python\Python37-32\python37.dll stdcall';
+   'Py_Finalize@C:\Users\max\AppData\Local\Programs\Python\Python36-32\python36.dll stdcall';       
+//Note: modify PYHOME and PYDLL :
+
+//const PYHOME = 'C:\Users\breitsch\AppData\Local\Programs\Python\Python37-32\'; 
+Const PYHOME = 'C:\Users\max\AppData\Local\Programs\Python\Python36-32\';
+      PYDLL  = 'C:\Users\breitsch\AppData\Local\Programs\Python\Python37-32\python37.dll'; 
+      PYSCRIPT = 'C:\maXbox\maxbox3\maxbox3\maXbox3\examples\module1maxbox1.py';
+      PYSCRIPT2= 'C:\maXbox\maxbox3\maXbox4\examples\896_textclassification.py';
+      LB = CR+LF;
+       
+const PyModule =
+              'def printData(data): '+#13#10+
+              '  return data+data+"/n"';       
+         
+const PYCMD = 'print("this is box")'+LB+ 
+              'import sys'+LB+ 
+              'f=open(r"1050pytest21_5powers.txt","w")'+LB+
+              'f.write("Hello PyWorld_mX47580, \n")'+LB+
+              'f.write("This data will be written on the file.")'+LB+ 
+              'f.close()';
+
+//https://pythongui.org/learn-about-powerful-python-decorators-in-a-delphi-windows-gui-app/              
+const DECOR = 'def say_hi():'+LF+
+              ' return "Hello there from maXbox4"';              
+              
+var myloadscript: string;
+     PyForm: TForm; pyMemo: TMemo;
+     avar: string; pyval: variant; pyint: integer;
+
+Procedure PYLaz_P4D_Demo2;
+//https://wiki.freepascal.org/Python4Delphi 
+var eng : TPythonEngine;
+    Out1: TPythonGUIInputOutput;
+    pystrings: TStrings;
+begin
+  eng:= TPythonEngine.Create(Nil);
+  Out1:= TPythonGUIInputOutput.create(nil)
+  Out1.output:= pyMemo; //debugout.output; or memo2;
+  Out1.RawOutput:= False;
+  Out1.UnicodeIO:= False;
+  Out1.maxlines:= 50;
+  out1.displaystring('this string thing draw the line')
+  
+  //writeln(botostr(Isx64(exepath+'examples\python36.dll')));
+  //writeln(botostr(Isx64(pydllpath2)));
+  //eng.dllpath:= exepath;
+  //eng.dllname:='python37.dll';
+  eng.pythonhome:= PYHOME;
+  try
+   //pymod.InitializeForNewInterpreter; //}
+   //pymod.engine:= eng;
+    eng.opendll(PYDLL)
+    eng.IO:= Out1;
+    eng.AutoFinalize:= True; 
+    //eng.AutoUnload:= false; 
+    writeln(eng.dllname);
+    //pymod.engine:= eng;
+    if eng.IsHandleValid then begin
+      writeln('DLLhandle: '+botostr(eng.IsHandleValid))
+      WriteLn('evens: '+ eng.EvalStringAsStr('[x**2 for x in range(15)]'));
+      WriteLn('gauss: '+ eng.EvalStringAsStr('sum([x for x in range(101)])'));
+      WriteLn('gauss2: '+ eng.EvalStr('sum([x % 2 for x in range(10100)])'));
+      WriteLn('mathstr: '+ eng.EvalStr('"py " * 7'));
+      //WriteLn('builtins: '+ eng.EvalStr('dir(__builtins__)'));
+      WriteLn('upperstr: '+ eng.EvalStr('"hello again".upper()'));
+      pymemo.lines.add('workdir: '+ eng.EvalStr('__import__("os").getcwd()'));
+      writeln('syncheck '+
+      botostr(eng.CheckEvalSyntax('print("powers:",[x**2 for x in range(10)])')));
+      
+      WriteLn('powerline1: '+ eng.EvalStr('list(map(int, ["1", "2", "3"]))'));
+      WriteLn('powerline2: '+ eng.EvalStr('list(map(float, ["1",2,"3.0",4.0,"5",6]))'));
+               eng.Execstring('sum_of_digits=lambda x: sum(map(int, str(x)))');
+      WriteLn('powerline3: '+ eng.EvalStr('sum_of_digits(1789)'));
+      
+               eng.Execstring('A = [[1, 2, 3], [4, 5, 6], [7, 8, 9]]');
+               eng.Execstring('transpose_A = [list(i) for i in zip(*A)]');
+      WriteLn('powerline4: '+ eng.EvalStr('transpose_A'));  
+      
+      //We can use dictionary comprehension to swap key-value pairs.
+               eng.Execstring('staff= {"Data Scientist":"John","Django Developer":"Max"}');
+      WriteLn('powerline5: '+ eng.EvalStr('{i:j for j, i in staff.items()}'));                                                   
+      eng.ExecString('print("powers:",[x**2 for x in range(10)])');
+      writeln('ExecSynCheck1 '+botostr(eng.CheckExecSyntax(PYCMD)));
+      eng.ExecString(PYCMD);
+      
+     { pystrings:= TStringlist.create;
+      pystrings.add('import matplotlib.pyplot as plt')
+      pystrings.add('import numpy as np')
+      pystrings.add('np.arange(5, 24, 3)')
+      pystrings.add('fig, ax = plt.subplots(dpi=153)')
+      pystrings.add('plt.plot([1,2,3,4,5,6], [1,2,3,4,9,5], "go")')
+      pystrings.add('plt.show()')
+      eng.ExecStrings4(pystrings);
+      pystrings.free; }
+      
+      //eng.ExecString('import subprocess');  
+      //eng.ExecString('subprocess.call(["pip", "install", "sympy"])')
+      eng.ExecString('from sympy import *');
+      eng.ExecString('from sympy.plotting import plot'); 
+      writeln(eng.EvalStr('list(primerange(7, 150))'));
+      writeln(eng.EvalStr('sum(list(primerange(0, 100)))'));
+      writeln(eng.EvalStr('(list(primerange(0, 101)))'));
+      writeln(eng.EvalStr('len(list(primerange(0, 101)))'));
+      //https://www.tutorialspoint.com/sympy/sympy_solvers.htm
+      avar:= '-2';
+     { eng.ExecString('x=Symbol("x")');
+      eng.ExecString('x,y=symbols("x y")');
+      writeln(eng.EvalStr('solveset(Eq(x**2-9,0), x)'));
+      writeln(eng.EvalStr('solveset(Eq(x**2-3*x,'+avar+'),x)'));
+      writeln(eng.EvalStr('solveset(exp(x),x)'));
+      println(eng.EvalStr('linsolve([Eq(x-y,4),Eq( x + y ,1) ], (x, y))')); }
+     
+      //eng.ExecString('plot(x**'+avar+', line_color="red")');
+      //eng.ExecString('plot((sin(x),(x, -2*pi, 2*pi)),(cos(x), (x, -pi, pi)))');
+      {
+      eng.ExecString('from sympy.plotting import plot3d'); 
+      eng.ExecString('x,y=symbols("x y") '); 
+      eng.ExecString('plot3d(x*y, (x, -10,10), (y, -10,10))'); }
+      
+      pyval:= VarPythonEval('sum([x for x in range(201)])');
+      //writeln('evalvar '+botostr(VarIsPythonList(pyval)));
+      writeln('evalvar '+botostr(VarIsnumeric(pyval)));
+      pyval:= NewPythonDict;
+      writeln(botostr(VarIsPython( pyval)));
+      pyval := (VarPythonEval('2 ** 3'));         
+     { eng.ExecString('import subprocess');  
+      eng.ExecString('subprocess.call(["pip", "install", "langdetect"])')
+      eng.ExecString('from langdetect import detect'); 
+      println('lang detect: '+eng.EvalStr('detect("bonjour mes ordinateurs")'));
+      }
+      {eng.ExecString('from array import *');
+      eng.ExecString('import pandas as pd');
+      eng.ExecString('df=pd.read_csv("./examples/submission.csv")');
+      println(eng.EvalStr('df'));
+      //Exception: <class 'RuntimeError'>: Can only map one python type to DType.  }
+      
+      eng.Execstring(DECOR)
+      //eng.ExecString(' return "hello there"');  
+      print(eng.EvalStr('say_hi()'));
+      
+      //os.path.getsize('sample.csv')
+      eng.Execstring('import os')
+      println(eng.EvalStr('os.path.getsize("./maXbox4.exe")'));
+      //eng.Execstring('quit()')
+      
+      //eng.ExecString('import subprocess');  
+      //eng.ExecString('subprocess.call(["pip3", "install", "pysound"])')
+      //eng.ExecString('import subprocess');  
+      //eng.ExecString('subprocess.call(["pip3", "install", "playsound"])')
+      
+      //https://realpython.com/playing-and-recording-sound-python/
+      //eng.Execstring('from playsound import playsound')
+    //eng.Execstring('playsound(r"C:\Program Files\Streaming\maxbox4\maxbox4\airmaxloop3.mp3",0)')
+      
+      //eng.ExecString('import subprocess');  
+      //eng.ExecString('subprocess.call(["pip3", "install", "libROSA"])')
+      //eng.Execstring('import librosa as lr')
+      
+      eng.Execstring('from collections import defaultdict')
+      eng.Execstring('my_default_dict={}')
+      
+      //eng.Execstring('for letter in "the red fox ran as fast as it could":'+LF+
+        //                               ' my_default_dict[letter] += 1')
+      
+      eng.Execstring('set1=[1, 2, 3, 4, 5]'+LF+'set2=[3, 4, 5, 6, 7]')
+      eng.Execstring('set1, set2 = set2, set1');
+      println(eng.EvalStr('set1, set2'));
+      eng.ExecString('import random');
+      println(eng.EvalStr('random.sample(set1, 3)'));
+      //memo2.font.name:= 'courier';
+      
+     { eng.ExecString('import pandas as pd');
+      eng.ExecString('import seaborn as sns');
+      eng.ExecString('diamonds = sns.load_dataset("diamonds")');
+      println(eng.EvalStr('diamonds.describe().T.head(10)'));  }
+  //https://levelup.gitconnected.com/25-python-one-liners-everyone-should-know-8befc13248c3
+  //1. Merge two dictionaries in a single expression
+    eng.Execstring('x = {"a": 1, "b": 2}'+LF+'y = {"c": 3, "d": 4}');
+    println('merge dic(): '+eng.EvalStr('{**x, **y}'));
+  //2. Merge two lists
+    eng.Execstring('x = ["a", "b"]'+LF+'y = ["c", "d", "e"]'+LF+'x.extend(y)');
+    println('merge list(): '+eng.EvalStr('x'));
+  //3. Get the most frequent element
+    eng.ExecString('from collections import Counter');
+    eng.Execstring('my_list = ["a", "b", "b", "a", "a", "a", "c", "c", "b", "d"]');
+    println('counter most: '+eng.EvalStr('Counter(my_list).most_common()[0][0]')); 
+  //4. Get quotient and remainder at the same time  
+    eng.ExecString('quotient, remainder = divmod(37, 5)');
+    println('q+remainder: '+eng.EvalStr('quotient, remainder'));
+  //5. Get the longest string from a list  
+    eng.ExecString('words = ["Python", "is", "naturally", "awesome"]'); 
+    println('longest string: '+eng.EvalStr('max(words, key=len)')); 
+  //6. Get a list in the reverse order 
+    println('reverse: '+eng.EvalStr('words[::-1]')); 
+    eng.ExecString('sentence = "Python is naturally awesome \n"');
+    println('reversesent : '+eng.EvalStr('sentence[::-1]')); 
+  //8. Write into a file  
+    eng.ExecString('with open("file.txt","a",newline="\n") as f: f.write(sentence)');
+    openfile(exepath+'file.txt');
+    out1.displaystring(loadfile(exepath+'file.txt'))
+  //9. Read a file in a single line 
+    println('read file line : '+
+                       eng.EvalStr('[line.strip() for line in open("file.txt")]')); 
+  //12. Find the first n Fibonacci numbers                      
+    eng.ExecString('fib = lambda x: x if x <= 1 else fib(x - 1) + fib(x - 2)');
+    println('fibo select : '+eng.EvalStr('fib(15)')); 
+  //13. Count the number of occurrences of a character in a string  
+    println('count char : '+eng.EvalStr('"I love Python".count("o")'));  
+  //14. Sort in a single line   
+    eng.ExecString('numbers = [5, -3, 428, -102, 4, 1]');     
+    println('sort line : '+eng.EvalStr('numbers.sort()')+eng.Evalstr('numbers'));  
+  //21. Remove duplicate elements from a list
+    println('remove dups : '+eng.EvalStr('list(set(["a","a","b","a","c"]))'));   
+  //22. Convert a list of strings to integers
+    println('convert : '+eng.EvalStr('list(map(int,["1","2","3"]))')); 
+    //Let’s make it in a single line:
+    println('iterators : '+eng.EvalStr('[(*range(1, 16))]'));                   
+      
+    pymemo.update;
+    end
+      else writeln('invalid library handle! '+Getlasterrortext);
+    println('PythonOK: '+botostr(PythonOK));  
+  except
+     eng.raiseError;
+     writeln('PyErr '+ExceptionToString(ExceptionType, ExceptionParam));
+  //PyErr Exception: Access violation at address 50F49DA6 in module '_multiarray_umath.cp37-win32.pyd'. Write of address 00000022.
+  finally
+     //eng.close 
+     eng.unloaddll; 
+     //PyFinalize();
+     eng.free;
+     //PyFinalize();
+  end;     
+  out1.free;
+  //pyImport(PyModule);
+end;
+
+begin  //@main
+  //PythonEngine1.Free;
+  //myloadscript2:= filetostring(PYSCRIPT2);
+  
+  PyForm:= loadForm2(300,400, clgreen,'PyFrm4D');
+  pyMemo:= TMemo.create(PyForm);
+  pymemo.height:= 380; pymemo.width:= 250;
+  pyMemo.parent:= PyForm
+  PyForm.show;
+  
+  PYLaz_P4D_Demo2; 
+  
+  //register_PYthonGUI;
+End.
+----app_template_loaded_code----
+----File newtemplate.txt not exists - now saved!----
+
+doc: https://stackoverflow.com/questions/23134820/unhandled-exception-at-multiarray-pyd-the-2nd-time-the-program-runs#23173191
+
+https://stackoverflow.com/questions/16779799/py-initialize-and-py-finalize-and-matplotlib
+
+
+C:\Users\Max\AppData\Local\Programs\Python\Python36-32>python.exe -m pip install sympy
+Collecting sympy
+  Cache entry deserialization failed, entry ignored
+  Downloading https://files.pythonhosted.org/packages/78/43/33c5a5e7fbafbf51520f
+4e09cb0634a1ca1d4cd5469c57967e43183d7a42/sympy-1.9-py3-none-any.whl (6.2MB)
+    100% |¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦| 6.2MB 186kB/s
+Collecting mpmath>=0.19 (from sympy)
+  Cache entry deserialization failed, entry ignored
+  Downloading https://files.pythonhosted.org/packages/d4/cf/3965bddbb4f1a61c49aa
+cae0e78fd1fe36b5dc36c797b31f30cf07dcbbb7/mpmath-1.2.1-py3-none-any.whl (532kB)
+    100% |¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦| 542kB 1.0MB/s
+Installing collected packages: mpmath, sympy
+Successfully installed mpmath-1.2.1 sympy-1.9
+You are using pip version 9.0.1, however version 21.3.1 is available.
+You should consider upgrading via the 'python -m pip install --upgrade pip' comm
+and.
+
+C:\Users\Max\AppData\Local\Programs\Python\Python36-32>
+
+Doc: Destroying it calls Py_Finalize, which frees all memory allocated by the Python DLL.
+Or, if you're just using the Python API without the VCL wrappers, you can probably just call Py_NewInterpreter on your TPythonInterface object to get a fresh execution environment without necessarily discarding everything done before.
+
+Evil eval()
+
+You should never pass untrusted source to the eval() directly. As it is quite easy for the malicious user to wreak havoc on your system. For example, the following code can be used to delete all the files from the system.
+
+1 >>>
+2 eval('os.system("RM -RF /")') # command is deliberately capitalized
+3 >>>
+
+
+Ref: https://sourceforge.net/projects/maxbox/files/Examples/EKON/P4D/python37.dll/download
+--------------------------------------------------------
+dll EXCEPT Exception: There is already one instance of TPythonEngine running.
+TRUE
+Exception: Python is not properly initialized.
+PascalScript maXbox4 - RemObjects & SynEdit
+
+dll EXCEPT Exception: There is already one instance of TPythonEngine running.
+TRUE
+Exception: Python is not properly initialized.
+
+dll EXCEPT Exception: Access violation at address 00345A76 in module 'maXbox4.exe'. Read of address 4365636E.
+TRUE
+Exception: Access violation at address 6BA3BA66 in module 'python36.dll'. Read of address 000000AD.
+
+mapdll EXCEPT Exception: There is already one instance of TPythonEngine running.
+PythonOK TRUE
+ImportEXCEPT Exception: Access violation at address 6BA3BA66 in module 'python36.dll'. Read of address 000000AC.
+ mX4 executed: 26/07/2021 13:30:51  Runtime: 0:0:2.48  Memload: 71% use
+ 
+Example 3: Python multithreading
+
+All the programs above in this article are single-threaded programs. Here's an example of a multithreaded Python program.
+
+
+import threading 
+  
+def print_hello_three_times():
+  for i in range(3):
+    print("Hello")
+  
+def print_hi_three_times(): 
+    for i in range(3): 
+      print("Hi") 
+
+t1 = threading.Thread(target=print_hello_three_times)  
+t2 = threading.Thread(target=print_hi_three_times)  
+
+t1.start()
+t2.start()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                   
+
+
+
+  
+
+
+    

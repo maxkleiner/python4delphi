@@ -1,0 +1,156 @@
+Program Python_ThreadsDemo28_Dissasemble;
+
+//https://arutselvan99.medium.com/python-why-is-faster-than-list-1b52d0ea9ac9
+//https://www.programiz.com/python-programming/time/sleep
+//Note: modify PYHOME and PYDLL :
+
+const //PYHOME = 'C:\Users\breitsch\AppData\Local\Programs\Python\Python37-32\';
+    PYHOME = 'C:\Users\max\AppData\Local\Programs\Python\Python36-32\';
+    PYDLL  = 'C:\Users\max\AppData\Local\Programs\Python\Python36-32\python36.dll'; 
+    PYSCRIPT = 'C:\maXbox\maxbox3\maxbox3\maXbox3\examples\module1maxbox1.py';
+    LB= CR+LF;
+       
+const TH1 = 'def print_hello_three_times(): '+LB+
+            '  for i in range(3):           '+LB+
+            '    winsound.Beep(540, 500)    '+LB+
+            '    #time.sleep(1.4)           '+LB+
+            '  return "Hello"';
+  
+const TH2 = 'def print_hi_three_times():    '+LB+ 
+            '  for i in range(3):           '+LB+
+            '    print("\a")                '+LB+
+            '    winsound.Beep(440, 500)    '+LB+
+            '  return "Hi"'; 
+            
+const ATIME='while True: '+LB+ 
+            '  localtime = time.localtime()'+LB+ 
+            '  result = time.strftime("%I:%M:%S %p", localtime)'+LB+ 
+            '  print(result, end="", flush=True)'+LB+ 
+            '  print("\r", end="", flush=True)'+LB+ 
+            '  time.sleep(1)';                        
+              
+var  PyForm: TForm; pyMemo: TMemo;
+     pyval: variant;
+     
+
+var eng: TPythonEngine; aPythonVersion: TPythonVersion;
+         PythonVersions: TPythonVersions; AllUserInstall: Boolean;
+         apd: TApdMeter;
+
+begin  //@main
+  //myloadscript2:= filetostring(PYSCRIPT2);
+  
+  PyForm:= loadForm2(200,300, clgreen,'PyFrm4D_VersionThread_Tester_EKON25');
+  pyMemo:= TMemo.create(PyForm);
+  apd:= TApdMeter.create(pyform);
+  //apd.color:= clyellow;
+  apd.parent:= pyform;
+  apd.barcolor:= clred;
+  apd.position:= 30;
+  apd.SetBounds(10,100, 150, 150);
+  apd.visible:= true;
+  pyMemo.parent:= PyForm
+  PyForm.show;
+  aPythonVersion:= TPythonVersion.create;
+  
+ //3. replace maps demo
+   //eng.Free
+   eng:= TPythonEngine.Create(Nil);
+   eng.pythonhome:= PYHOME;
+   eng.opendll(PYDLL)
+   //eng.free;
+   //eng.IO:= pyMemo;
+   try
+     eng.Execstring('pets= ("bird","snake","dog","turtle","cat","hamster")');
+     // eng.Execstring('val.sort(key=lambda x: x[2],reverse=False)');
+     eng.Execstring('uppercased_pets = list(map(str.upper, pets))');
+     println('Tip replace maps: '+eng.EvalStr('uppercased_pets'));
+     pyMemo.lines.add(eng.EvalStr('list(map(str.upper, pets))'));
+     
+     eng.Execstr('import dis, winsound, time');
+     println('disassemble call1: '+eng.EvalStr('(dis.dis(lambda: []))')); 
+     println('disassemble call2: '+eng.EvalStr('(dis.dis(lambda: list()))')); 
+     //println('def call: '+eng.EvalStr('print_hello_three_times()')); 
+     println('call3: '+eng.evalstr('__import__("dis").dis(lambda: [])')); 
+     //saveString(exepath+'pydis.py', 'import dis'+CRLF+('print(dis.dis(lambda: list()))'));
+   //saveString(exepath+'pydis.py','import dis'+CRLF+('repr(print(dis.dis(print("TXT"))))'+CRLF));
+     //ExecuteShell('py', 'pydis.py');
+     saveString(exepath+'pydis.py', 'import dis'+CRLF+('dis.dis(x for x in range(5))'));
+     println(getDOSOutput('py '+exepath+'pydis.py', exePath));
+     
+     eng.Execstr('from collections import defaultdict, Counter');
+     eng.Execstr('my_default_dict = defaultdict(list)');
+     eng.Execstr('for letter in "the red fox ran as fast as it could":'+LB+
+                 '  my_default_dict[letter]=+ 1'+LB+
+                 '  my_default_dict[letter]+= 1'+LB);
+     println('call defaultdict: '+eng.evalstr('my_default_dict'));  
+     
+     eng.Execstr('def LetterCount(text):'+LB+
+                 '  return Counter(c for c in text.lower() if c.isalpha())');
+     println('call counter:'+eng.evalstr('Counter("the red fox ran as fast as it could")'));                      
+     
+     //eng.Execstring(ATIME);
+     if PythonVersionFromPath(PYHOME, aPythonVersion, false) then begin
+       aPythonVersion.AssignTo(eng) ;
+       writeln('Version from path: '+TPythonEngine(eng).RegVersion);
+       writeln('DLL from path: '+TPythonEngine(eng).DLLName);
+     end;
+     {for it:= 10 to 50 do begin
+       sleep(100) 
+       apd.position:= it;
+     end;}
+   except
+     eng.raiseError;
+     writeln(ExceptionToString(ExceptionType, ExceptionParam));
+   finally
+     eng.Free;
+     aPythonVersion.Free;
+     //apd.position:= 100;
+  end;  
+  
+ eng:= TPythonEngine.Create(Nil);
+ eng.pythonhome:= PYHOME;
+ eng.opendll(PYDLL)
+  //eng.IO:= pyMemo;
+ try
+   eng.Execstring('with open(r"'+exepath+'maXbox4.exe","rb") as afile:'+
+                           ' fbuf = afile.read()');
+   println(eng.evalstr('__import__("hashlib").sha512('+
+                                 'fbuf).hexdigest().upper()')); 
+ except
+   eng.raiseError;
+ finally
+   eng.Free;
+ end;      
+  
+  //PYLaz_P4D_Demo2;   EKON25 - explicit better than implicit
+  eng:= TPythonEngine.Create(Nil);
+  eng.pythonhome:= PYHOME;
+  eng.loadDLL;
+  println(GetPythonEngine.EvalStr('__import__("decimal").Decimal(0.1)')); 
+  eng.Free;
+  apd.position:= 100;
+  
+End.
+
+Doc: One thing to note is that the map() function returns an iterable object, and thus we can use the list() function to generate a list from this iterable.
+writeln('RegVersion: '+itoa(TPythonEngine(eng).RegVersion));
+https://stackoverflow.com/questions/16779799/py-initialize-and-py-finalize-and-matplotlib
+
+import threading 
+  
+def print_hello_three_times():
+  for i in range(3):
+    print("Hello")
+  
+def print_hi_three_times(): 
+    for i in range(3): 
+      print("Hi") 
+
+t1 = threading.Thread(target=print_hello_three_times)  
+t2 = threading.Thread(target=print_hi_three_times)  
+t1.start()
+t2.start()
+
+This package implements JSON support for FPC.
+    

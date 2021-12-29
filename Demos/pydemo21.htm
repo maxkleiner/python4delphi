@@ -1,0 +1,113 @@
+Version:0.9
+StartHTML:0000000105
+EndHTML:0000015853
+StartFragment:0000001053
+EndFragment:0000015837
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>mXScriptasHTML</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta name="generator" content="SynEdit HTML exporter" />
+<style type="text/css">
+<!--
+body { color: #000000; background-color: #FFFFFF; }
+.pas1-assembler { }
+.pas1-character { color: #0066CC; text-decoration: underline; }
+.pas1-comment { color: #000080; font-style: italic; }
+.pas1-float { color: #00FF00; }
+.pas1-hexadecimal { color: #FF00FF; }
+.pas1-identifier { }
+.pas1-number { color: #FF0000; }
+.pas1-preprocessor { font-style: italic; }
+.pas1-reservedword { color: #000080; font-weight: bold; }
+.pas1-space { }
+.pas1-string { color: #008080; }
+.pas1-symbol { color: #FF0000; }
+-->
+</style>
+</head>
+<body>
+<!--StartFragment--><pre><code><span class="pas1-reservedword">PROGRAM</span><span class="pas1-space"> SEPDemo__PythonTemplate_RSA_Hexer_Indexer_1_20_PyDemo</span><span class="pas1-symbol">;
+</span><span class="pas1-comment">{Purpose: convert hex to int of RSA Keys!}
+//https://dev.to/dandyvica/understanding-public-private-rsa-keys-3j81
+
+</span><span class="pas1-reservedword">Const</span><span class="pas1-space"> PYHOME32 </span><span class="pas1-symbol">=</span><span class="pas1-space"> </span><span class="pas1-string">'C:\Users\max\AppData\Local\Programs\Python\Python36-32\'</span><span class="pas1-symbol">;</span><span class="pas1-space"> 
+      PYDLL32  </span><span class="pas1-symbol">=</span><span class="pas1-space"> </span><span class="pas1-string">'C:\Users\max\AppData\Local\Programs\Python\Python36-32\python36.dll'</span><span class="pas1-symbol">;</span><span class="pas1-space"> 
+
+      REXDEF</span><span class="pas1-symbol">=</span><span class="pas1-space"> </span><span class="pas1-string">'def striphtml(data):       '</span><span class="pas1-symbol">+</span><span class="pas1-identifier">LF</span><span class="pas1-symbol">+
+</span><span class="pas1-space">               </span><span class="pas1-string">'  p = re.compile(r&quot;&lt;.*?&gt;&quot;)'</span><span class="pas1-symbol">+</span><span class="pas1-identifier">LF</span><span class="pas1-symbol">+
+</span><span class="pas1-space">               </span><span class="pas1-string">'  return p.sub(&quot;&quot;, data)  '</span><span class="pas1-symbol">;</span><span class="pas1-space">  
+      CHEXSTR </span><span class="pas1-symbol">=</span><span class="pas1-space"> </span><span class="pas1-string">'00:c9:73:e2:3b:11:01:2f:2c:62:a4:1a:74:3f:92:'</span><span class="pas1-symbol">;</span><span class="pas1-space">         
+               
+      HEXCONVERT </span><span class="pas1-symbol">=
+</span><span class="pas1-space">      </span><span class="pas1-string">'&quot;&quot;&quot; convert hex string integer to int &quot;&quot;&quot; '</span><span class="pas1-symbol">+</span><span class="pas1-identifier">LF</span><span class="pas1-symbol">+
+</span><span class="pas1-space">      </span><span class="pas1-string">'def convert(n: str) -&gt; int:               '</span><span class="pas1-symbol">+</span><span class="pas1-identifier">LF</span><span class="pas1-symbol">+
+</span><span class="pas1-space">      </span><span class="pas1-string">'    # get rid of &quot;:&quot;, spaces and newlines '</span><span class="pas1-symbol">+</span><span class="pas1-identifier">LF</span><span class="pas1-symbol">+
+</span><span class="pas1-space">      </span><span class="pas1-string">'    hex = n.replace(&quot;:&quot;, &quot;&quot;).replace(&quot;\n&quot;,&quot;&quot;).replace(&quot; &quot;,&quot;&quot;)'</span><span class="pas1-symbol">+</span><span class="pas1-identifier">LF</span><span class="pas1-symbol">+
+</span><span class="pas1-space">      </span><span class="pas1-string">'    return int(hex,16)'</span><span class="pas1-symbol">;</span><span class="pas1-space">          
+         
+</span><span class="pas1-reservedword">var</span><span class="pas1-space"> bufs</span><span class="pas1-symbol">:</span><span class="pas1-space"> </span><span class="pas1-reservedword">string</span><span class="pas1-symbol">;</span><span class="pas1-space">               
+</span><span class="pas1-reservedword">Begin</span><span class="pas1-space">  </span><span class="pas1-comment">//@Main
+</span><span class="pas1-space">  </span><span class="pas1-reservedword">maxform1</span><span class="pas1-symbol">.</span><span class="pas1-identifier">console1click</span><span class="pas1-symbol">(</span><span class="pas1-identifier">self</span><span class="pas1-symbol">)
+</span><span class="pas1-space">  </span><span class="pas1-reservedword">memo2</span><span class="pas1-symbol">.</span><span class="pas1-identifier">height</span><span class="pas1-symbol">:=</span><span class="pas1-space"> </span><span class="pas1-number">200;
+</span><span class="pas1-space">  </span><span class="pas1-reservedword">with</span><span class="pas1-space"> TPythonEngine</span><span class="pas1-symbol">.</span><span class="pas1-identifier">Create</span><span class="pas1-symbol">(</span><span class="pas1-reservedword">Nil</span><span class="pas1-symbol">)</span><span class="pas1-space"> </span><span class="pas1-reservedword">do</span><span class="pas1-space"> </span><span class="pas1-reservedword">begin
+</span><span class="pas1-space">    pythonhome</span><span class="pas1-symbol">:=</span><span class="pas1-space"> PYHOME32</span><span class="pas1-symbol">;
+</span><span class="pas1-space">    </span><span class="pas1-reservedword">try
+</span><span class="pas1-space">      opendll</span><span class="pas1-symbol">(</span><span class="pas1-identifier">PYDLL32</span><span class="pas1-symbol">)
+</span><span class="pas1-space">      Println</span><span class="pas1-symbol">(</span><span class="pas1-string">'Colab Platform: '</span><span class="pas1-symbol">+</span><span class="pas1-space"> 
+          EvalStr</span><span class="pas1-symbol">(</span><span class="pas1-string">'__import__(&quot;platform&quot;).platform()'</span><span class="pas1-symbol">));</span><span class="pas1-space"> 
+      </span><span class="pas1-comment">//Println('CPU Arch. Check Linux: '+ 
+</span><span class="pas1-space">     Println</span><span class="pas1-symbol">(</span><span class="pas1-string">'DIR Check: '</span><span class="pas1-symbol">+</span><span class="pas1-space"> 
+     EvalStr</span><span class="pas1-symbol">(</span><span class="pas1-string">'__import__(&quot;subprocess&quot;).check_output(&quot;dir&quot;,shell=True).strip().decode()'</span><span class="pas1-symbol">));
+</span><span class="pas1-space">     ExecString</span><span class="pas1-symbol">(</span><span class="pas1-identifier">HEXCONVERT</span><span class="pas1-symbol">);</span><span class="pas1-space"> 
+     println</span><span class="pas1-symbol">(</span><span class="pas1-identifier">EvalStr</span><span class="pas1-symbol">(</span><span class="pas1-string">'convert(&quot;'</span><span class="pas1-symbol">+</span><span class="pas1-identifier">CHEXSTR</span><span class="pas1-symbol">+</span><span class="pas1-string">'&quot;)'</span><span class="pas1-symbol">));
+</span><span class="pas1-space">     bufs</span><span class="pas1-symbol">:=</span><span class="pas1-space"> StringReplace</span><span class="pas1-symbol">(</span><span class="pas1-identifier">CHEXSTR</span><span class="pas1-symbol">,</span><span class="pas1-string">':'</span><span class="pas1-symbol">,</span><span class="pas1-string">''</span><span class="pas1-symbol">,[</span><span class="pas1-identifier">rfReplaceAll</span><span class="pas1-symbol">]);
+</span><span class="pas1-space">     </span><span class="pas1-reservedword">with</span><span class="pas1-space"> TInteger</span><span class="pas1-symbol">.</span><span class="pas1-identifier">create</span><span class="pas1-symbol">(0)</span><span class="pas1-space"> </span><span class="pas1-reservedword">do</span><span class="pas1-space"> </span><span class="pas1-reservedword">begin
+</span><span class="pas1-space">       </span><span class="pas1-reservedword">if</span><span class="pas1-space"> AssignHex</span><span class="pas1-symbol">(</span><span class="pas1-identifier">bufs</span><span class="pas1-symbol">)</span><span class="pas1-space"> </span><span class="pas1-reservedword">then
+</span><span class="pas1-space">         writeln</span><span class="pas1-symbol">(</span><span class="pas1-identifier">ConvertToDecimalString</span><span class="pas1-symbol">(</span><span class="pas1-identifier">false</span><span class="pas1-symbol">));
+</span><span class="pas1-space">       free
+     </span><span class="pas1-reservedword">end</span><span class="pas1-symbol">;</span><span class="pas1-space">     
+     writeln</span><span class="pas1-symbol">(</span><span class="pas1-identifier">sha1tohex</span><span class="pas1-symbol">(</span><span class="pas1-identifier">sha1ofstr</span><span class="pas1-symbol">(</span><span class="pas1-identifier">bufs</span><span class="pas1-symbol">)))
+</span><span class="pas1-space">     </span><span class="pas1-comment">//HexToBuf(CHEXSTR, bufs);
+</span><span class="pas1-space">    </span><span class="pas1-reservedword">except
+</span><span class="pas1-space">      raiseError</span><span class="pas1-symbol">;
+</span><span class="pas1-space">    </span><span class="pas1-reservedword">finally</span><span class="pas1-space">                         
+      Free</span><span class="pas1-symbol">;
+</span><span class="pas1-space">    </span><span class="pas1-reservedword">end</span><span class="pas1-symbol">;
+</span><span class="pas1-space">  </span><span class="pas1-reservedword">end</span><span class="pas1-symbol">;</span><span class="pas1-space"> 
+    Writeln</span><span class="pas1-symbol">(</span><span class="pas1-string">'Demo01	A simple Python evaluator Gauss evaluator '</span><span class="pas1-symbol">+</span><span class="pas1-identifier">CRLF</span><span class="pas1-symbol">+
+</span><span class="pas1-space">   </span><span class="pas1-string">'Demo02	Evaluate a Python expression with ExecSynCheck1 and Strlist'</span><span class="pas1-symbol">+</span><span class="pas1-identifier">CRLF</span><span class="pas1-symbol">+
+</span><span class="pas1-space">   </span><span class="pas1-string">'http://www.softwareschule.ch/examples/pydemo2.txt'</span><span class="pas1-space">          </span><span class="pas1-symbol">+</span><span class="pas1-identifier">CRLF</span><span class="pas1-symbol">+
+</span><span class="pas1-space">   </span><span class="pas1-string">'http://www.softwareschule.ch/examples/pydemo2.htm           '</span><span class="pas1-symbol">+</span><span class="pas1-identifier">CRLF</span><span class="pas1-symbol">+
+</span><span class="pas1-space">   </span><span class="pas1-string">'Demo03	15-powerful-python-one-liners PYLaz_P4D_Demo2       '</span><span class="pas1-symbol">+</span><span class="pas1-identifier">CRLF</span><span class="pas1-symbol">+
+</span><span class="pas1-space">   </span><span class="pas1-string">'Demo04	Eval_IOEvents (advanced case) extension Demo3 PYLaz_P4D_Demo2'</span><span class="pas1-symbol">+</span><span class="pas1-identifier">CRLF</span><span class="pas1-symbol">+
+</span><span class="pas1-space">   </span><span class="pas1-string">'Demo05	Defining a mX4_Python Template                     '</span><span class="pas1-symbol">+</span><span class="pas1-identifier">CRLF</span><span class="pas1-symbol">+
+</span><span class="pas1-space">   </span><span class="pas1-string">'Demo06	Defining a Python Template_PyCryptoDome_Bitcoin    '</span><span class="pas1-symbol">+</span><span class="pas1-identifier">CRLF</span><span class="pas1-symbol">+
+</span><span class="pas1-space">   </span><span class="pas1-string">'Demo07	Using Translator with Subprocess()                 '</span><span class="pas1-symbol">+</span><span class="pas1-identifier">CRLF</span><span class="pas1-symbol">+
+</span><span class="pas1-space">   </span><span class="pas1-string">'Demo08	Using Turtle Graph for new Python types            '</span><span class="pas1-symbol">+</span><span class="pas1-identifier">CRLF</span><span class="pas1-symbol">+
+</span><span class="pas1-space">   </span><span class="pas1-string">'Demo09	Making a URLLib_Agent with GoggleSearch            '</span><span class="pas1-symbol">+</span><span class="pas1-identifier">CRLF</span><span class="pas1-symbol">+
+</span><span class="pas1-space">   </span><span class="pas1-string">'Demo10  Using URLLib_ISBN_Agent_PyPas inside Python        '</span><span class="pas1-symbol">+</span><span class="pas1-identifier">CRLF</span><span class="pas1-symbol">+
+</span><span class="pas1-space">   </span><span class="pas1-string">'Demo11	Using URLLib_JSON_PyPas inside Pascal               '</span><span class="pas1-symbol">+</span><span class="pas1-identifier">CRLF</span><span class="pas1-symbol">+
+</span><span class="pas1-space">   </span><span class="pas1-string">'Demo12	Using a RSA_PyPa crypto methods                     '</span><span class="pas1-symbol">+</span><span class="pas1-identifier">CRLF</span><span class="pas1-symbol">+
+</span><span class="pas1-space">   </span><span class="pas1-string">'Demo13	Using Python_Cheat_Sheet5 big demo                  '</span><span class="pas1-symbol">+</span><span class="pas1-identifier">CRLF</span><span class="pas1-symbol">+
+</span><span class="pas1-space">   </span><span class="pas1-string">'Demo14	Get Import Module with LoadStringJ(PYMODFILE)                '</span><span class="pas1-symbol">+</span><span class="pas1-identifier">CRLF</span><span class="pas1-symbol">+
+</span><span class="pas1-space">   </span><span class="pas1-string">'Demo15	ImportModuleData: this is a extension of Demo14              '</span><span class="pas1-symbol">+</span><span class="pas1-identifier">CRLF</span><span class="pas1-symbol">+
+</span><span class="pas1-space">   </span><span class="pas1-string">'Demo16	Using ImportModuleData_Export in TPythonModule or Pylist     '</span><span class="pas1-symbol">+</span><span class="pas1-identifier">CRLF</span><span class="pas1-symbol">+
+</span><span class="pas1-space">   </span><span class="pas1-string">'Demo17	Using Threading, Windows Console and Command line arguments  '</span><span class="pas1-symbol">+</span><span class="pas1-identifier">CRLF</span><span class="pas1-symbol">+
+</span><span class="pas1-space">   </span><span class="pas1-string">'Demo18	Using Threading and Delphi log window                        '</span><span class="pas1-symbol">+</span><span class="pas1-identifier">CRLF</span><span class="pas1-symbol">+
+</span><span class="pas1-space">   </span><span class="pas1-string">'Demo19	Using VarPyth.pas                                            '</span><span class="pas1-symbol">+</span><span class="pas1-identifier">CRLF</span><span class="pas1-symbol">+
+</span><span class="pas1-space">   </span><span class="pas1-string">'Demo20	Demo8 revisited to allow the new Python type to be subclassed'</span><span class="pas1-symbol">+</span><span class="pas1-identifier">CRLF</span><span class="pas1-symbol">+
+</span><span class="pas1-space">   </span><span class="pas1-string">'Demo21  Container indexing this one!   '</span><span class="pas1-space"> </span><span class="pas1-symbol">);</span><span class="pas1-space">                                     
+</span><span class="pas1-reservedword">End</span><span class="pas1-symbol">.</span><span class="pas1-space">                                                                    
+
+
+
+
+
+        
+   
+   
+</span></code></pre><!--EndFragment--></body>
+</html>

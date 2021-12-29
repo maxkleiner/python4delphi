@@ -1,0 +1,54 @@
+PROGRAM SEPDemo__PythonTemplate_ImportModuleDataHistogramShell;
+{Purpose: executes a py script and shows histogram!}
+{TYPE <Type declarations> Pascal-Delphi-Python-Json-JScript} 
+
+Const PYHOME32 = 'C:\Users\max\AppData\Local\Programs\Python\Python36-32\'; 
+      PYDLL32  = 'C:\Users\max\AppData\Local\Programs\Python\Python36-32\python36.dll'; 
+      PYMODULE = 'C:\maXbox\mX47464\maxbox4\examples\histogram15.py';
+      PYMODULEPATH = 'C:\maXbox\mX47464\maxbox4\examples';
+
+      PYBC =  'from bitcoin import *'+LF+
+              'my_private_key = random_key()'+LF+
+              'my_public_key = privtopub(my_private_key)'+LF+
+              'my_bitcoin_addr = pubtoaddr(my_public_key)'+LF+
+              'print(my_bitcoin_addr)';
+              
+      REXDEF= 'def striphtml(data):      '+LF+
+               '  p = re.compile(r"<.*?>")'+LF+
+               '  return p.sub("", data)  ';  
+               
+Begin  //@Main
+  with TPythonEngine.Create(Nil) do begin
+    pythonhome:= PYHOME32;
+    opendll(PYDLL32)
+    try
+      Execstring('import base64'+LF+'import urllib.parse, re, sys');
+      Execstring(REXDEF);
+      if fileExists(PYMODULE) then begin
+        println(UTF8toAnsi(pymodule)+CRLF)
+        {Execstring('sys.path.append(r'+'"'+PYMODULEPATH+'")');
+         Execstring('from histogram import *'); }
+        //Execstring(LoadStringJ(PYMODULE));
+        //println('get module data: '+evalStr('pyplot.hist(x)'));
+        ExecuteShell('py', PYMODULE);
+      end;
+    except
+      raiseError;
+    finally                         
+      Free;
+    end;
+  end;  
+//<Definitions>  
+End. 
+
+Ref:  https://www.sonarqube.org/features/multi-languages/python/
+
+Install a 32-bit package with a 64 pip installer -t (Target)
+C:\Users\max\AppData\Local\Programs\Python\Python36-32>pip3 install -t C:\Users\
+max\AppData\Local\Programs\Python\Python36-32\Lib bitcoin
+----File newtemplate.txt not exists - now saved!----
+
+
+       
+   
+   

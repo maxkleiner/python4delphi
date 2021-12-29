@@ -1,0 +1,204 @@
+PROGRAM SEPDemo_App_mX4_PythonTemplate_PyCryptoDome_Bitcoin;
+//https://pycryptodome.readthedocs.io/en/latest/src/examples.html
+//https://medium.com/coinmonks/bitcoin-with-python-6595588c2fcf
+//https://www.blockchain.com/explorer
+//https://bitcointools.site/tool/pubkey-to-address
+
+//<Constant declarations> 
+{TYPE 
+<Type declarations>}      
+
+Const PYHOME32 = 'C:\Users\max\AppData\Local\Programs\Python\Python36-32\'; 
+      PYDLL32  = 'C:\Users\max\AppData\Local\Programs\Python\Python36-32\python36.dll'; 
+      PYHOME64 = 'C:\Users\max\AppData\Local\Programs\Python\Python36\'; 
+      PYDLL64  = 'C:\Users\max\AppData\Local\Programs\Python\Python36\python36.dll'; 
+
+Var 
+//<Variable declarations>
+  i: integer; eng: TPythonEngine;
+
+//<FUNCTION>
+//<PROCEDURE> 
+
+//Generate public key and private key
+
+Const PYCMD = 'key = RSA.generate(2048)'+LF+ 
+              'private_key = key.export_key()'+LF+ 
+              'file_out = open("privatekey.pem", "wb")'+LF+
+              'file_out.write(private_key)'+LF+
+              'file_out.close()';
+              
+Const PYBC =  'from bitcoin import *'+LF+
+              'my_private_key = random_key()'+LF+
+              'my_public_key = privtopub(my_private_key)'+LF+
+              'my_bitcoin_addr = pubtoaddr(my_public_key)'+LF+
+              'print(my_bitcoin_addr)';
+
+BEGIN  //@Main
+//<Executable statements>
+  eng:= TPythonEngine.Create(Nil);
+  eng.pythonhome:= PYHOME32;
+  eng.opendll(PYDLL32)
+  //eng.IO:= pyMemo;
+    try
+      eng.Execstring('import base64');
+      //eng.Execstring('import Crypto');
+      
+      //eng.ExecString('import subprocess');  
+      //eng.ExecString('subprocess.call(["pip3","install -t '+PYHOME32+'Lib", "bitcoin"])')
+      //eng.ExecString('subprocess.call(["pip3","install", "bitcoin"])')
+      //eng.ExecString('from sympy import *');*)
+      
+      eng.Execstring('from bitcoin import *');
+      println(eng.evalstr('random_key()'));
+      
+      eng.Execstring('from Crypto.Signature import PKCS1_v1_5');
+      
+      eng.Execstring('from Crypto.PublicKey import RSA'+LF+
+                     'from Crypto.Random import get_random_bytes');
+                     //'from Crypto.Cipher import AES, PKCS1_OAEP');
+      ////Generate public key and private key               
+      // eng.Execstring(PYCMD); 
+      println(eng.evalstr('dir("PKCS1_v1_5")')); 
+      println(eng.evalstr('dir("RSA")'));             
+      
+      //from Crypto.PublicKey import RSA
+      //from Crypto.PublicKey import RSA
+      //from Crypto import Random
+      println('bitcoinprikey0: '+
+                           eng.evalstr('__import__("bitcoin").random_key()'));
+     
+      println('bitcoinprikey: '+eng.evalstr('random_key()'));
+      println('bitcoinpubkey: '+eng.evalstr('privtopub(random_key())'));
+      println('bitcoinaddress: '+
+                           eng.evalstr('pubtoaddr(privtopub(random_key()))'));
+      
+      eng.Execstring(PYBC);
+      println('bitcoinaddress script: '+eng.evalstr('my_bitcoin_addr'));
+      
+      println(SHA256ToStr(CalcDoubleSHA256(eng.evalstr('random_key()'))));
+      //println(SHA256ToStr(CalcSHA256('1Hif9bgGKbgnksAtc9hsbbHB3rPLAWBZAd')));
+      
+      eng.Execstring('with open(r"'+exepath+'maXbox4.exe","rb") as afile:'+
+                              ' fbuf = afile.read()');
+      println(eng.evalstr('__import__("hashlib").sha512('+
+                                    'fbuf).hexdigest().upper()')); 
+    except
+      eng.raiseError;
+    finally
+      eng.Free;
+      //aPythonVersion.Free;
+    end;    
+  //maXcalcF('2^64 /(60*60*24*365)')  
+//<Definitions>  
+END. 
+
+Ref:  https://www.sonarqube.org/features/multi-languages/python/
+
+Ref code:
+from Crypto.Hash import SHA256
+from Crypto.PublicKey import RSA
+from Crypto import Random
+
+bitcoinprikey: 3aa0dc740d42f06c7fe179a594137b3b71a7d5ca39e4ecf41c91b3c648fc9731
+bitcoinpubkey: 0495fdee31242b9edb91f69591ebb96194072ee5d4b7e277c9acc4d6cf34498c2dc0b425ce1be6e72536af6c78c5b1a12d104aea1d01e47bde7bf05a96810927fd
+bitcoinaddress: 1Hif9bgGKbgnksAtc9hsbbHB3rPLAWBZAd
+
+random_generator = Random.new().read
+
+#used to generate a keypair which contain a public and private key
+keyPair = RSA.generate(1024,random_generator)
+pubKey = keyPair.publicKey()
+
+plainText = 'Hello World'
+hashA = SHA256.new(plainText).digest()
+digitalSignature = keyPair.sign(hashA,'')
+
+print("Hash A: "+repr(hashA) + "\n");
+print("Digital Signature: " + repr(digitalSignature) + "\n")
+
+#Bob receives the plainText and digitalSignature from Alice 
+#plainTextChanged ='Hello World'
+hashB =SHA256.new(plainText).digest()
+print("Hash B: " + repr(hashB) + "\n")
+
+if(pubKey.verify(hashB, digitalSignature)):
+    print("Match")
+else:
+    print("No Match")
+
+    C:\Program Files (x86)\Windows Kits\10\include\10.0.17134.0\ucrt\inttypes.h(
+83): error C2143: syntax error: missing '{' before '__cdecl'
+    C:\Program Files (x86)\Windows Kits\10\include\10.0.17134.0\ucrt\inttypes.h(
+90): error C2143: syntax error: missing '{' before '__cdecl'
+    C:\Program Files (x86)\Windows Kits\10\include\10.0.17134.0\ucrt\inttypes.h(
+96): error C2143: syntax error: missing '{' before '__cdecl'
+    error: command 'C:\\Program Files (x86)\\Microsoft Visual Studio 14.0\\VC\\B
+IN\\x86_amd64\\cl.exe' failed with exit status 2
+    ----------------------------------------
+ERROR: Command errored out with exit status 1: 'c:\users\max\appdata\local\progr
+ams\python\python36\python.exe' -u -c 'import sys, setuptools, tokenize; sys.arg
+v[0] = '"'"'C:\\Users\\max\\AppData\\Local\\Temp\\pip-install-yf3lh10u\\pycrypto
+\\setup.py'"'"'; __file__='"'"'C:\\Users\\max\\AppData\\Local\\Temp\\pip-install
+-yf3lh10u\\pycrypto\\setup.py'"'"';f=getattr(tokenize, '"'"'open'"'"', open)(__f
+ile__);code=f.read().replace('"'"'\r\n'"'"', '"'"'\n'"'"');f.close();exec(compil
+e(code, __file__, '"'"'exec'"'"'))' install --record 'C:\Users\max\AppData\Local
+\Temp\pip-record-7gjehywl\install-record.txt' --single-version-externally-manage
+d --compile --install-headers 'C:\Users\max\AppData\Local\Programs\Python\Python
+36\Include\pycrypto' Check the logs for full command output.
+WARNING: You are using pip version 20.1.1; however, version 21.2.4 is available.
+
+You should consider upgrading via the 'c:\users\max\appdata\local\programs\pytho
+n\python36\python.exe -m pip install --upgrade pip' command.
+
+Solution: It require installation of Microsoft Visual C++ 14.0)
+
+I have made a simple python script and built a 64-bit Windows executable from it via pyinstaller. However, most computers at my office run 32-bit Windows operating systems, thus my program does not work. From what I have read, it is possible to make an executable for 32-bit systems as long as I use the 32-bit version of python. So I went ahead and installed the 32-bit version of python 3.5, but I can't find the way to link pip to the 32-bit version of python so I can install all the necessary modules. Every time I call pip it displays all the modules that are installed on the 64-bit version, even though by default I am running the 32-bit version python.
+
+https://pypi.org/project/pycryptodome/#filespydemo5crypto.txt
+
+C:\Users\max\AppData\Local\Programs\Python>C:\Users\max\AppData\Local\Programs\P
+ython\Python36\Scripts\pip3.exe install -t C:\Users\max\AppData\Local\Programs\P
+ython\Python36-32\lib\ https://files.pythonhosted.org/packages/b2/0c/1cfc4700b15
+bc155c76a42f504379ec15483bf57dbf41c3825147cbf5865/pycryptodome-3.10.1-pp36-pypy3
+6_pp73-win32.whl
+Collecting pycryptodome==3.10.1
+  Using cached pycryptodome-3.10.1-pp36-pypy36_pp73-win32.whl (1.6 MB)
+Installing collected packages: pycryptodome
+Successfully installed pycryptodome-3.10.1
+WARNING: Target directory C:\Users\max\AppData\Local\Programs\Python\Python36-32
+\lib\Crypto already exists. Specify --upgrade to force replacement.
+WARNING: Target directory C:\Users\max\AppData\Local\Programs\Python\Python36-32
+\lib\pycryptodome-3.10.1.dist-info already exists. Specify --upgrade to force re
+placement.
+WARNING: You are using pip version 20.1.1; however, version 21.2.4 is available.
+
+You should consider upgrading via the 'c:\users\max\appdata\local\programs\pytho
+n\python36\python.exe -m pip install --upgrade pip' command.
+
+C:\Users\max\AppData\Local\Programs\Python\Python36-32>pip3 install -t C:\Users\
+max\AppData\Local\Programs\Python\Python36-32\Lib bitcoin
+Collecting bitcoin
+  Downloading bitcoin-1.1.42.tar.gz (36 kB)
+Building wheels for collected packages: bitcoin
+  Building wheel for bitcoin (setup.py) ... done
+  Created wheel for bitcoin: filename=bitcoin-1.1.42-py3-none-any.whl size=43514
+ sha256=9373bd6ea351dfa409f33c27014c0d6377ae3b8b76a71da1fa75de92e30655b8
+  Stored in directory: c:\users\max\appdata\local\pip\cache\wheels\27\b0\82\9b3b
+630ec2952871a415a2c8083b5998d81528fee2815fc0ac
+Successfully built bitcoin
+Installing collected packages: bitcoin
+Successfully installed bitcoin-1.1.42
+
+Exception: <class 'OSError'>: Cannot load native module 'Crypto.Cipher._raw_ecb': Trying '_raw_ecb.cp36-win32.pyd': [WinError 126] The specified module could not be found, Trying '_raw_ecb.pyd': [WinError 126] The specified module could not be found.
+
+C:\Users\max\AppData\Local\Programs\Python>
+
+If you have both the 64 and 32 bit versions installed and ever need to install to the 32 bit version, you have to enter both the major and minor revision numbers as part of the command and add '-32' to the command argument. "py -3.5-32 -m pip install [package]" will install to the 32 bit version.
+
+Install a 32-bit package with a 64 pip installer -t (Target)
+C:\Users\max\AppData\Local\Programs\Python\Python36-32>pip3 install -t C:\Users\
+max\AppData\Local\Programs\Python\Python36-32\Lib bitcoin
+ 
+----app_template_loaded_code----
+----File newtemplate.txt not exists - now saved!----
