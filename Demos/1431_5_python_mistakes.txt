@@ -1,0 +1,139 @@
+PROGRAM Jewels_and_stones_5_python_mistakes;
+
+//https://rosettacode.org/wiki/Giuga_numbers#Delphi
+//https://rosettacode.org/wiki/Jewels_and_stones#Delphi
+//from https://python.plainenglish.io/5-python-mistakes-that-cost-me-a-job-offer-42fc4e73b814
+
+CONST 
+//<Constant declarations> 
+  TEXTOUT = 'hi world of code stone rage page';
+  
+function CommonLetters(S1,S2: string): integer;
+{Count the number of letters in S1 are found in S2}
+var I, J: integer;
+begin
+   Result:=0;
+   for I:=1 to Length(S1) do
+    for J:=1 to Length(S2) do
+     if S1[I]=S2[J] then Inc(Result);
+end;
+
+procedure ShowJewelsStones(Memo: TMemo; Jewels,Stones: string);
+{Show one Jewels-Stones comparison}
+begin
+   Memo2.Lines.Add(Jewels+' '+Stones+' '+IntToStr(CommonLetters(Jewels,Stones)));
+end;
+
+procedure TestJewelsStones(Memo: TMemo);
+begin
+   ShowJewelsStones(Memo,'aAAbbbb', 'aA');
+   ShowJewelsStones(Memo,'ZZ','z');
+   ShowJewelsStones(Memo,'aB','');
+   ShowJewelsStones(Memo,'12345643','34');
+   ShowJewelsStones(Memo,'ABCDEFGHIJKLMNOPQRSTUVWXYZ@abcdefghijklmnopqrstuvwxyz',
+                   'ABCDEFGHIJKLMNOPQRSTUVWXYZ@abcdefghijklmnopqrstuvwxyz');
+end;
+
+const PYFUNC =
+  'def countJewels(s, j):            '+LF+
+  '  return sum(x in j for x in s)   ';
+ 
+ PYCOLLECT= 
+  'def collect_items(item, items=[]):  '+lf+
+  '  if items is None:                 '+lf+
+  '      items = []                    '+lf+
+  '  items.append(item)                '+lf+
+  '  return items                      ';
+
+BEGIN  //@Main
+//<Executable statements>
+  maxform1.console1click(self);
+  maXcalcF('2^64 / (60*60*24*365)') 
+  TestJewelsStones(memo2); 
+  
+  with TPythonEngine.Create(Nil) do begin
+    autofinalize:= false;
+    loadDLL;
+    try
+      ExecString('import sys');
+      ExecString(PYFUNC);
+      println('pyout: '+evalstr('countJewels("taAAbbbb","aA"),sys.version'));
+      println('pyout: '+evalstr('countJewels("12345643","34"),sys.version'));
+      addclient(TEngineClient.create(nil));
+      addclient(TEngineClient.create(nil));
+      writeln('PythonOK '+botostr(PythonOK)+ ' cl.count:'+itoa(clientcount));
+      //I didn’t fail because of syntax. I failed because of habits.
+      //1. I used == Instead of is With None
+      //is checks object identity. == checks equality, which can be overridden.
+      execstr('if "A" is None:  '+lf+
+              '   print(sys.version)       ');
+      
+      //2. I Forgot That Default Arguments Are Evaluated Once
+      //This can easily break programs. 
+      ExecStr(PYCOLLECT);    
+      println(evalstr('collect_items("a")'));
+      println(evalstr('collect_items("b")')); 
+      //3. I Didn’t Use List Comprehensions
+      execstr('result = []               '+lf+
+               'for x in range(10):      '+lf+
+               '    if x % 2 == 0:       '+lf+
+               '        result.append(x) ');
+      println(evalstr('result'));    
+      println(evalstr('[x for x in range(10) if x % 2 == 0]')); 
+      
+      //4. I Didn’t Know About enumerate()  
+      {for index, item in enumerate(items):
+      print(index, item) }                      
+      execstr('result = []                     '+lf+
+              'for idx,x in enumerate("A,B,C"):'+lf+
+              '  if x == "B":                  '+lf+
+              '     result.append(x+str(idx))  ');
+      println(evalstr('result'));  
+      
+      //5. I Misused try/except
+      //I had used a bare except, which is dangerous.
+      { before
+        try:
+             value = int(user_input)
+         except:
+             print("Invalid input")  }
+      // after       
+      {  try:
+             value = int(user_input)
+         except ValueError:
+             print("Invalid input")  }       
+    except
+      raiseError;
+    finally
+      unloadDll;
+      Free;
+    end;  
+  end;  
+END. 
+
+
+ref: Output:  https://rosettacode.org/wiki/Jewels_and_stones#Delphi
+              https://rosettacode.org/wiki/Jewels_and_stones#Python
+
+https://python.plainenglish.io/5-python-mistakes-that-cost-me-a-job-offer-42fc4e73b814
+
+              
+aAAbbbb aA 3
+ZZ z 0
+ABCDEFGHIJKLMNOPQRSTUVWXYZ@abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLMNOPQRSTUVWXYZ@abcdefghijklmnopqrstuvwxyz 53
+
+https://bbs.archlinux.org/viewtopic.php?id=297117
+
+https://cloudspinx.com/how-to-install-wine-10-x-on-kali-linux/
+
+debug 2147483647
+30
+858
+1722
+66198
+
+ mX5?? executed: 03/04/2024 11:44:25  Runtime: 0:0:2.935  Memload: 71% use
+
+
+----app_template_loaded_code----
+----File newtemplate.txt not exists - now saved!----
