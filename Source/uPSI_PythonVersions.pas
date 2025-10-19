@@ -3,7 +3,7 @@ unit uPSI_PythonVersions;
 Tinherit from tobject convert from record to class
 https://github.com/magicmonty/delphi-code-coverage/blob/master/3rdParty/JWAPI/jwapi2.2a/Win32API/JwaWinBase.pas
 https://github.com/maxkleiner/python4delphi/blob/master/Source/PythonVersions.pas
-
+        use of rerecord to class  - new py version
 
 }
 interface
@@ -42,7 +42,7 @@ implementation
 
 
 uses
-   PythonVersions
+   PythonVersions_class //, pythonversions
   ;
  
  
@@ -58,6 +58,8 @@ begin
   //with RegClassS(CL,'TOBJECT', 'TPythonVersion') do
   with CL.AddClassN(CL.FindClass('TOBJECT'),'TPythonVersion') do
   begin
+   RegisterMethod('Constructor Create');
+    RegisterMethod('Procedure Free;');
     RegisterProperty('IsRegistered', 'Boolean', iptrw);
     RegisterProperty('IsAllUsers', 'Boolean', iptrw);
     RegisterProperty('SysVersion', 'string', iptrw);
@@ -74,6 +76,7 @@ begin
     RegisterProperty('SysArchitecture', 'string', iptr);
     RegisterProperty('IsPython3K', 'Boolean', iptr);
     RegisterProperty('HelpFile', 'string', iptrw);
+    RegisterProperty('HelpFile2', 'string', iptrw);
     RegisterProperty('DisplayName', 'string', iptrw);
     RegisterProperty('ApiVersion', 'integer', iptr);
   end;
@@ -91,7 +94,15 @@ begin
  CL.AddDelphiFunction('Function GetRegisteredPythonVersions : TPythonVersions');
  CL.AddDelphiFunction('Function GetLatestRegisteredPythonVersion( out PythonVersion : TPythonVersion) : Boolean');
  CL.AddDelphiFunction('Function PythonVersionFromPath( const Path : string; out PythonVersion : TPythonVersion; AcceptVirtualEnvs : Boolean) : Boolean');
-end;
+ CL.AddDelphiFunction('function GetRegisteredPythonVersion2(SysVersion: string;out PythonVersion: TPythonVersion): Boolean;');
+ CL.AddDelphiFunction('function GetRegisteredPythonVersions2(const MinVersion:string;const MaxVersion:string): TPythonVersions;');
+ CL.AddDelphiFunction('function GetPythonVersions :string;');
+ CL.AddDelphiFunction('function GetPyVers: string;');          //alias
+ CL.AddDelphiFunction('function GetServices:string;');
+
+ //function GetRegisteredPythonVersions2(const MinVersion:string;const MaxVersion:string): TPythonVersions;
+  //function GetRegisteredPythonVersion2(SysVersion: string;out PythonVersion: TPythonVersion): Boolean;
+ end;
 
 (* === run-time registration functions === *)
 (*----------------------------------------------------------------------------*)
@@ -113,6 +124,13 @@ begin Self.HelpFile := T; end;
 (*----------------------------------------------------------------------------*)
 procedure TPythonVersionHelpFile_R(Self: TPythonVersion; var T: string);
 begin T := Self.HelpFile; end;
+
+procedure TPythonVersionHelpFile_W2(Self: TPythonVersion; const T: string);
+begin Self.HelpFile2 := T; end;
+
+(*----------------------------------------------------------------------------*)
+procedure TPythonVersionHelpFile_R2(Self: TPythonVersion; var T: string);
+begin T := Self.HelpFile2; end;
 
 (*----------------------------------------------------------------------------*)
 procedure TPythonVersionIsPython3K_R(Self: TPythonVersion; var T: Boolean);
@@ -196,13 +214,19 @@ begin
  S.RegisterDelphiFunction(@GetRegisteredPythonVersions, 'GetRegisteredPythonVersions', cdRegister);
  S.RegisterDelphiFunction(@GetLatestRegisteredPythonVersion, 'GetLatestRegisteredPythonVersion', cdRegister);
  S.RegisterDelphiFunction(@PythonVersionFromPath, 'PythonVersionFromPath', cdRegister);
+  S.RegisterDelphiFunction(@GetRegisteredPythonVersion2, 'GetRegisteredPythonVersion2', cdRegister);
+  S.RegisterDelphiFunction(@GetRegisteredPythonVersions2, 'GetRegisteredPythonVersions2', cdRegister);
+  S.RegisterDelphiFunction(@GetPythonVersions, 'GetPythonVersions', cdRegister);
+  S.RegisterDelphiFunction(@GetPythonVersions, 'GetPyVers', cdRegister);           //alias
+  S.RegisterDelphiFunction(@Getservices, 'GetServices', cdRegister);
 end;
 
 (*----------------------------------------------------------------------------*)
 procedure RIRegister_TPythonVersion(CL: TPSRuntimeClassImporter);
 begin
-  with CL.Add(TPythonVersion) do
-  begin
+  with CL.Add(TPythonVersion) do  begin
+  RegisterConstructor(@TPythonVersion.Create, 'Create');
+    RegisterMethod(@TPythonVersion.Free, 'Free');
     RegisterPropertyHelper(@TPythonVersionIsRegistered_R,@TPythonVersionIsRegistered_W,'IsRegistered');
     RegisterPropertyHelper(@TPythonVersionIsAllUsers_R,@TPythonVersionIsAllUsers_W,'IsAllUsers');
     RegisterPropertyHelper(@TPythonVersionSysVersion_R,@TPythonVersionSysVersion_W,'SysVersion');
@@ -219,9 +243,11 @@ begin
     RegisterPropertyHelper(@TPythonVersionSysArchitecture_R,nil,'SysArchitecture');
     RegisterPropertyHelper(@TPythonVersionIsPython3K_R,nil,'IsPython3K');
     RegisterPropertyHelper(@TPythonVersionHelpFile_R,@TPythonVersionHelpFile_W,'HelpFile');
+    RegisterPropertyHelper(@TPythonVersionHelpFile_R2,@TPythonVersionHelpFile_W2,'HelpFile2');
+
     RegisterPropertyHelper(@TPythonVersionDisplayName_R,@TPythonVersionDisplayName_W,'DisplayName');
     RegisterPropertyHelper(@TPythonVersionApiVersion_R,nil,'ApiVersion');
-  end;
+  end;  //}
 end;
 
 (*----------------------------------------------------------------------------*)
